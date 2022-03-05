@@ -55,7 +55,10 @@ namespace ProjBiltiful
 
         public void GravarProduto(Produto produto)
         {
-            //using (StreamWriter sw = new StreamWriter())
+            using (StreamWriter sw = new StreamWriter(Path.Combine(caminhoFinal, pastaProduto)))
+            {
+                sw.WriteLine(produto.ToString());
+            }
         }
     }
 }

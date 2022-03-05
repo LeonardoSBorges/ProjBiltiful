@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace CadastrosBasicos
 {
     public class Produto
@@ -17,6 +18,11 @@ namespace CadastrosBasicos
         public char situacao { get; set; }
 
         // nome arquivo: Cosmetico.dat
+
+        public override string ToString()
+        {
+            return cbarras + nome + vvenda + uvenda + dcadastro + situacao;
+        }
 
         public Produto()
         {
@@ -88,6 +94,9 @@ namespace CadastrosBasicos
                         vvenda = venda;
                         //uvenda = ;
                         dcadastro = DateTime.Now.Date;
+
+                        
+
                         Console.WriteLine(" Cadastro do Materia-prima concluido com sucesso!");
                         Console.WriteLine(" PRessione ENTER para voltar ao menu");
                         Console.ReadKey();
@@ -99,18 +108,3 @@ namespace CadastrosBasicos
 
     }
 }
-
-
-/*decimal.TryParse(Console.ReadLine().ToString(CultureInfo.InvariantCulture), out decimal value1);
-                bool flagValue = decimal.TryParse(Console.ReadLine().ToString(CultureInfo.InvariantCulture), out decimal value);
-                if (!flagValue)
-                {
-                    venda = 0;
-                }
-                else
-                {
-                    venda = value;
-                }
-
-
-                //venda = Console.ReadLine() == "" ? 0 : Convert.ToDecimal(Console.ReadLine().ToString(CultureInfo.InvariantCulture));*/
