@@ -96,11 +96,7 @@ namespace CadastrosBasicos
                 flag = char.TryParse(Console.ReadLine().ToUpper().Trim(),out genero);
                 if (flag == false)
                     Console.Write("Genero incorreto, tente novamente");
-                else if(genero != 'M' || genero != 'F')
-                {
-                    flag = false;
-                    Console.WriteLine("insira um valor valido!!");
-                }
+
             } while(flag != true);
 
             return genero;
@@ -116,11 +112,7 @@ namespace CadastrosBasicos
                 flag = char.TryParse(Console.ReadLine().ToUpper().Trim(), out sit);
                 if (flag != true)
                     Console.WriteLine("Insira um valor correto");
-                else if (sit != 'A' || sit != 'I')
-                {
-                    Console.WriteLine("Insira um dos valores oferecidos acima");
-                    flag = false;
-                }
+               
             } while (flag != true);
             return sit;
         }

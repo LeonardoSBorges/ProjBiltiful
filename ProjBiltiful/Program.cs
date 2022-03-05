@@ -10,12 +10,12 @@ namespace ProjBiltiful
     {
         static void Main(string[] args)
         {
-            MenuCadastros menuCadastros;
             //Este menu sera utilizado para testes
             int value = -1;
             while (value != 0)
             {
-                Console.Write(@"1. Cadastros
+                Console.Write(@"============= BITIFUL =============
+1. Cadastros
 2. Vendas
 2. Compra de Materia-Prima
 3. Producao
@@ -33,7 +33,7 @@ Insira uma opcao valida:
                         break;
                     case 1:
                         //Cadastrar
-                        menuCadastros = new MenuCadastros();
+                        MenuCadastros.SubMenu();
                         break;
                     case 2:
                         break;
