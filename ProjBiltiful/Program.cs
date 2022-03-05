@@ -1,8 +1,7 @@
-﻿using CadastrosBasicos;
 using System;
 using System.Globalization;
 using VendasProdutos;
-
+using CadastrosBasicos;
 namespace ProjBiltiful
 {
     internal class Program
