@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CadastrosBasicos
 {
-    internal class MPrima
+    public class MPrima
     {
         public string id { get; set; }
         public string nome { get; set; }
