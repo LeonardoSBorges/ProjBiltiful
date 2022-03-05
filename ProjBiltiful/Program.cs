@@ -1,6 +1,6 @@
 ﻿using System;
 using VendasProdutos;
-
+using CadastrosBasicos;
 namespace ProjBiltiful
 {
     internal class Program
@@ -27,6 +27,7 @@ Insira uma opcao valida:
                         // sair
                         break;
                     case 1:
+
                         break;
                     case 2:
                         break;
