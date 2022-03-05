@@ -6,7 +6,8 @@ namespace ProjBiltiful
     internal class Program
     {
         static void Main(string[] args)
-        {
+        { 
+            //Este menu sera utilizado para testes
             int value = -1;
             while (value!=0)
             {
@@ -27,7 +28,7 @@ Insira uma opcao valida:
                         // sair
                         break;
                     case 1:
-
+                        //Cadastrar
                         break;
                     case 2:
                         break;
