@@ -18,15 +18,10 @@ namespace VendasProdutos
 
         public void Cadastrar()
         {
-            if (!Directory.Exists("database"))
-            {
-                Directory.CreateDirectory("database");
-                File.Create("database\\Venda.dat").Close();
-            }
-
+  
             try
             {
-                StreamWriter sw = new StreamWriter("database\\Venda.dat", append: true);
+                StreamWriter sw = new StreamWriter("ProjBiltiful\\Venda\\Venda.dat", append: true);
 
                 sw.WriteLine(Id.ToString().PadLeft(5, '0') + Cliente + DVenda.ToString("dd/MM/yyyy") + VTotal);
 

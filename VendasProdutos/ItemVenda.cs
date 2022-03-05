@@ -27,15 +27,10 @@ namespace VendasProdutos
 
         public void Cadastrar(List<ItemVenda> itens)
         {
-            if (!Directory.Exists("database"))
-            {
-                Directory.CreateDirectory("database");
-                File.Create("database\\ItemVenda.dat").Close();
-            }
 
             try
             {
-                StreamWriter sw = new StreamWriter("database\\ItemVenda.dat", append: true);
+                StreamWriter sw = new StreamWriter("ProjBiltiful\\Venda\\ItemVenda.dat", append: true);
 
                 itens.ForEach(item =>
                 {
