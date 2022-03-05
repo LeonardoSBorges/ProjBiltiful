@@ -14,7 +14,7 @@ namespace ProjBiltiful
             CultureInfo.DefaultThreadCurrentCulture = cultureInformation;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInformation;
 
-            Arquivos.GerarPastas();
+            new Arquivos();
             Produto a = new Produto();
         }
     }
