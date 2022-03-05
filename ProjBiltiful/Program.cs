@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CadastrosBasicos;
+using System;
+using System.Globalization;
 using VendasProdutos;
 
 namespace ProjBiltiful
@@ -7,7 +9,13 @@ namespace ProjBiltiful
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello world!!");
+            var cultureInformation = new CultureInfo("pt-BR");
+            cultureInformation.NumberFormat.CurrencySymbol = "R$";
+            CultureInfo.DefaultThreadCurrentCulture = cultureInformation;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInformation;
+
+            Arquivos.GerarPastas();
+            Produto a = new Produto();
         }
     }
 }
