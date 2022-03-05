@@ -1,7 +1,9 @@
 using System;
-using System.Globalization;
 using VendasProdutos;
 using CadastrosBasicos;
+using System.Globalization;
+using System.Collections.Generic;
+
 namespace ProjBiltiful
 {
     internal class Program
@@ -15,6 +17,5 @@ namespace ProjBiltiful
 
             new Arquivos();
             Produto a = new Produto();
-        }
     }
 }
