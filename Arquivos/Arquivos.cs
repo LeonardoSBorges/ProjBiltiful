@@ -27,6 +27,7 @@ namespace ProjBiltiful
         public void GerarPastas()
         {
             string caminhoInicial = Directory.GetCurrentDirectory();
+            Console.WriteLine(caminhoInicial);
             caminhoFinal = Path.Combine(caminhoInicial, "ProjBiltiful");
             Directory.CreateDirectory(caminhoFinal);
 
@@ -52,7 +53,17 @@ namespace ProjBiltiful
             Directory.CreateDirectory(pastaVenda);
 
         }
+        //public void GravarNovoCliente()
+        //{
+        //    string local = "";
+        //    if (File.Exists())
+        //    {
+        //        using (StreamWriter sw = new StreamWriter(pastaCliente))
+        //        {
 
+        //        }
+        //    }
+        //}
         public void GravarProduto(Produto produto)
         {
             //using (StreamWriter sw = new StreamWriter())
