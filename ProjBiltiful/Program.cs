@@ -1,6 +1,7 @@
 ﻿using System;
 using VendasProdutos;
 using CadastrosBasicos;
+using ProducaoCosmeticos;
 namespace ProjBiltiful
 {
     internal class Program
