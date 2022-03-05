@@ -33,9 +33,15 @@ namespace CadastrosBasicos
             do
             {
                 Console.Write("Razao social: ");
-                nome = Console.ReadLine().Trim();
+                nome = Console.ReadLine().Trim().PadLeft(50, '`');
                 if (nome.Length <= 50)
+                {
                     flag = true;
+                    if (nome.Length <= 50)
+                    {
+                        flag = true;
+                    }
+                }
             } while (flag != true);
             return nome;
         }

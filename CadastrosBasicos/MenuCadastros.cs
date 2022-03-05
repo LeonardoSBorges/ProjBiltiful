@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CadastrosBasicos.ManipulaArquivos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,8 @@ namespace CadastrosBasicos
        
         public static void SubMenu()
         {
-            MenuCadastros menuCadastros;
+            Cliente cliente;
+            Write write = new Write();
             //Este menu sera utilizado para testes
             int value = -1;
             while (value != 0)
@@ -36,7 +38,8 @@ Insira uma opcao valida:
                         break;
                     case 1:
                         //Cadastrar
-                        new Cliente();
+                        cliente = new Cliente();
+                        write.GravarNovoCliente(cliente);
                         break;
                     case 2:
                         new Fornecedor();

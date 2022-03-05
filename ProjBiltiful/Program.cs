@@ -1,6 +1,7 @@
 using System;
 using VendasProdutos;
 using CadastrosBasicos;
+using CadastrosBasicos.ManipulaArquivos;
 using ProducaoCosmeticos;
 using System.Globalization;
 
@@ -14,9 +15,7 @@ namespace ProjBiltiful
             cultureInformation.NumberFormat.CurrencySymbol = "R$";
             CultureInfo.DefaultThreadCurrentCulture = cultureInformation;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInformation;
-
-            new Arquivos();
-            Produto a = new Produto();
+            Write w = new Write();
 
             int value = -1;
             while (value != 0)

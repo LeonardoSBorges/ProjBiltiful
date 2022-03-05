@@ -1,28 +1,32 @@
-﻿using System;
+﻿using CadastrosBasicos.ManipulaArquivos;
+using System;
 
 namespace CadastrosBasicos
 {
-    public class Cliente 
+    public class Cliente
     {
-        public string cpf { get; set; }
-        public string nome { get; set; }
-        public DateTime dnascimento { get; set; }
-        private char sexo { get; set; }
-        private DateTime ucompra { get; set; }
-        private DateTime dcadastro { get; set; }
-        private char situacao { get; set; }
+        public Write write { get; set; }
+        public string cpf { get; private set; }
+        public string nome { get; private set; }
+        public DateTime dnascimento { get; private set; }
+        public char sexo { get; private set; }
+        public DateTime ucompra { get; set; }
+        public DateTime dcadastro { get; private set; }
+        public char situacao { get; set; }
 
         public Cliente()
         {
             cpf = CPF();
             nome = Nome();
             dnascimento = DNascimento();
-            sexo = Sexo();
-            ucompra = DateTime.Now;
-            dcadastro = DateTime.Now;
-            situacao = Situacao();
+            if (Validacoes.CalcudaData(dnascimento))
+            {
+                sexo = Sexo();
+                ucompra = DateTime.Now;
+                dcadastro = DateTime.Now;
+                situacao = Situacao();
+            }
         }
-
         public string CPF()
         {
             bool flag = false;
@@ -42,11 +46,10 @@ namespace CadastrosBasicos
                         continue;
                     }
                 }
-               
-            }while (flag != true);
+
+            } while (flag != true);
             return value;
         }
-
         public string Nome()
         {
             string nome;
@@ -54,9 +57,11 @@ namespace CadastrosBasicos
             do
             {
                 Console.Write("Nome: ");
-                nome = Console.ReadLine().Trim();
-                if (nome.Length <= 50)
+                nome = Console.ReadLine().Trim().PadLeft(50,'`') ;
+                if (nome.Length <= 50) 
+                {
                     flag = true;
+                }
             } while (flag != true);
             return nome;
         }
@@ -64,13 +69,12 @@ namespace CadastrosBasicos
         {
             DateTime nascimento;
             bool flag = false;
-
             do
             {
                 Console.Write("Nascimento (dd/mm/aaaa): ");
                 flag = DateTime.TryParse(Console.ReadLine().Trim(), out nascimento);
 
-                if(flag == false)
+                if (flag == false)
                     Console.WriteLine("Data incorreta!");
             } while (flag != true);
 
@@ -83,25 +87,23 @@ namespace CadastrosBasicos
             }
             else
                 return nascimento;
-            
         }
-
         public char Sexo()
         {
             Char genero;
             bool flag = false;
 
-            do {
+            do
+            {
                 Console.Write("Sexo (M/F): ");
-                flag = char.TryParse(Console.ReadLine().ToUpper().Trim(),out genero);
+                flag = char.TryParse(Console.ReadLine().ToUpper().Trim(), out genero);
                 if (flag == false)
                     Console.Write("Genero incorreto, tente novamente");
 
-            } while(flag != true);
+            } while (flag != true);
 
             return genero;
         }
-
         public char Situacao()
         {
             char sit;
@@ -112,7 +114,7 @@ namespace CadastrosBasicos
                 flag = char.TryParse(Console.ReadLine().ToUpper().Trim(), out sit);
                 if (flag != true)
                     Console.WriteLine("Insira um valor correto");
-               
+
             } while (flag != true);
             return sit;
         }
