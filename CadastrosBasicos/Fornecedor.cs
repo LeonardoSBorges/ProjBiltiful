@@ -8,7 +8,7 @@ namespace CadastrosBasicos
 {
     public class Fornecedor
     {
-        //Classe fornecdor
+        //Classe fornecdor novamente
         public string cnpj { get; set; }
         public string rsocial { get; set; }
         public DateTime dabertudora { get; set; }
