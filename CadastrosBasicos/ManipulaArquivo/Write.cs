@@ -63,7 +63,7 @@ namespace CadastrosBasicos.ManipulaArquivos
                 {
                     using (StreamWriter sw = new StreamWriter(local))
                     {
-                        Console.WriteLine("Arquivo criado com sucesso!\Cliente inserido com sucesso");
+                        Console.WriteLine("Arquivo criado com sucesso!\nCliente inserido com sucesso");
                         sw.WriteLine(total);
                     }
                 }
