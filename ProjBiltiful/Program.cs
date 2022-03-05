@@ -14,10 +14,10 @@ namespace ProjBiltiful
             cultureInformation.NumberFormat.CurrencySymbol = "R$";
             CultureInfo.DefaultThreadCurrentCulture = cultureInformation;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInformation;
-          
+
             new Arquivos();
             Produto a = new Produto();
-          
+
             int value = -1;
             while (value != 0)
             {
@@ -49,6 +49,8 @@ Insira uma opcao valida:
 
                 }
 
-            
+
+            }
+        }
     }
 }
