@@ -2,15 +2,18 @@
 using VendasProdutos;
 using CadastrosBasicos;
 using ProducaoCosmeticos;
+using System.Globalization;
+
 namespace ProjBiltiful
 {
     internal class Program
     {
         static void Main(string[] args)
-        { 
+        {
+            MenuCadastros menuCadastros;
             //Este menu sera utilizado para testes
             int value = -1;
-            while (value!=0)
+            while (value != 0)
             {
                 Console.Write(@"1. Cadastros
 2. Vendas
@@ -21,8 +24,8 @@ Insira uma opcao valida:
 ");
                 value = int.Parse(Console.ReadLine());
 
-                 
-                    
+
+
                 switch (value)
                 {
                     case 0:
@@ -30,6 +33,7 @@ Insira uma opcao valida:
                         break;
                     case 1:
                         //Cadastrar
+                        menuCadastros = new MenuCadastros();
                         break;
                     case 2:
                         break;
