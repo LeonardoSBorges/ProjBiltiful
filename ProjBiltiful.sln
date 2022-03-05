@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjBiltiful", "ProjBiltiful\ProjBiltiful.csproj", "{45D6FA91-4F12-4791-9576-54573AF82F92}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45D6FA91-4F12-4791-9576-54573AF82F92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45D6FA91-4F12-4791-9576-54573AF82F92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45D6FA91-4F12-4791-9576-54573AF82F92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45D6FA91-4F12-4791-9576-54573AF82F92}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3BEE6B02-043F-48D1-87A0-8DD629B812CB}
+	EndGlobalSection
+EndGlobal
