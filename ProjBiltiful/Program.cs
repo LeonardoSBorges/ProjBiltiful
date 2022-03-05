@@ -1,4 +1,5 @@
 ﻿using System;
+using VendasProdutos;
 
 namespace ProjBiltiful
 {
@@ -6,7 +7,7 @@ namespace ProjBiltiful
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Hello world!!");
         }
     }
 }

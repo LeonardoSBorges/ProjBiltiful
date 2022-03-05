@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CadastrosBasicos\CadastrosBasicos.csproj" />
+    <ProjectReference Include="..\ComprasMateriasPrimas\ComprasMateriasPrimas.csproj" />
+    <ProjectReference Include="..\ProducaoCosmeticos\ProducaoCosmeticos.csproj" />
+    <ProjectReference Include="..\VendasProdutos\VendasProdutos.csproj" />
+  </ItemGroup>
+
+</Project>
