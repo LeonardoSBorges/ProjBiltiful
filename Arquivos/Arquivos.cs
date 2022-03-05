@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CadastrosBasicos;
 
-namespace ProjBiltiful
+namespace ManipulaArquivos
 {
     public class Arquivos
     {
@@ -27,6 +26,7 @@ namespace ProjBiltiful
         public void GerarPastas()
         {
             string caminhoInicial = Directory.GetCurrentDirectory();
+            Console.WriteLine(caminhoInicial);
             caminhoFinal = Path.Combine(caminhoInicial, "ProjBiltiful");
             Directory.CreateDirectory(caminhoFinal);
 
@@ -52,7 +52,17 @@ namespace ProjBiltiful
             Directory.CreateDirectory(pastaVenda);
 
         }
+        //public void GravarNovoCliente()
+        //{
+        //    string local = "";
+        //    if (File.Exists())
+        //    {
+        //        using (StreamWriter sw = new StreamWriter(pastaCliente))
+        //        {
 
+        //        }
+        //    }
+        //}
         public void GravarProduto(Produto produto)
         {
             using (StreamWriter sw = new StreamWriter(Path.Combine(caminhoFinal, pastaProduto)))
