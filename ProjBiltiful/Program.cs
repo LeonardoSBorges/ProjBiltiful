@@ -9,21 +9,6 @@ namespace ProjBiltiful
 {
     internal class Program
     {
-        public static void GerarPastas()
-        {
-            string caminhoInicial = Directory.GetCurrentDirectory();
-            Console.WriteLine(caminhoInicial);
-            string caminhoFinal = Path.Combine(caminhoInicial, "ProjBiltiful");
-            Directory.CreateDirectory(caminhoFinal);
-
-            string pastaMateriaPrima = Path.Combine(caminhoFinal, "MateriaPrima");
-            Directory.CreateDirectory(pastaMateriaPrima);
-
-            string pastaProduto = Path.Combine(caminhoFinal, "Produto");
-            Directory.CreateDirectory(pastaProduto);
-
-        }
-
         static void Main(string[] args)
         {
 

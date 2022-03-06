@@ -11,6 +11,8 @@ namespace VendasProdutos
     {
         public static void SubMenu()
         {
+            new Arquivos();
+
             string opcao;
 
             do

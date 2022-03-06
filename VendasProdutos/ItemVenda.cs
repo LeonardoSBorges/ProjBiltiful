@@ -6,7 +6,7 @@ namespace VendasProdutos
 {
     public class ItemVenda
     {
-        private static string caminho = @"ProjBiltiful\Venda\ItemVenda.dat";
+        private static Arquivos caminho = new Arquivos();
 
         public int Id { get; set; }
         public string Produto { get; set; }
@@ -34,7 +34,10 @@ namespace VendasProdutos
         {
             try
             {
-                StreamWriter sw = new StreamWriter(caminho, append: true);
+                Console.WriteLine(caminho.ArquivoItemVenda);
+                Console.ReadKey();
+
+                StreamWriter sw = new StreamWriter(caminho.ArquivoItemVenda, append: true);
 
                 itens.ForEach(item =>
                 {

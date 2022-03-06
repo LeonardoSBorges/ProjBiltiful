@@ -4,10 +4,9 @@ using System.IO;
 
 namespace VendasProdutos
 {
-
     public class Venda
     {
-        private static string caminho = @"ProjBiltiful\Venda\Venda.dat";
+        public static Arquivos caminho =  new Arquivos();
 
         public int Id { get; set; }
         public string Cliente { get; set; }
@@ -37,7 +36,7 @@ namespace VendasProdutos
         {
             try
             {
-                return File.ReadAllLines(caminho).Length + 1;
+                return File.ReadAllLines(caminho.ArquivoVenda).Length + 1;
             }
             catch (Exception e)
             {
@@ -51,7 +50,7 @@ namespace VendasProdutos
         {
             try
             {
-                StreamWriter sw = new StreamWriter(caminho, append: true);
+                StreamWriter sw = new StreamWriter(caminho.ArquivoVenda, append: true);
 
                 sw.WriteLine(Id.ToString().PadLeft(5, '0') + Cliente + DVenda.ToString("dd/MM/yyyy") + VTotal);
 
@@ -84,7 +83,7 @@ namespace VendasProdutos
 
         public string BuscaBinaria(int id)
         {
-            string[] dados = File.ReadAllLines(caminho);
+            string[] dados = File.ReadAllLines(caminho.ArquivoVenda);
 
             int minimo = 0;
             int maximo = dados.Length;
