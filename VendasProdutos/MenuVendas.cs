@@ -83,6 +83,19 @@ namespace VendasProdutos
 
         public static void LocalizarVenda()
         {
+            Console.Clear();
+
+            Venda venda = new Venda();
+
+            Console.WriteLine("Informe o ID da venda que deseja buscar: ");
+            int.TryParse(Console.ReadLine(), out int id);
+
+            venda = venda.Localizar(id);
+
+            if (venda != null)
+                Console.WriteLine(venda.ToString());
+            else
+                Console.WriteLine("venda não registrada!");
         }
     }
 }
