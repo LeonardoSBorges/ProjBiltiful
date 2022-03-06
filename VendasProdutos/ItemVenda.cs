@@ -6,7 +6,7 @@ namespace VendasProdutos
 {
     public class ItemVenda
     {
-
+        private static string caminho = @"ProjBiltiful\\Venda\\ItemVenda.dat";
 
         public int Id { get; set; }
         public string Produto { get; set; }
@@ -27,10 +27,9 @@ namespace VendasProdutos
 
         public void Cadastrar(List<ItemVenda> itens)
         {
-
             try
             {
-                StreamWriter sw = new StreamWriter("ProjBiltiful\\Venda\\ItemVenda.dat", append: true);
+                StreamWriter sw = new StreamWriter(caminho, append: true);
 
                 itens.ForEach(item =>
                 {
