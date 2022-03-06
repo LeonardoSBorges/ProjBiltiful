@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using VendasProdutos;
 using CadastrosBasicos;
 using ProducaoCosmeticos;
@@ -8,6 +9,21 @@ namespace ProjBiltiful
 {
     internal class Program
     {
+        public static void GerarPastas()
+        {
+            string caminhoInicial = Directory.GetCurrentDirectory();
+            Console.WriteLine(caminhoInicial);
+            string caminhoFinal = Path.Combine(caminhoInicial, "ProjBiltiful");
+            Directory.CreateDirectory(caminhoFinal);
+
+            string pastaMateriaPrima = Path.Combine(caminhoFinal, "MateriaPrima");
+            Directory.CreateDirectory(pastaMateriaPrima);
+
+            string pastaProduto = Path.Combine(caminhoFinal, "Produto");
+            Directory.CreateDirectory(pastaProduto);
+
+        }
+
         static void Main(string[] args)
         {
 
@@ -50,7 +66,7 @@ Insira uma opcao valida: ");
 
                     default:
                         Console.Clear();
-                        Console.WriteLine("OpÁ„o inv·lida");
+                        Console.WriteLine("Op√ß√£o inv√°lida");
                         Console.ReadKey();
                         break;
                 }

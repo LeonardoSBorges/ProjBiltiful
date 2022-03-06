@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendasProdutos", "VendasProdutos\VendasProdutos.csproj", "{37D1D1A4-C02D-4D7E-9273-CC1DD3DE01B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VendasProdutos", "VendasProdutos\VendasProdutos.csproj", "{37D1D1A4-C02D-4D7E-9273-CC1DD3DE01B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComprasMateriasPrimas", "ComprasMateriasPrimas\ComprasMateriasPrimas.csproj", "{CFC1E769-7B72-4520-AE5A-0ADD4710E58C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComprasMateriasPrimas", "ComprasMateriasPrimas\ComprasMateriasPrimas.csproj", "{CFC1E769-7B72-4520-AE5A-0ADD4710E58C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CadastrosBasicos", "CadastrosBasicos\CadastrosBasicos.csproj", "{2948B73E-7A94-4C31-ACBB-96523EC335F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CadastrosBasicos", "CadastrosBasicos\CadastrosBasicos.csproj", "{2948B73E-7A94-4C31-ACBB-96523EC335F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProducaoCosmeticos", "ProducaoCosmeticos\ProducaoCosmeticos.csproj", "{737C4C2C-6EAC-4932-BAB5-E50E885FFD57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProducaoCosmeticos", "ProducaoCosmeticos\ProducaoCosmeticos.csproj", "{737C4C2C-6EAC-4932-BAB5-E50E885FFD57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjBiltiful", "ProjBiltiful\ProjBiltiful.csproj", "{244F2098-526B-4C59-8CF6-D1A737522DC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjBiltiful", "ProjBiltiful\ProjBiltiful.csproj", "{244F2098-526B-4C59-8CF6-D1A737522DC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManipulaArquivos", "Arquivos\ManipulaArquivos.csproj", "{932612EC-1DBC-4CEB-BCC9-0C58287F6BB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{244F2098-526B-4C59-8CF6-D1A737522DC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{244F2098-526B-4C59-8CF6-D1A737522DC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{244F2098-526B-4C59-8CF6-D1A737522DC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{932612EC-1DBC-4CEB-BCC9-0C58287F6BB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{932612EC-1DBC-4CEB-BCC9-0C58287F6BB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{932612EC-1DBC-4CEB-BCC9-0C58287F6BB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{932612EC-1DBC-4CEB-BCC9-0C58287F6BB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

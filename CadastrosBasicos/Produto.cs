@@ -1,9 +1,12 @@
-﻿using System;
+﻿using ManipulaArquivos;
+using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace CadastrosBasicos
 {
@@ -18,13 +21,20 @@ namespace CadastrosBasicos
 
         // nome arquivo: Cosmetico.dat
 
-        public Produto()
+        public override string ToString()
         {
-            Cadastrar();
+            return cbarras + nome + vvenda + uvenda + dcadastro + situacao;
         }
 
-        private void Cadastrar()
+/*        public Produto()
         {
+           
+        }*/
+
+        public void Cadastrar()
+        {
+            Produto produto = new Produto();
+
             char sit = 'A';
             string cod, nomeTemp;
             decimal venda = 0;
@@ -83,11 +93,14 @@ namespace CadastrosBasicos
                     {
                         flag = false;
 
-                        cbarras = cod;
-                        nome = nomeTemp;
-                        vvenda = venda;
+                        produto.cbarras = cod;
+                        produto.nome = nomeTemp;
+                        produto.vvenda = venda;
                         //uvenda = ;
-                        dcadastro = DateTime.Now.Date;
+                        produto.dcadastro = DateTime.Now.Date;
+
+                        GravarProduto(produto);
+
                         Console.WriteLine(" Cadastro do Materia-prima concluido com sucesso!");
                         Console.WriteLine(" PRessione ENTER para voltar ao menu");
                         Console.ReadKey();
@@ -97,20 +110,22 @@ namespace CadastrosBasicos
             } while (flag);
         }
 
+        public void GravarProduto(Produto produto)
+        {
+            string caminhoInicial = Directory.GetCurrentDirectory();
+            Console.WriteLine(caminhoInicial);
+
+            string caminhoFinal = Path.Combine(caminhoInicial + "ProjBiltiful\\");
+            Directory.CreateDirectory(caminhoFinal);
+
+            string pastaProduto = Path.Combine(caminhoFinal, "Produto");
+            Directory.CreateDirectory(pastaProduto);
+
+            using (StreamWriter sw = new StreamWriter(pastaProduto))
+            {
+                sw.WriteLine(produto.ToString());
+            }
+        }
+
     }
 }
-
-
-/*decimal.TryParse(Console.ReadLine().ToString(CultureInfo.InvariantCulture), out decimal value1);
-                bool flagValue = decimal.TryParse(Console.ReadLine().ToString(CultureInfo.InvariantCulture), out decimal value);
-                if (!flagValue)
-                {
-                    venda = 0;
-                }
-                else
-                {
-                    venda = value;
-                }
-
-
-                //venda = Console.ReadLine() == "" ? 0 : Convert.ToDecimal(Console.ReadLine().ToString(CultureInfo.InvariantCulture));*/
