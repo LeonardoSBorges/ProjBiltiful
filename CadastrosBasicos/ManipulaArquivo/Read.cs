@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CadastrosBasicos.ManipulaArquivo
 {
-    internal class Read
+    public class Read
     {
         public string caminhoFinal { get; set; }
         public string pastaCliente { get; set; }
@@ -52,31 +52,122 @@ namespace CadastrosBasicos.ManipulaArquivo
             Directory.CreateDirectory(pastaVenda);
         }
 
-        public Cliente LerArquivoCliente()
+
+        public Fornecedor ProcurarFornecedor(string procuraCnpj)
         {
-            Cliente cliente = new Cliente();
+            string procuraFornecedor = "";
+            string file = pastaFornecedor + "\\Fornecedor.dat";
+            Fornecedor fornecedor;
             try
             {
-                using (StreamReader sr = new StreamReader(pastaCliente))
+                if (File.Exists(file))
                 {
-                    string value = sr.ReadLine();
-                    bool flag = false;
-                    string cpf = value.Substring(0, 11);
-                    Console.WriteLine(cpf);
-                    do
+                    using (StreamReader sr = new StreamReader(file))
                     {
-                        if (cpf == cliente.cpf)
+                        procuraFornecedor = sr.ReadLine();
+
+                        while (procuraFornecedor != null)
                         {
-                            
+                            string cnpj = procuraFornecedor.Substring(0, 14);
+                            if (procuraCnpj == cnpj)
+                            {
+                                string rSocial = procuraCnpj.Substring(14, 50);
+                                DateTime dAbertura = DateTime.Parse(procuraFornecedor.Substring(64, 10));
+                                DateTime uCompra = DateTime.Parse(procuraFornecedor.Substring(74, 10));
+                                DateTime dCadastro = DateTime.Parse(procuraFornecedor.Substring(84, 10));
+                                char situacao = char.Parse(procuraFornecedor.Substring(94, 1));
+                                return new Fornecedor(cnpj, rSocial, dAbertura, uCompra, dCadastro, situacao); ;
+                            }
+
+
                         }
-                    }while (flag != true);
+                        return null;
+                    }
                 }
+            }catch(Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
+            return null;
+        }
+
+
+        public Cliente ProcuraCliente(string cpf)
+        {
+            string procuraCliente = "";
+            string file = pastaCliente + "\\Cliente.dat";
+            Cliente cliente;
+            try
+            {
+                if (File.Exists(file))
+                {
+                    using (StreamReader sr = new StreamReader(file))
+                    {
+                        procuraCliente = sr.ReadLine();
+
+                        while (procuraCliente != null)
+                        {
+                            string recebeCpf = procuraCliente.Substring(0, 11);
+                            if (recebeCpf == cpf)
+                            {
+                                string nome = procuraCliente.Substring(11, 50);
+                                DateTime dNascimento = DateTime.Parse(procuraCliente.Substring(61, 10));
+                                char sexo = char.Parse(procuraCliente.Substring(71, 1));
+                                DateTime uCompra = DateTime.Parse(procuraCliente.Substring(72, 10));
+                                DateTime dCadastro = DateTime.Parse(procuraCliente.Substring(82, 10));
+                                char situacao = char.Parse(procuraCliente.Substring(92, 1));
+                                cliente = new Cliente(cpf, nome, dNascimento, sexo, uCompra, dCadastro, situacao);
+                                Console.WriteLine("Cliente ja cadastrado");
+                                Console.WriteLine(cliente.ToString());
+                                Console.ReadKey();
+                                return cliente;
+                            }
+
+                            procuraCliente = sr.ReadLine();
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Nada foi encontrado!");
+
+                    return null;
+                }
+
+                return null;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Ocorreu um erro: " + ex.Message);
             }
-
+            return null;
         }
+        //public Cliente LerArquivoCliente()
+        //{
+        //    Cliente cliente = new Cliente();
+        //    try
+        //    {
+        //        using (StreamReader sr = new StreamReader(pastaCliente))
+        //        {
+        //            string value = sr.ReadLine();
+        //            bool flag = false;
+        //            string cpf = value.Substring(0, 11);
+        //            Console.WriteLine(cpf);
+        //            do
+        //            {
+        //                if (cpf == cliente.CPF)
+        //                {
+        //                    cliente = cpf;
+        //                }
+        //            }while (flag != true);
+        //        }
+
+        //        return cliente;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Ocorreu um erro: " + ex.Message);
+        //    }
+        //}
     }
 }

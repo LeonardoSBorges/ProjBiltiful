@@ -56,7 +56,7 @@ namespace CadastrosBasicos.ManipulaArquivos
         {
             try
             {
-                string total = $"{cliente.cpf}{cliente.nome}{cliente.dnascimento.ToString("dd/MM/yyyy")}{cliente.sexo}{cliente.ucompra.ToString("dd/MM/yyyy")}{cliente.dcadastro.ToString("dd/MM/yyyy")}{cliente.situacao}";
+                string total = $"{cliente.CPF}{cliente.Nome}{cliente.DNascimento.ToString("dd/MM/yyyy")}{cliente.Sexo}{cliente.UCompra.ToString("dd/MM/yyyy")}{cliente.DCadastro.ToString("dd/MM/yyyy")}{cliente.Situacao}";
 
                 string local = pastaCliente + "\\Cliente.dat";
                 if (!File.Exists(local))
@@ -81,14 +81,15 @@ namespace CadastrosBasicos.ManipulaArquivos
                 Console.WriteLine("Ocorreu um erro: " + ex.Message);
             }
         }
-        
         public void GravarNovoFornecedor(Fornecedor fornecedor)
         {
             try
             {
-                string total = $"{fornecedor.cnpj}{fornecedor.rsocial}{fornecedor.dabertudora.ToString("dd/MM/yyyy")}{fornecedor.ucompra.ToString("dd/MM/yyyy")}{fornecedor.dcadastro.ToString("dd/MM/yyyy")}{fornecedor.situacao}";
+                string total = $"{fornecedor.CNPJ}{fornecedor.RSocial}{fornecedor.DAbertura.ToString("dd/MM/yyyy")}{fornecedor.UCompra.ToString("dd/MM/yyyy")}{fornecedor.DCadastro.ToString("dd/MM/yyyy")}{fornecedor.Situacao}";
 
-                string local = caminhoFinal + "\\Fornecedor.dat";
+                string local = pastaFornecedor + "\\Fornecedor.dat";
+
+                
                 if (!File.Exists(local))
                 {
                     using (StreamWriter sw = new StreamWriter(local))

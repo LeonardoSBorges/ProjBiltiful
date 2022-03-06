@@ -8,82 +8,36 @@ namespace CadastrosBasicos
 {
     public class Fornecedor
     {
-        //Classe fornecdor novamente
-        public string cnpj { get; set; }
-        public string rsocial { get; set; }
-        public DateTime dabertudora { get; set; }
-        public DateTime ucompra { get; set; }
-        public DateTime dcadastro { get; set; }
-        public char situacao { get; set; }
+        public string CNPJ { get; set; }
+        public string RSocial { get; set; }
+        public DateTime DAbertura { get; set; }
+        public DateTime UCompra { get; set; }
+        public DateTime DCadastro { get; set; }
+        public char Situacao { get; set; }
 
-        public Fornecedor()
+
+        public Fornecedor(string cnpj, string rSocial, DateTime dAbertura,char situacao)
         {
-            cnpj = CNPJ();
-            rsocial = RSocial();
-            situacao = Situacao();
-            dabertudora = DateTime.Now;
-            ucompra = DateTime.Now;
-            dcadastro = DateTime.Now;
-            
+            CNPJ = cnpj;
+            RSocial = rSocial;
+            DAbertura = dAbertura;
+            UCompra = DateTime.Now;
+            DCadastro = DateTime.Now;
+            Situacao = situacao;
         }
-        public string RSocial()
+        public Fornecedor(string cnpj, string rSocial, DateTime dAbertura, DateTime uCompra, DateTime dCadastro, char situacao)
         {
-            string nome;
-            bool flag = false;
-            do
-            {
-                Console.Write("Razao social: ");
-                nome = Console.ReadLine().Trim().PadLeft(50, '`');
-
-                if (nome.Length <= 50)
-                {
-                    flag = true;
-                    if (nome.Length <= 50)
-                    {
-                        flag = true;
-                    }
-                }
-            } while (flag != true);
-            return nome;
+            CNPJ = cnpj;
+            RSocial = rSocial;
+            DAbertura = dAbertura;
+            UCompra = DateTime.Now;
+            DCadastro = DateTime.Now;
+            Situacao = situacao;
         }
 
-        public string CNPJ()
+        public override string ToString()
         {
-            bool flag = false;
-            string value;
-            do
-            {
-                Console.Write("CNPJ: ");
-                value = Console.ReadLine().Trim();
-                cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
-                if (value.Length <= 18)
-                {
-                    if (Validacoes.ValidarCnpj(value))
-                        flag = true;
-                    else
-                    {
-                        Console.WriteLine("CNPJ invalido!");
-                        continue;
-                    }
-                }
-
-            } while (flag != true);
-            return value;
-        }
-
-        public char Situacao()
-        {
-            char sit;
-            bool flag = false;
-            do
-            {
-                Console.Write("Fornecedor (A – Ativo ou I – Inativo): ");
-                flag = char.TryParse(Console.ReadLine().ToUpper().Trim(), out sit);
-                if (flag != true)
-                    Console.WriteLine("Insira um valor correto");
-
-            } while (flag != true);
-            return sit;
+            return $"CNPJ: {CNPJ}\nRSocial: {RSocial}\nData de Abertura da empresa: {DAbertura.ToString("dd/MM/yyyy")}\nUltima Compra: {UCompra.ToString("dd/MM/yyyy")}\nData de Cadastro: {DCadastro.ToString("dd/MM/yyyy")}\nSituacao: {Situacao}";
         }
     }
 }
