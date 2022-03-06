@@ -13,21 +13,24 @@ namespace CadastrosBasicos
         public DateTime ucompra { get; set; }
         public DateTime dcadastro { get; private set; }
         public char situacao { get; set; }
-
         public Cliente()
         {
-            cpf = CPF();
-            nome = Nome();
-            dnascimento = DNascimento();
-            if (Validacoes.CalcudaData(dnascimento))
+            if (CPF())
             {
-                sexo = Sexo();
-                ucompra = DateTime.Now;
-                dcadastro = DateTime.Now;
-                situacao = Situacao();
+                nome = Nome();
+                dnascimento = DNascimento();
+                if (Validacoes.CalcudaData(dnascimento))
+                {
+                    cpf = nome.Replace(".", "");
+                    cpf = nome.Replace("-", "");
+                    sexo = Sexo();
+                    ucompra = DateTime.Now;
+                    dcadastro = DateTime.Now;
+                    situacao = Situacao();
+                }
             }
         }
-        public string CPF()
+        public bool CPF()
         {
             bool flag = false;
             string value = " ";
@@ -35,7 +38,7 @@ namespace CadastrosBasicos
             {
                 Console.Write("CPF: ");
                 value = Console.ReadLine().Trim();
-
+                cpf = cpf.Replace(".", "").Replace("-", "");
                 if (value.Length <= 14)
                 {
                     if (Validacoes.ValidarCpf(value))
@@ -48,7 +51,8 @@ namespace CadastrosBasicos
                 }
 
             } while (flag != true);
-            return value;
+            cpf = value;
+            return true;
         }
         public string Nome()
         {

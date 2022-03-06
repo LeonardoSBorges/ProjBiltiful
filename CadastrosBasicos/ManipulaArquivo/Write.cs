@@ -58,7 +58,37 @@ namespace CadastrosBasicos.ManipulaArquivos
             {
                 string total = $"{cliente.cpf}{cliente.nome}{cliente.dnascimento.ToString("dd/MM/yyyy")}{cliente.sexo}{cliente.ucompra.ToString("dd/MM/yyyy")}{cliente.dcadastro.ToString("dd/MM/yyyy")}{cliente.situacao}";
 
-                string local = caminhoFinal + "\\Cliente.dat";
+                string local = pastaCliente + "\\Cliente.dat";
+                if (!File.Exists(local))
+                {
+                    using (StreamWriter sw = new StreamWriter(local))
+                    {
+                        Console.WriteLine("Arquivo criado com sucesso!\nCliente inserido com sucesso");
+                        sw.WriteLine(total);
+                    }
+                }
+                else
+                {
+                    using (StreamWriter sw = new StreamWriter(local, append: true))
+                    {
+                        sw.WriteLine(total);
+                        Console.WriteLine("Cliente inserido com sucesso");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
+        }
+        
+        public void GravarNovoFornecedor(Fornecedor fornecedor)
+        {
+            try
+            {
+                string total = $"{fornecedor.cnpj}{fornecedor.rsocial}{fornecedor.dabertudora.ToString("dd/MM/yyyy")}{fornecedor.ucompra.ToString("dd/MM/yyyy")}{fornecedor.dcadastro.ToString("dd/MM/yyyy")}{fornecedor.situacao}";
+
+                string local = caminhoFinal + "\\Fornecedor.dat";
                 if (!File.Exists(local))
                 {
                     using (StreamWriter sw = new StreamWriter(local))

@@ -58,6 +58,7 @@ Insira uma opcao valida:
                 Console.ReadKey();
                 Console.Clear();
             }
+
         }
     }
 }

@@ -34,6 +34,7 @@ namespace CadastrosBasicos
             {
                 Console.Write("Razao social: ");
                 nome = Console.ReadLine().Trim().PadLeft(50, '`');
+
                 if (nome.Length <= 50)
                 {
                     flag = true;
@@ -54,7 +55,7 @@ namespace CadastrosBasicos
             {
                 Console.Write("CNPJ: ");
                 value = Console.ReadLine().Trim();
-
+                cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
                 if (value.Length <= 18)
                 {
                     if (Validacoes.ValidarCnpj(value))

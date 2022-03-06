@@ -30,7 +30,6 @@ namespace CadastrosBasicos
             string digito;
             string tempCnpj;
             cnpj = cnpj.Trim();
-            cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
             if (cnpj.Length != 14)
                 return false;
             tempCnpj = cnpj.Substring(0, 12);
@@ -64,7 +63,6 @@ namespace CadastrosBasicos
             int soma;
             int resto;
             cpf = cpf.Trim();
-            cpf = cpf.Replace(".", "").Replace("-", "");
             if (cpf.Length != 11)
                 return false;
             tempCpf = cpf.Substring(0, 9);
