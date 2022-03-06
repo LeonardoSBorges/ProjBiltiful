@@ -6,7 +6,7 @@ namespace VendasProdutos
 {
     public class ItemVenda
     {
-        private static string caminho = @"ProjBiltiful\\Venda\\ItemVenda.dat";
+        private static string caminho = @"ProjBiltiful\Venda\ItemVenda.dat";
 
         public int Id { get; set; }
         public string Produto { get; set; }
@@ -23,6 +23,11 @@ namespace VendasProdutos
             Qtd = qtd;
             VUnitario = vUnitario;
             TItem = qtd * vUnitario;
+        }
+
+        public override string ToString()
+        {
+            return $"{Id}\t{Produto}\t{Qtd}\t{VUnitario}\t\t{TItem}";
         }
 
         public void Cadastrar(List<ItemVenda> itens)
