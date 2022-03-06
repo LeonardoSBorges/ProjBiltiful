@@ -10,6 +10,7 @@ namespace VendasProdutos
     {
         public static void SubMenu()
         {
+            Venda venda = new Venda();
             string opcao;
 
             do
@@ -24,7 +25,7 @@ namespace VendasProdutos
                 switch (opcao = Console.ReadLine())
                 {
                     case "1":
-                        NovaVenda();
+                        venda.NovaVenda();
                         break;
 
                     case "2":
@@ -45,41 +46,8 @@ namespace VendasProdutos
             } while (opcao != "3");
         }
 
-        public static void NovaVenda()
-        {
-            int id = 1;
 
-            Venda venda = new Venda();
-            ItemVenda itemVenda = new ItemVenda();
 
-            List<ItemVenda> itens = new List<ItemVenda>();
-
-            for (int i = 0; i < 3; i++)
-            {
-                Console.Clear();
-
-                Console.WriteLine("Informe o produto: ");
-                string produto = Console.ReadLine();
-
-                Console.WriteLine("Informe a quantidade do produto: ");
-                int quantidade = int.Parse(Console.ReadLine());
-
-                Console.WriteLine("Informe o valor do produto: ");
-                decimal vUnitario = Decimal.Parse(Console.ReadLine());
-
-                itens.Add(new ItemVenda(id, produto, quantidade, vUnitario));
-            }
-
-            itens.ForEach(item => venda.VTotal += item.TItem);
-
-            venda.Id = id;
-            venda.Cliente = "123.456.789-00";
-            venda.DVenda = DateTime.Now;
-
-            itemVenda.Cadastrar(itens);
-
-            venda.Cadastrar();
-        }
 
         public static void LocalizarVenda()
         {
