@@ -76,10 +76,17 @@ namespace CadastrosBasicos
             } while (flag);
         }
 
-        /*public MPrima Localizar()
+        public MPrima Localizar()
         {
+            string cod;
             Console.WriteLine("\n Busca de Materia-prima\n");
-            Console.WriteLine();
-        }*/
+            Console.Write(" Digite o cod. da materia-prima: ");
+            cod = Console.ReadLine();
+        }
+
+        public void Imprimir()
+        {
+
+        }
     }
 }

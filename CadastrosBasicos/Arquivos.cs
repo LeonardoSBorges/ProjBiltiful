@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ManipulaArquivos
+namespace CadastrosBasicos
 {
     public class Arquivos
     {
@@ -30,39 +30,14 @@ namespace ManipulaArquivos
             caminhoFinal = Path.Combine(caminhoInicial, "ProjBiltiful");
             Directory.CreateDirectory(caminhoFinal);
 
-            pastaCliente = Path.Combine(caminhoFinal, "Cliente");
-            Directory.CreateDirectory(pastaCliente);
-
-            pastaFornecedor = Path.Combine(caminhoFinal, "Fornecedor");
-            Directory.CreateDirectory(pastaFornecedor);
-
             pastaMateriaPrima = Path.Combine(caminhoFinal, "MateriaPrima");
             Directory.CreateDirectory(pastaMateriaPrima);
 
             pastaProduto = Path.Combine(caminhoFinal, "Produto");
             Directory.CreateDirectory(pastaProduto);
 
-            pastaRisco = Path.Combine(caminhoFinal, "Risco");
-            Directory.CreateDirectory(pastaRisco);
-
-            pastaBloqueado = Path.Combine(caminhoFinal, "Bloqueado");
-            Directory.CreateDirectory(pastaBloqueado);
-
-            pastaVenda = Path.Combine(caminhoFinal, "Venda");
-            Directory.CreateDirectory(pastaVenda);
-
         }
-        //public void GravarNovoCliente()
-        //{
-        //    string local = "";
-        //    if (File.Exists())
-        //    {
-        //        using (StreamWriter sw = new StreamWriter(pastaCliente))
-        //        {
-
-        //        }
-        //    }
-        //}
+        
         public void GravarProduto(Produto produto)
         {
             using (StreamWriter sw = new StreamWriter(Path.Combine(caminhoFinal, pastaProduto)))

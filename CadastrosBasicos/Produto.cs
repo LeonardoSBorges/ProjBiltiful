@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ManipulaArquivos;
+using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -24,13 +26,15 @@ namespace CadastrosBasicos
             return cbarras + nome + vvenda + uvenda + dcadastro + situacao;
         }
 
-        public Produto()
+/*        public Produto()
         {
-            Cadastrar();
-        }
+           
+        }*/
 
-        private void Cadastrar()
+        public void Cadastrar()
         {
+            Produto produto = new Produto();
+
             char sit = 'A';
             string cod, nomeTemp;
             decimal venda = 0;
@@ -89,13 +93,13 @@ namespace CadastrosBasicos
                     {
                         flag = false;
 
-                        cbarras = cod;
-                        nome = nomeTemp;
-                        vvenda = venda;
+                        produto.cbarras = cod;
+                        produto.nome = nomeTemp;
+                        produto.vvenda = venda;
                         //uvenda = ;
-                        dcadastro = DateTime.Now.Date;
+                        produto.dcadastro = DateTime.Now.Date;
 
-                        
+                        GravarProduto(produto);
 
                         Console.WriteLine(" Cadastro do Materia-prima concluido com sucesso!");
                         Console.WriteLine(" PRessione ENTER para voltar ao menu");
@@ -104,6 +108,23 @@ namespace CadastrosBasicos
                 }
 
             } while (flag);
+        }
+
+        public void GravarProduto(Produto produto)
+        {
+            string caminhoInicial = Directory.GetCurrentDirectory();
+            Console.WriteLine(caminhoInicial);
+
+            string caminhoFinal = Path.Combine(caminhoInicial + "ProjBiltiful\\");
+            Directory.CreateDirectory(caminhoFinal);
+
+            string pastaProduto = Path.Combine(caminhoFinal, "Produto");
+            Directory.CreateDirectory(pastaProduto);
+
+            using (StreamWriter sw = new StreamWriter(pastaProduto))
+            {
+                sw.WriteLine(produto.ToString());
+            }
         }
 
     }
