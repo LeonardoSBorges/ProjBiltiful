@@ -6,7 +6,7 @@ namespace VendasProdutos
 {
     public class ItemVenda
     {
-
+        private static string caminho = @"ProjBiltiful\Venda\ItemVenda.dat";
 
         public int Id { get; set; }
         public string Produto { get; set; }
@@ -25,17 +25,16 @@ namespace VendasProdutos
             TItem = qtd * vUnitario;
         }
 
+        public override string ToString()
+        {
+            return $"{Id}\t{Produto}\t{Qtd}\t{VUnitario}\t\t{TItem}";
+        }
+
         public void Cadastrar(List<ItemVenda> itens)
         {
-            if (!Directory.Exists("database"))
-            {
-                Directory.CreateDirectory("database");
-                File.Create("database\\ItemVenda.dat").Close();
-            }
-
             try
             {
-                StreamWriter sw = new StreamWriter("database\\ItemVenda.dat", append: true);
+                StreamWriter sw = new StreamWriter(caminho, append: true);
 
                 itens.ForEach(item =>
                 {
