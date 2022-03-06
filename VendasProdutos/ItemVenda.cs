@@ -34,9 +34,6 @@ namespace VendasProdutos
         {
             try
             {
-                Console.WriteLine(caminho.ArquivoItemVenda);
-                Console.ReadKey();
-
                 StreamWriter sw = new StreamWriter(caminho.ArquivoItemVenda, append: true);
 
                 itens.ForEach(item =>

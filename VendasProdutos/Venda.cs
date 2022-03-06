@@ -6,7 +6,7 @@ namespace VendasProdutos
 {
     public class Venda
     {
-        public static Arquivos caminho =  new Arquivos();
+        public static Arquivos caminho = new Arquivos();
 
         public int Id { get; set; }
         public string Cliente { get; set; }
