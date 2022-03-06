@@ -38,7 +38,7 @@ namespace VendasProdutos
 
                 itens.ForEach(item =>
                 {
-                    string linha = item.Id.ToString() + item.Produto + item.Qtd + item.VUnitario + item.TItem;
+                    string linha = item.Id.ToString().PadLeft(5, '0') + item.Produto + item.Qtd.ToString().PadLeft(3, '0') + item.VUnitario.ToString("N2").PadLeft(5, '0') + item.TItem.ToString("N2").PadLeft(5, '0');
                     sw.WriteLine(linha);
                 });
 

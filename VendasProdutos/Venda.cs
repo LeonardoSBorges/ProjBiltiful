@@ -29,7 +29,7 @@ namespace VendasProdutos
 
         public override string ToString()
         {
-            return $"{Id}\t{DVenda.ToString("dd/MM/yyyy")}\n{Cliente}\n{VTotal}";
+            return $"Venda número {Id}\tData: {DVenda.ToString("dd/MM/yyyy")}\nCliente: {Cliente}\nTotal da Venda: {VTotal.ToString("N2")}";
         }
 
         public int NovoIdVenda()
@@ -52,7 +52,7 @@ namespace VendasProdutos
             {
                 StreamWriter sw = new StreamWriter(caminho.ArquivoVenda, append: true);
 
-                sw.WriteLine(Id.ToString().PadLeft(5, '0') + Cliente + DVenda.ToString("dd/MM/yyyy") + VTotal);
+                sw.WriteLine(Id.ToString().PadLeft(5, '0') + Cliente + DVenda.ToString("dd/MM/yyyy") + VTotal.ToString("N2").PadLeft(9, '0'));
 
                 sw.Close();
             }
