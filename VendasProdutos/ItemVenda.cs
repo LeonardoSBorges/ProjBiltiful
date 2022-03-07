@@ -6,7 +6,7 @@ namespace VendasProdutos
 {
     public class ItemVenda
     {
-        private static string caminho = @"ProjBiltiful\Venda\ItemVenda.dat";
+        private static Arquivos caminho = new Arquivos();
 
         public int Id { get; set; }
         public string Produto { get; set; }
@@ -27,18 +27,18 @@ namespace VendasProdutos
 
         public override string ToString()
         {
-            return $"{Id}\t{Produto}\t{Qtd}\t{VUnitario}\t\t{TItem}";
+            return $"{Id.ToString().PadLeft(5, '0')}\t{Produto}\t{Qtd.ToString().PadLeft(3, '0')}\t{VUnitario.ToString("#.00")}\t\t{TItem.ToString("#.00")}";
         }
 
         public void Cadastrar(List<ItemVenda> itens)
         {
             try
             {
-                StreamWriter sw = new StreamWriter(caminho, append: true);
+                StreamWriter sw = new StreamWriter(caminho.ArquivoItemVenda, append: true);
 
                 itens.ForEach(item =>
                 {
-                    string linha = item.Id.ToString() + item.Produto + item.Qtd + item.VUnitario + item.TItem;
+                    string linha = item.Id.ToString().PadLeft(5, '0') + item.Produto + item.Qtd.ToString().PadLeft(3, '0') + item.VUnitario.ToString("#.00").PadLeft(6, '0') + item.TItem.ToString("#.00").PadLeft(7, '0');
                     sw.WriteLine(linha);
                 });
 
