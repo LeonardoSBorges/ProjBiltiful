@@ -11,8 +11,8 @@ namespace CadastrosBasicos
     {
         public string Id { get; set; }
         public string Nome { get; set; }
-        public DateTime UCompra { get; set; }
-        public DateTime DCadastro { get; set; }
+        public DateTime UltimaCompra { get; set; }
+        public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
         // nome arquivo: Materia.dat
@@ -26,8 +26,8 @@ namespace CadastrosBasicos
         {
             Id = id;
             Nome = nome;
-            UCompra = uCompra;
-            DCadastro = dCadastro;
+            UltimaCompra = uCompra;
+            DataCadastro = dCadastro;
             Situacao = situacao;
         }
 
@@ -35,8 +35,8 @@ namespace CadastrosBasicos
         {
             return Id
                 + Nome.PadLeft(20, ' ')
-                + UCompra.ToString("dd/MM/yyyy").Replace("/", "")
-                + DCadastro.ToString("dd/MM/yyyy").Replace("/", "")
+                + UltimaCompra.ToString("dd/MM/yyyy").Replace("/", "")
+                + DataCadastro.ToString("dd/MM/yyyy").Replace("/", "")
                 + Situacao;
         }
 
@@ -135,8 +135,8 @@ namespace CadastrosBasicos
                         flag = false;
 
                         MPrima.Nome = nomeTemp;
-                        MPrima.UCompra = DateTime.Now.Date;
-                        MPrima.DCadastro = DateTime.Now.Date;
+                        MPrima.UltimaCompra = DateTime.Now.Date;
+                        MPrima.DataCadastro = DateTime.Now.Date;
                         MPrima.Situacao = sit;
 
                         GravarMateriaPrima(MPrima);
@@ -444,8 +444,8 @@ namespace CadastrosBasicos
             return "\n"
                 + "\n Codigo: \t" + mPrima.Id
                 + "\n Nome: \t" + mPrima.Nome
-                + "\n Ultima Venda: \t" + mPrima.UCompra.ToString("dd/MM/yyyy")
-                + "\n Data Cadastro: " + mPrima.DCadastro.ToString("dd/MM/yyyy")
+                + "\n Ultima Venda: \t" + mPrima.UltimaCompra.ToString("dd/MM/yyyy")
+                + "\n Data Cadastro: " + mPrima.DataCadastro.ToString("dd/MM/yyyy")
                 + "\n Situacao: \t" + situacao
                 + "\n";
         }
