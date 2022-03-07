@@ -11,6 +11,8 @@ namespace VendasProdutos
     {
         public static void SubMenu()
         {
+            new Arquivos();
+
             string opcao;
 
             do
@@ -20,7 +22,9 @@ namespace VendasProdutos
                 Console.WriteLine("=============== VENDAS ===============");
                 Console.WriteLine("1. Nova venda");
                 Console.WriteLine("2. Consultar Venda");
-                Console.WriteLine("3. Voltar");
+                Console.WriteLine("3. Consultar Produtos de uma venda");
+                Console.WriteLine("4. Excluir Venda");
+                Console.WriteLine("0. Voltar");
 
                 switch (opcao = Console.ReadLine())
                 {
@@ -33,6 +37,14 @@ namespace VendasProdutos
                         break;
 
                     case "3":
+                        LocalizarItens();
+                        break;
+
+                    case "4":
+                        ExcluirVenda();
+                        break;
+
+                    case "0":
                         break;
 
                     default:
@@ -43,8 +55,9 @@ namespace VendasProdutos
 
                 Console.ReadKey();
 
-            } while (opcao != "3");
+            } while (opcao != "0");
         }
+
 
         public static void NovaVenda()
         {
@@ -65,7 +78,7 @@ namespace VendasProdutos
 
             List<ItemVenda> itensVenda = new List<ItemVenda>();
 
-            int itens = 0;
+            int itens = 1;
             string escolha;
 
             do
@@ -73,11 +86,17 @@ namespace VendasProdutos
                 Console.WriteLine("\nDigite o Código do Produto:");
                 string produto = Console.ReadLine();
 
+                //aqui vai ter que alterar pra fazer a verificação se o produto existe no arquivo de produtos e depois mostrar na tela qual o produto escolhido
+
+
                 Console.WriteLine("\nInforme a quantidade:");
                 int qtd = int.Parse(Console.ReadLine());
 
                 Console.WriteLine("\nInforme o valor do produto: ");
                 decimal valor = decimal.Parse(Console.ReadLine());
+
+                //e aqui vai pegar no arquivo de produtos o valor referente ao produto que buscamos. Não vai precisar digitar o valor. 
+
 
                 Console.Clear();
 
@@ -96,42 +115,46 @@ namespace VendasProdutos
                 });
 
                 Console.WriteLine("------------------------------------------------------");
-                Console.WriteLine($"\t\t\t\t\t\t{venda.VTotal}");
+                Console.WriteLine($"\t\t\t\t\t\t{venda.VTotal.ToString("#.00")}");
 
-                if (itens < 3)
+
+                do
                 {
-                    do
-                    {
-                        Console.WriteLine("\nAdicionar novo produto?");
-                        Console.WriteLine("[ S ] Sim\t[ N ] Não");
-                        escolha = Console.ReadLine().ToUpper();
+                    Console.WriteLine("\nAdicionar novo produto?");
+                    Console.WriteLine("[ S ] Sim\t[ N ] Não");
+                    escolha = Console.ReadLine().ToUpper();
 
-                        Console.Clear();
-                    } while (escolha != "S" && escolha != "N");
+                    Console.Clear();
+                } while (escolha != "S" && escolha != "N");
 
 
-                    if (escolha == "S")
-                        itens++;
-                    else
-                        break;
-                }
+                if (escolha == "S")
+                    itens++;
                 else
+                    break;
+
+                if (itens == 4)
                 {
+                    Console.Clear();
                     Console.WriteLine("Seu carrinho está cheio!");
+                    Console.ReadKey();
                     break;
                 }
-            } while (itens < 3);
+
+            } while (itens != 4);
+
+            Console.Clear();
 
             do
             {
-                Console.Write($"Venda Nº {venda.Id.ToString().PadLeft(5, '0')}\tData: {venda.DVenda.ToString("dd/MM/yyyy")}");
+                Console.Write($"\nVenda Nº {venda.Id.ToString().PadLeft(5, '0')}\tData: {venda.DVenda.ToString("dd/MM/yyyy")}");
                 Console.WriteLine("\n\n");
 
                 Console.WriteLine("Id\tProduto\t\tQtd\tV.Unitário\tT.Item");
                 Console.WriteLine("------------------------------------------------------");
                 itensVenda.ForEach(item => Console.WriteLine(item.ToString()));
                 Console.WriteLine("------------------------------------------------------");
-                Console.WriteLine($"\t\t\t\t\t\t{venda.VTotal}");
+                Console.WriteLine($"\t\t\t\t\t\t{venda.VTotal.ToString("#.00")}");
 
                 Console.WriteLine("\n\n");
 
@@ -146,9 +169,8 @@ namespace VendasProdutos
                 itemVenda.Cadastrar(itensVenda);
 
                 venda.Cadastrar();
+                Console.WriteLine("\n\nVenda cadastrada com sucesso!\nPressione ENTER para voltar ao Menu Vendas...");
             }
-
-
         }
 
         public static void LocalizarVenda()
@@ -157,61 +179,132 @@ namespace VendasProdutos
 
             Venda venda = new Venda();
 
-            Console.WriteLine("Informe o ID da venda que deseja buscar: ");
+            Console.WriteLine("Informe a venda que deseja buscar: ");
             int.TryParse(Console.ReadLine(), out int id);
-
+            Console.WriteLine();
             venda = venda.Localizar(id);
 
             if (venda != null)
+            {
                 Console.WriteLine(venda.ToString());
+                Console.WriteLine("\nPressione ENTER para voltar ao menu...");
+                Console.ReadLine();
+            }
             else
-                Console.WriteLine("venda não registrada!");
+            {
+                Console.WriteLine("venda não registrada!\nPressione ENTER para voltar ao menu...");
+                Console.ReadLine();
+            }
         }
 
-        public static bool VerificaCpf(string cpf)
+        private static void LocalizarItens()
         {
-            int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-            int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-            string tempCpf;
-            string digito;
-            int soma;
-            int resto;
+            string line;
+            try
+            {
+                StreamReader sr = new StreamReader("C:\\Users\\Everton Fabricio\\source\\repos\\ProjBiltiful\\ProjBiltiful\\bin\\Debug\\net5.0\\ProjBiltiful\\Venda\\ItemVenda.dat");
+                //coloquei o caminho inteiro pq não sei como fazer pra chamar caminho do jeito que o Junior fez.
 
-            cpf = cpf.Trim();
-            cpf = cpf.Replace(".", "").Replace("-", "");
+                Console.Write("Pedido Numero: ");
+                string busca = Console.ReadLine();
+                line = sr.ReadLine();
 
-            if (cpf.Length != 11)
-                return false;
+                while (line != null)
+                {
+                    if (line.Substring(0, 5) == busca)
+                    {
+                        Console.WriteLine("Quant\t   Produto\tVal.Unit.  Val.Total");
+                        Console.Write(line.Substring(18, 3).TrimStart('0'));
+                        Console.Write("\t" + line.Substring(5, 13));
+                        Console.Write("\t  " + line.Substring(21, 5).TrimStart('0'));
+                        Console.WriteLine("\t     " + line.Substring(26, 5).TrimStart('0'));
+                        Console.WriteLine();
+                    }
+                    line = sr.ReadLine();
+                }
+                sr.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("Busca Finalizada.\nPressione ENTER para voltar");
+            }
+            Console.ReadKey();
+        }
 
-            tempCpf = cpf.Substring(0, 9);
-            soma = 0;
+        private static void ExcluirVenda()
+        {
+            Console.WriteLine("Informe a Venda que deseja excluir.");
+            Console.Write("Venda Numero: ");
+            string busca = Console.ReadLine();
+            try //para arquivo Venda.dat
+            {
+                string ArqCerto = "C:\\Users\\Everton Fabricio\\source\\repos\\ProjBiltiful\\ProjBiltiful\\bin\\Debug\\net5.0\\ProjBiltiful\\Venda\\Venda.dat";
+                string ArqTemp = "C:\\Users\\Everton Fabricio\\source\\repos\\ProjBiltiful\\ProjBiltiful\\bin\\Debug\\net5.0\\ProjBiltiful\\Venda\\Temp.dat";
+                //Mesma coisa que no localizar item. Eu não sei chamar o caminho do jeito que o Junior fez! Depois que chamar daquele jeito, apaga isso aqui.
 
-            for (int i = 0; i < 9; i++)
-                soma += int.Parse(tempCpf[i].ToString()) * multiplicador1[i];
+                StreamReader sr = new StreamReader(ArqCerto);
+                StreamWriter sw = new StreamWriter(ArqTemp);
 
-            resto = soma % 11;
-            if (resto < 2)
-                resto = 0;
-            else
-                resto = 11 - resto;
+                string line = sr.ReadLine();
 
-            digito = resto.ToString();
+                while (line != null)
+                {
+                    if (line.Substring(0, 5) != busca)
+                    {
+                        sw.WriteLine(line);
+                    }
+                    line = sr.ReadLine();
+                }
 
-            tempCpf = tempCpf + digito;
+                sr.Close();
+                sw.Close();
+                File.Delete(ArqCerto);
+                File.Copy(ArqTemp, ArqCerto);
+                File.Delete(ArqTemp);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
 
-            soma = 0;
-            for (int i = 0; i < 10; i++)
-                soma += int.Parse(tempCpf[i].ToString()) * multiplicador2[i];
+            try //para arquivo ItemVenda.dat
+            {
+                string ArqCerto = "C:\\Users\\Everton Fabricio\\source\\repos\\ProjBiltiful\\ProjBiltiful\\bin\\Debug\\net5.0\\ProjBiltiful\\Venda\\ItemVenda.dat";
+                string ArqTemp = "C:\\Users\\Everton Fabricio\\source\\repos\\ProjBiltiful\\ProjBiltiful\\bin\\Debug\\net5.0\\ProjBiltiful\\Venda\\Temp.dat";
+                //Mesma coisa que no localizar item. Eu não sei chamar o caminho do jeito que o Junior fez! Depois que chamar daquele jeito, apaga isso aqui.
 
-            resto = soma % 11;
-            if (resto < 2)
-                resto = 0;
-            else
-                resto = 11 - resto;
+                StreamReader sr = new StreamReader(ArqCerto);
+                StreamWriter sw = new StreamWriter(ArqTemp);
+                string line = sr.ReadLine();
+                while (line != null)
+                {
+                    if (line.Substring(0, 5) != busca)
+                    {
+                        sw.WriteLine(line);
+                    }
+                    line = sr.ReadLine();
+                }
 
-            digito = digito + resto.ToString();
+                sr.Close();
+                sw.Close();
+                File.Delete(ArqCerto);
+                File.Copy(ArqTemp, ArqCerto);
+                File.Delete(ArqTemp);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
 
-            return cpf.EndsWith(digito);
+            finally
+            {
+                Console.WriteLine("Operação realizada com sucesso.\nPressione ENTER para voltar");
+            }
+            Console.ReadKey();
         }
 
     }
