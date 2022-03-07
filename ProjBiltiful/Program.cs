@@ -33,8 +33,15 @@ namespace ProjBiltiful
 
             
 
-            Produto a = new Produto();
-            a.Cadastrar();
+            //Produto a = new Produto();
+            //a.Menu();
+            MPrima b = new MPrima();
+            b.Menu();
+
+            /*decimal valor = 10.12m;
+            Console.WriteLine(valor.ToString("000.#0"));
+            Console.ReadKey();*/
+
 
             /*int value = -1;
             while (value != 0)

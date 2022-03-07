@@ -40,7 +40,8 @@ namespace CadastrosBasicos
         
         public void GravarProduto(Produto produto)
         {
-            using (StreamWriter sw = new StreamWriter(Path.Combine(caminhoFinal, pastaProduto)))
+            
+            using (StreamWriter sw = new StreamWriter(Path.Combine(caminhoFinal, pastaProduto) + "Cosmetico.dat"))
             {
                 sw.WriteLine(produto.ToString());
             }
