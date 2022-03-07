@@ -1,120 +1,110 @@
-﻿using System;
+﻿using CadastrosBasicos.ManipulaArquivos;
+using System;
 
 namespace CadastrosBasicos
 {
-    public class Cliente 
+    public class Cliente
     {
-        public string cpf { get; set; }
-        public string nome { get; set; }
-        public DateTime dnascimento { get; set; }
-        private char sexo { get; set; }
-        private DateTime ucompra { get; set; }
-        private DateTime dcadastro { get; set; }
-        private char situacao { get; set; }
+        public Write write = new Write();
+        public Read read = new Read();
+        public string CPF { get; private set; }
+        public string Nome { get; set; }
+        public DateTime DataNascimento { get; set; }
+        public char Sexo { get; set; }
+        public DateTime UltimaVenda { get; set; }
+        public DateTime DataCadastro { get; set; }
+        public char Situacao { get; set; }
 
         public Cliente()
         {
-            cpf = CPF();
-            nome = Nome();
-            dnascimento = DNascimento();
-            sexo = Sexo();
-            ucompra = DateTime.Now;
-            dcadastro = DateTime.Now;
-            situacao = Situacao();
+
         }
 
-        public string CPF()
+        public Cliente(string cpf, string name, DateTime dataNascimento, char sexo, char situacao)
         {
-            bool flag = false;
-            string value = " ";
-            do
-            {
-                Console.Write("CPF: ");
-                value = Console.ReadLine().Trim();
-
-                if (value.Length <= 14)
-                {
-                    if (Validacoes.ValidarCpf(value))
-                        flag = true;
-                    else
-                    {
-                        Console.WriteLine("CPF invalido!");
-                        continue;
-                    }
-                }
-               
-            }while (flag != true);
-            return value;
+            CPF = cpf;
+            Nome = name;
+            DataNascimento = dataNascimento;
+            Sexo = sexo;
+            UltimaVenda = DateTime.Now;
+            DataCadastro = DateTime.Now;
+            Situacao = situacao;
+        }
+        public Cliente(string cpf, string name, DateTime dataNascimento, char sexo, DateTime UltimaCompra, DateTime dataCadastro, char situacao)
+        {
+            CPF = cpf;
+            Nome = name;
+            DataNascimento = dataNascimento;
+            Sexo = sexo;
+            UltimaVenda = UltimaCompra;
+            DataCadastro = dataCadastro;
+            Situacao = situacao;
         }
 
-        public string Nome()
+
+        public void BloqueiaCadastro()
         {
-            string nome;
-            bool flag = false;
-            do
+            Cliente cliente;
+            Console.WriteLine("Insira o CPF para bloqueio: ");
+            string cpf = Console.ReadLine();
+            cpf = cpf.Replace(".", "").Replace("-", "");
+            if (read.ProcurarCPFBloqueado(cpf))
             {
-                Console.Write("Nome: ");
-                nome = Console.ReadLine().Trim();
-                if (nome.Length <= 50)
-                    flag = true;
-            } while (flag != true);
-            return nome;
-        }
-        public DateTime DNascimento()
-        {
-            DateTime nascimento;
-            bool flag = false;
-
-            do
-            {
-                Console.Write("Nascimento (dd/mm/aaaa): ");
-                flag = DateTime.TryParse(Console.ReadLine().Trim(), out nascimento);
-
-                if(flag == false)
-                    Console.WriteLine("Data incorreta!");
-            } while (flag != true);
-
-            bool value = Validacoes.CalcudaData(nascimento);
-
-            if (value == false)
-            {
-                Console.WriteLine("Nao pode cadastrar pessoas com menos de 18 anos no sistema!");
-                return nascimento;
+                Console.WriteLine("Ja esta bloqueado");
             }
             else
-                return nascimento;
-            
-        }
-
-        public char Sexo()
-        {
-            Char genero;
-            bool flag = false;
-
-            do {
-                Console.Write("Sexo (M/F): ");
-                flag = char.TryParse(Console.ReadLine().ToUpper().Trim(),out genero);
-                if (flag == false)
-                    Console.Write("Genero incorreto, tente novamente");
-
-            } while(flag != true);
-
-            return genero;
-        }
-
-        public char Situacao()
-        {
-            char sit;
-            bool flag = false;
-            do
             {
-                Console.Write("usuario (A – Ativo ou I – Inativo): ");
-                flag = char.TryParse(Console.ReadLine().ToUpper().Trim(), out sit);
-                if (flag != true)
-                    Console.WriteLine("Insira um valor correto");
-               
-            } while (flag != true);
-            return sit;
+                if (Validacoes.ValidarCpf(cpf))
+                {
+                    cliente = read.ProcuraCliente(cpf);
+                    if (cliente != null)
+                    {
+                        write.BloqueiaCliente(cliente.CPF);
+                        Console.WriteLine("CPF bloqueado!");
+                    }
+                }
+                else
+                    Console.WriteLine("CPF incorreto!");
+            }
+        }
+        public Cliente Editar()
+        {
+            Cliente cliente;
+            Console.WriteLine("Somente algumas informacoes podem ser alterada como (Nome/Data de Nascimento/sexo/Situacao), caso nao queira alterar alguma informacao pressione enter!");
+            Console.Write("CPF: ");
+            string cpf = Console.ReadLine();
+
+            cliente = read.ProcuraCliente(cpf);
+            if (cliente != null)
+            {
+                Console.WriteLine("Nome: ");
+                string nome = Console.ReadLine().Trim().PadLeft(50, ' ');
+                Console.WriteLine("Data de nascimento: ");
+                bool flag = DateTime.TryParse(Console.ReadLine(), out DateTime dNascimento);
+                Console.WriteLine("Situacao: ");
+                bool flagSituacao = char.TryParse(Console.ReadLine(), out char situacao);
+
+                cliente.Nome = nome == "" ? cliente.Nome : nome;
+                cliente.DataNascimento = flag == false ? cliente.DataCadastro : dNascimento;
+                cliente.Situacao = flagSituacao == false ? cliente.Situacao : situacao;
+
+                write.EditarCliente(cliente);
+            }
+            return cliente;
+        }
+        public string RetornaArquivo()
+        {
+            return $"{CPF}{Nome}{DataNascimento.ToString("dd/MM/yyyy")}{Sexo}{UltimaVenda.ToString("dd/MM/yyyy")}{DataCadastro.ToString("dd/MM/yyyy")}{Situacao}";
+
+        }
+        public void Navegar()
+        {
+            read.ListaArquivoCliente();
+
+        }
+        public override string ToString()
+        {
+            return $"CPF: {CPF}\nNome: {Nome.Trim()}\nData de nascimento: {DataNascimento.ToString("dd/MM/yyyy")}\nSexo: {Sexo}\nUltima Compra: {UltimaVenda.ToString("dd/MM/yyyy")}\nDia de Cadastro: {DataCadastro.ToString("dd/MM/yyyy")}\nSituacao: {Situacao}";
         }
 
     }

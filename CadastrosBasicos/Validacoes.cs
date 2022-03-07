@@ -8,7 +8,7 @@ namespace CadastrosBasicos
 {
     public class Validacoes
     {
-        public static bool CalcudaData(DateTime data)
+        public static bool CalculaData(DateTime data)
         {
             DateTime dateNow = DateTime.Now;
             int calculaData;
@@ -20,6 +20,20 @@ namespace CadastrosBasicos
 
             return calculaData >= 18 ? true : false;
         }
+        public static bool CalculaCriacao(DateTime data)
+        {
+            DateTime dateNow = DateTime.Now;
+            int calculaData;
+
+            calculaData = dateNow.Year - data.Year;
+            TimeSpan value = dateNow.Subtract(data);
+            if (value.Days >= 180)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         public static bool ValidarCnpj(string cnpj)
         {
@@ -30,7 +44,6 @@ namespace CadastrosBasicos
             string digito;
             string tempCnpj;
             cnpj = cnpj.Trim();
-            cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
             if (cnpj.Length != 14)
                 return false;
             tempCnpj = cnpj.Substring(0, 12);
@@ -64,7 +77,6 @@ namespace CadastrosBasicos
             int soma;
             int resto;
             cpf = cpf.Trim();
-            cpf = cpf.Replace(".", "").Replace("-", "");
             if (cpf.Length != 11)
                 return false;
             tempCpf = cpf.Substring(0, 9);

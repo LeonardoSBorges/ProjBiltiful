@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using VendasProdutos;
 using CadastrosBasicos;
+using CadastrosBasicos.ManipulaArquivos;
 using ProducaoCosmeticos;
 using System.Globalization;
 
@@ -10,7 +11,12 @@ namespace ProjBiltiful
     {
         static void Main(string[] args)
         {
-            //Este menu sera utilizado para testes
+            var cultureInformation = new CultureInfo("pt-BR");
+            cultureInformation.NumberFormat.CurrencySymbol = "R$";
+            CultureInfo.DefaultThreadCurrentCulture = cultureInformation;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInformation;
+            Write w = new Write();
+
             int value = -1;
             while (value != 0)
             {
@@ -42,8 +48,7 @@ Insira uma opcao valida:
 
                 }
 
-                Console.ReadKey();
-                Console.Clear();
+
             }
         }
     }
