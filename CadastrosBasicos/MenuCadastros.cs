@@ -11,6 +11,7 @@ namespace CadastrosBasicos
        
         public static void SubMenu()
         {
+            Console.Clear();
             //MenuCadastros menuCadastros;
             //Este menu sera utilizado para testes
             int value = -1;
@@ -42,8 +43,10 @@ Insira uma opcao valida:
                         new Fornecedor();
                         break;
                     case 3:
+                        new MPrima().Menu();
                         break;
                     case 4:
+                        new Produto().Menu();
                         break;
                     case 5:
                         break;

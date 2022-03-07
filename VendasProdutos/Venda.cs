@@ -75,7 +75,7 @@ namespace VendasProdutos
 
                 DateTime.TryParse(data.Insert(2, "/").Insert(5, "/"), out DateTime dt);
 
-                Venda venda = new Venda(int.Parse(idVenda), cliente.Insert(3, ".").Insert(7, ".").Insert(11, "-"), dt, Decimal.Parse(vtotal.Insert(vtotal.Length-2, ",")));
+                Venda venda = new Venda(int.Parse(idVenda), cliente.Insert(3, ".").Insert(7, ".").Insert(11, "-"), dt, Decimal.Parse(vtotal.Insert(vtotal.Length - 2, ",")));
 
                 return venda;
             }

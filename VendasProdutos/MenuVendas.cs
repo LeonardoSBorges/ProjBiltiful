@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CadastrosBasicos;
 
 namespace VendasProdutos
 {
@@ -71,20 +72,46 @@ namespace VendasProdutos
             int itens = 1;
             string escolha;
 
+
             do
             {
-                Console.WriteLine("\nDigite o Código do Produto:");
-                string produto = Console.ReadLine();
+                Produto produto = new Produto();
 
-                Console.WriteLine("\nInforme a quantidade:");
-                int qtd = int.Parse(Console.ReadLine());
+                do
+                {
+                    Console.WriteLine("\nDigite o Código do Produto:");
+                    string codProduto = Console.ReadLine();
 
-                Console.WriteLine("\nInforme o valor do produto: ");
-                decimal valor = decimal.Parse(Console.ReadLine());
+                    produto = produto.RetornaProduto(codProduto);
+
+                    if (produto == null)
+                    {
+                        Console.WriteLine("\nProduto não encontrado. Informe um código válido.");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+
+                } while (produto == null);
+
+                int qtd = 0;
+
+                do
+                {
+                    Console.WriteLine("\nInforme a quantidade:");
+                    qtd = int.Parse(Console.ReadLine());
+
+                    if (qtd < 1 || qtd > 999)
+                    {
+                        Console.WriteLine("Informe uma quantidade entre 1 e 999");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+
+                } while (qtd < 1 && qtd > 999);
 
                 Console.Clear();
 
-                itensVenda.Add(new ItemVenda(venda.Id, produto, qtd, valor));
+                itensVenda.Add(new ItemVenda(venda.Id, produto.CodigoBarras, qtd, produto.ValorVenda));
 
                 Console.WriteLine("Id\tProduto\t\tQtd\tV.Unitário\tT.Item");
                 Console.WriteLine("------------------------------------------------------");
@@ -150,9 +177,14 @@ namespace VendasProdutos
             {
                 ItemVenda itemVenda = new ItemVenda();
 
+                itensVenda.ForEach(item => {
+                    new Produto().Atualizar(item.Produto, venda.DataVenda.ToString("dd/MM/yyyy"));
+                });
+
                 itemVenda.Cadastrar(itensVenda);
 
                 venda.Cadastrar();
+
                 Console.WriteLine("\n\nVenda cadastrada com sucesso!\nPressione ENTER para voltar ao Menu Vendas...");
             }
         }
