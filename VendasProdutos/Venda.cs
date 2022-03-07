@@ -108,9 +108,78 @@ namespace VendasProdutos
 
         public void ImpressaoPorRegistro()
         {
+            Console.Clear();
 
+            if (File.ReadAllLines(caminho.ArquivoItemVenda).Length == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("Não ha vendas para exibir\nPressione ENTER para voltar...");
+                Console.ReadLine();
+                return;
+            }
+            string[] dados = File.ReadAllLines(caminho.ArquivoVenda);
+
+            var i = 0;
+            string choice;
+            ItemVenda itemVenda = new ItemVenda();
+
+            do
+            {
+                string idVenda = dados[i].Substring(0, 5);
+                string cliente = dados[i].Substring(5, 11);
+                string data = dados[i].Substring(16, 8);
+                string vtotal = dados[i].Substring(24, 7);
+
+                DateTime.TryParse(data.Insert(2, "/").Insert(5, "/"), out DateTime dt);
+
+                Venda venda = new Venda(int.Parse(idVenda), cliente.Insert(3, ".").Insert(7, ".").Insert(11, "-"), dt, Decimal.Parse(vtotal.Insert(vtotal.Length - 2, ",")));
+
+
+                List<ItemVenda> itens = itemVenda.Localizar(venda.Id);
+
+                Console.Write($"\nVenda Nº {venda.Id.ToString().PadLeft(5, '0')}\tData: {venda.DataVenda.ToString("dd/MM/yyyy")}");
+                Console.WriteLine("\n\n");
+
+                Console.WriteLine("Id\tProduto\t\tQtd\tV.Unitário\tT.Item");
+                Console.WriteLine("------------------------------------------------------");
+                itens.ForEach(item => Console.WriteLine(item.ToString()));
+                Console.WriteLine("------------------------------------------------------");
+                Console.WriteLine($"\t\t\t\t\t\t{venda.ValorTotal.ToString("#.00")}");
+
+                Console.WriteLine("\n\n");
+                Console.WriteLine("1 - Proximo\t2 - Anterior\t3 - Primeiro\t4 - Ultimo\t0 - Cancelar");
+                choice = Console.ReadLine();
+                Console.Clear();
+                switch (choice)
+                {
+                    case "1":
+                        if (i == dados.Length - 1)
+                            i = dados.Length - 1;
+                        else
+                            i++;
+                        break;
+
+                    case "2":
+                        if (i == 0)
+                            i = 0;
+                        else
+                            i--;
+                        break;
+
+                    case "3":
+                        i = 0;
+                        break;
+
+                    case "4":
+                        i = dados.Length - 1;
+                        break;
+                    case "0":
+                        break;
+                    default:
+                        Console.WriteLine("Opção invalida. Tente novamente.");
+                        break;
+                }
+            } while (choice != "0");
         }
-
-
     }
 }

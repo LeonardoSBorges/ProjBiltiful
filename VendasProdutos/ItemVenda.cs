@@ -71,7 +71,9 @@ namespace VendasProdutos
 
                 while ((line = sr.ReadLine()) != null)
                 {
-                    if (int.Parse(line.Substring(0, 5).TrimStart('0')) == idVenda)
+                    int.TryParse(line.Substring(0, 5).TrimStart('0'), out int id);
+
+                    if (id == idVenda)
                     {
                         string produto = line.Substring(5, 13);
                         string quantidade = line.Substring(18, 3);
@@ -79,7 +81,7 @@ namespace VendasProdutos
 
                         Decimal.TryParse(valorUnitario.Insert(valorUnitario.Length - 2, ","), out decimal vUnitario);
 
-                        itens.Add(new ItemVenda(produto, int.Parse(quantidade), vUnitario));
+                        itens.Add(new ItemVenda(id, produto, int.Parse(quantidade), vUnitario));
                     }
                 }
 

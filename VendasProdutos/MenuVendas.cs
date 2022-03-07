@@ -23,6 +23,7 @@ namespace VendasProdutos
                 Console.WriteLine("=============== VENDAS ===============");
                 Console.WriteLine("1. Nova venda");
                 Console.WriteLine("2. Consultar Venda");
+                Console.WriteLine("3. Imprimir Registros de Venda");
                 Console.WriteLine("0. Voltar");
 
                 switch (opcao = Console.ReadLine())
@@ -34,7 +35,9 @@ namespace VendasProdutos
                     case "2":
                         LocalizarVenda();
                         break;
-
+                    case "3":
+                        new Venda().ImpressaoPorRegistro();
+                        break;
                     case "0":
                         break;
 
@@ -43,9 +46,6 @@ namespace VendasProdutos
                         Console.WriteLine("Opção inválida");
                         break;
                 }
-
-                Console.ReadKey();
-
             } while (opcao != "0");
         }
 
@@ -221,7 +221,8 @@ namespace VendasProdutos
                 Console.WriteLine("------------------------------------------------------");
                 Console.WriteLine($"\t\t\t\t\t\t{venda.ValorTotal.ToString("#.00")}");
 
-                Console.WriteLine("\n\n");
+                Console.WriteLine("\nPressione ENTER para voltar ao menu...\n");
+                Console.ReadLine();
             }
             else
             {

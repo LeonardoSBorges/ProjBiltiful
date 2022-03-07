@@ -22,7 +22,7 @@ namespace VendasProdutos
 
         private string Caminho()
         {
-            string caminho = Path.Combine(Directory.GetCurrentDirectory(), "ProjBiltiful", "Venda");
+            string caminho = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
 
             if (!Directory.Exists(caminho))
                 Directory.CreateDirectory(caminho);
