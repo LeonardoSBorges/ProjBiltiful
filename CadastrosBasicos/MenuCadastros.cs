@@ -15,6 +15,7 @@ namespace CadastrosBasicos
         {
             Cliente cliente;
             Fornecedor fornecedor;
+            Risco risco;
             Read read = new Read();
             Write write = new Write();
             //Este menu sera utilizado para testes
@@ -32,7 +33,7 @@ Insira uma opcao valida:
 ");
                 value = int.Parse(Console.ReadLine());
 
-
+                bool flag = false;
 
                 switch (value)
                 {
@@ -41,8 +42,12 @@ Insira uma opcao valida:
                         break;
                     case 1:
                         //Cadastrar
+                        DateTime dNascimento;
                         Console.Write("Data de nascimento: ");
-                        DateTime dNascimento = DateTime.Parse(Console.ReadLine());
+                        do
+                        {
+                            flag = DateTime.TryParse(Console.ReadLine(), out dNascimento);
+                        } while (flag != true);
                         if (Validacoes.CalculaData(dNascimento))
                         {
                             cliente = RegistrarCliente(dNascimento);
@@ -50,8 +55,11 @@ Insira uma opcao valida:
                         }
                         break;
                     case 2:
-                        Console.WriteLine("Data de criacao da empresa:");
-                        DateTime dCriacao = DateTime.Parse(Console.ReadLine());
+                        DateTime dCriacao;
+                        Console.Write("Data de criacao da empresa:");
+                        do { 
+                        flag = DateTime.TryParse(Console.ReadLine(), out dCriacao);
+                        } while (flag != true);
                         if (Validacoes.CalculaCriacao(dCriacao)) 
                         {
                             fornecedor = RegistrarFornecedor(dCriacao);
@@ -63,6 +71,12 @@ Insira uma opcao valida:
                     case 4:
                         break;
                     case 5:
+                        Console.Write("CPF: ");
+                        string cpf = Console.ReadLine();
+                        risco = new Risco(cpf);
+                        cliente = read.ProcuraCliente(cpf);
+                        if(cliente == null)
+                            Console.WriteLine("Nenhum cadastro encontrado");
                         break;
                     case 6:
                         break;
@@ -90,7 +104,7 @@ Insira uma opcao valida:
             if (f == null) {
                 Console.Write("Razao social: ");
                 rSocial = Console.ReadLine().Trim().PadLeft(50, ' ');
-                Console.Write("Situacao: ");
+                Console.Write("Situacao (A - Ativo/ I - Inativo): ");
                 situacao = char.Parse(Console.ReadLine());
             }
             else

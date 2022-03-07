@@ -26,7 +26,6 @@ namespace CadastrosBasicos.ManipulaArquivo
         public void AcharArquivos()
         {
             string caminhoInicial = Directory.GetCurrentDirectory();
-            Console.WriteLine(caminhoInicial);
             caminhoFinal = Path.Combine(caminhoInicial, "ProjBiltiful");
             Directory.CreateDirectory(caminhoFinal);
 
@@ -51,11 +50,51 @@ namespace CadastrosBasicos.ManipulaArquivo
             pastaVenda = Path.Combine(caminhoFinal, "Venda");
             Directory.CreateDirectory(pastaVenda);
         }
+        public List<Cliente> ListaArquivoCliente()
+        {
+            List<Cliente> clientes = new List<Cliente>();
+            string procuraCliente = "", nome ="", cpf = "";
+            DateTime dNascimento, uCompra, dCadastro;
+            string file = pastaCliente + "\\Cliente.dat";
+            Cliente buscaCliente;
+            try
+            {
+                if (File.Exists(file))
+                {
+                    
+                    using (StreamReader sr = new StreamReader(file))
+                    {
+                        procuraCliente = sr.ReadLine();
+                        while (procuraCliente != null)
+                        {
+                            cpf = procuraCliente.Substring(0, 11);
+                             nome = procuraCliente.Substring(11, 50);
+                             dNascimento = DateTime.Parse(procuraCliente.Substring(61, 10));
+                            char sexo = char.Parse(procuraCliente.Substring(71, 1));
+                             uCompra = DateTime.Parse(procuraCliente.Substring(72, 10));
+                             dCadastro = DateTime.Parse(procuraCliente.Substring(82, 10));
+                            char situacao = char.Parse(procuraCliente.Substring(92, 1));
+                            buscaCliente = new Cliente(cpf, nome, dNascimento, sexo, uCompra, dCadastro, situacao);
+                            return clientes;
+                        }
+                    }
+                    return clientes;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
+            return null;
+          
 
-
+        }
+        //Fornecedor nao retorna valores.
         public Fornecedor ProcurarFornecedor(string procuraCnpj)
         {
-            string procuraFornecedor = "";
+            string procuraFornecedor = "", rSocial = "";
+            DateTime dAbertura, uCompra, dCadastro;
+            char situacao;
             string file = pastaFornecedor + "\\Fornecedor.dat";
             Fornecedor fornecedor;
             try
@@ -71,20 +110,24 @@ namespace CadastrosBasicos.ManipulaArquivo
                             string cnpj = procuraFornecedor.Substring(0, 14);
                             if (procuraCnpj == cnpj)
                             {
-                                string rSocial = procuraCnpj.Substring(14, 50);
-                                DateTime dAbertura = DateTime.Parse(procuraFornecedor.Substring(64, 10));
-                                DateTime uCompra = DateTime.Parse(procuraFornecedor.Substring(74, 10));
-                                DateTime dCadastro = DateTime.Parse(procuraFornecedor.Substring(84, 10));
-                                char situacao = char.Parse(procuraFornecedor.Substring(94, 1));
-                                return new Fornecedor(cnpj, rSocial, dAbertura, uCompra, dCadastro, situacao); ;
+                                rSocial = procuraFornecedor.Substring(14, 50);
+                                 dAbertura = DateTime.Parse(procuraFornecedor.Substring(64, 10));
+                                 uCompra = DateTime.Parse(procuraFornecedor.Substring(74, 10));
+                                 dCadastro = DateTime.Parse(procuraFornecedor.Substring(84, 10));
+                                situacao = char.Parse(procuraFornecedor.Substring(94, 1));
+                                fornecedor =  new Fornecedor(cnpj, rSocial, dAbertura, uCompra, dCadastro, situacao);
+                                Console.WriteLine(fornecedor.ToString());
+                                Console.WriteLine();
+                                return fornecedor;
                             }
 
-
+                            procuraFornecedor = sr.ReadLine();
                         }
                         return null;
                     }
                 }
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 Console.WriteLine("Ocorreu um erro: " + ex.Message);
             }
@@ -117,12 +160,10 @@ namespace CadastrosBasicos.ManipulaArquivo
                                 DateTime dCadastro = DateTime.Parse(procuraCliente.Substring(82, 10));
                                 char situacao = char.Parse(procuraCliente.Substring(92, 1));
                                 cliente = new Cliente(cpf, nome, dNascimento, sexo, uCompra, dCadastro, situacao);
-                                Console.WriteLine("Cliente ja cadastrado");
                                 Console.WriteLine(cliente.ToString());
                                 Console.ReadKey();
                                 return cliente;
                             }
-
                             procuraCliente = sr.ReadLine();
                         }
                     }

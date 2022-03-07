@@ -26,7 +26,6 @@ namespace CadastrosBasicos.ManipulaArquivos
         public void GerarPastas()
         {
             string caminhoInicial = Directory.GetCurrentDirectory();
-            Console.WriteLine(caminhoInicial);
             caminhoFinal = Path.Combine(caminhoInicial, "ProjBiltiful");
             Directory.CreateDirectory(caminhoFinal);
 
@@ -56,7 +55,7 @@ namespace CadastrosBasicos.ManipulaArquivos
         {
             try
             {
-                string total = $"{cliente.CPF}{cliente.Nome}{cliente.DNascimento.ToString("dd/MM/yyyy")}{cliente.Sexo}{cliente.UCompra.ToString("dd/MM/yyyy")}{cliente.DCadastro.ToString("dd/MM/yyyy")}{cliente.Situacao}";
+                string total = $"{cliente.CPF}{cliente.Nome}{cliente.DataNascimento.ToString("dd/MM/yyyy")}{cliente.Sexo}{cliente.UltimaVenda.ToString("dd/MM/yyyy")}{cliente.DataCadastro.ToString("dd/MM/yyyy")}{cliente.Situacao}";
 
                 string local = pastaCliente + "\\Cliente.dat";
                 if (!File.Exists(local))
@@ -85,8 +84,7 @@ namespace CadastrosBasicos.ManipulaArquivos
         {
             try
             {
-                string total = $"{fornecedor.CNPJ}{fornecedor.RSocial}{fornecedor.DAbertura.ToString("dd/MM/yyyy")}{fornecedor.UCompra.ToString("dd/MM/yyyy")}{fornecedor.DCadastro.ToString("dd/MM/yyyy")}{fornecedor.Situacao}";
-
+                string total = fornecedor.CNPJ + fornecedor.RSocial + fornecedor.DAbertura.ToString("dd/MM/yyyy") + fornecedor.UCompra.ToString("dd/MM/yyyy") + fornecedor.DCadastro.ToString("dd/MM/yyyy") + fornecedor.Situacao;
                 string local = pastaFornecedor + "\\Fornecedor.dat";
 
                 
