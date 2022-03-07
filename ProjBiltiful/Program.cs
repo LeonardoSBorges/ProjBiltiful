@@ -17,17 +17,9 @@ namespace ProjBiltiful
             CultureInfo.DefaultThreadCurrentCulture = cultureInformation;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInformation;
 
+            int value;
 
-            MPrima b = new MPrima();
-            b.Menu();
-            /*Produto a = new Produto();
-            a.Cadastrar();*/
-        }
-    }
-}
-
-            /*int value = -1;
-            while (value != 0)
+            do
             {
                 Console.Clear();
                 Console.Write(@"=============== BITIFUL ===============
@@ -52,6 +44,7 @@ Insira uma opcao valida: ");
                         break;
 
                     case 3:
+                        new MPrima().Menu();
                         break;
 
                     case 4:
@@ -66,4 +59,4 @@ Insira uma opcao valida: ");
             } while (value != 0);
         }
     }
-}/*/
+}
