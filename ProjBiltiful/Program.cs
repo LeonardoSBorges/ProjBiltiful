@@ -37,6 +37,7 @@ namespace ProjBiltiful
                         break;
 
                     case 1:
+                        MenuCadastros.SubMenu();
                         break;
 
                     case 2:
@@ -44,7 +45,6 @@ namespace ProjBiltiful
                         break;
 
                     case 3:
-                        new MPrima().Menu();
                         break;
 
                     case 4:
