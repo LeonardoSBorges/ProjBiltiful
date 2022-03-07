@@ -1,4 +1,4 @@
-﻿//using System;
+//using System;
 //using System.IO;
 //using System.Collections.Generic;
 //using System.Linq;
@@ -38,12 +38,14 @@
 
 //        //}
         
-//        //public void GravarProduto(Produto produto)
-//        //{
-//        //    using (StreamWriter sw = new StreamWriter(Path.Combine(caminhoFinal, pastaProduto)))
-//        //    {
-//        //        sw.WriteLine(produto.ToString());
-//        //    }
-//        //}
-//    }
-//}
+        public void GravarProduto(Produto produto)
+        {
+            
+            using (StreamWriter sw = new StreamWriter(Path.Combine(caminhoFinal, pastaProduto) + "Cosmetico.dat"))
+            {
+                sw.WriteLine(produto.ToString());
+            }
+        }
+    }
+}
+
