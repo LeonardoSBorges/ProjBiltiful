@@ -3,6 +3,8 @@ using VendasProdutos;
 using CadastrosBasicos;
 using ProducaoCosmeticos;
 using System.Globalization;
+using CadastrosBasicos;
+using ComprasMateriasPrimas;
 
 namespace ProjBiltiful
 {
@@ -38,6 +40,8 @@ Insira uma opcao valida:
                     case 2:
                         break;
                     case 3:
+                        //Comprar Materia Prima
+                        Compra.SubMenu();
                         break;
 
                 }
