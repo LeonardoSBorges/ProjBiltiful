@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace VendasProdutos
 {
+
     public class Venda
     {
+        private static string caminho = @"ProjBiltiful\Venda\Venda.dat";
+
         public int Id { get; set; }
         public string Cliente { get; set; }
         public DateTime DVenda { get; set; }
@@ -12,21 +16,42 @@ namespace VendasProdutos
 
         public Venda()
         {
+            Id = NovoIdVenda();
             VTotal = 0;
         }
 
+        public Venda(int id, string cliente, DateTime dVenda, decimal vTotal)
+        {
+            Id = id;
+            Cliente = cliente;
+            DVenda = dVenda;
+            VTotal = vTotal;
+        }
+
+        public override string ToString()
+        {
+            return $"{Id}\t{DVenda.ToString("dd/MM/yyyy")}\n{Cliente}\n{VTotal}";
+        }
+
+        public int NovoIdVenda()
+        {
+            try
+            {
+                return File.ReadAllLines(caminho).Length + 1;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
+
+            return -1;
+        }
 
         public void Cadastrar()
         {
-            if (!Directory.Exists("database"))
-            {
-                Directory.CreateDirectory("database");
-                File.Create("database\\Venda.dat").Close();
-            }
-
             try
             {
-                StreamWriter sw = new StreamWriter("database\\Venda.dat", append: true);
+                StreamWriter sw = new StreamWriter(caminho, append: true);
 
                 sw.WriteLine(Id.ToString().PadLeft(5, '0') + Cliente + DVenda.ToString("dd/MM/yyyy") + VTotal);
 
@@ -38,8 +63,46 @@ namespace VendasProdutos
             }
         }
 
-        public void Localizar()
+        public Venda Localizar(int id)
         {
+            string linha = BuscaBinaria(id);
+
+            if (linha != null)
+            {
+                string idVenda = linha.Substring(0, 5);
+                string cliente = linha.Substring(5, 11);
+                string data = linha.Substring(16, 10);
+                string vtotal = linha.Substring(26, 5);
+
+                Venda venda = new Venda(int.Parse(idVenda), cliente, DateTime.Parse(data), Decimal.Parse(vtotal));
+
+                return venda;
+            }
+
+            return null;
+        }
+
+        public string BuscaBinaria(int id)
+        {
+            string[] dados = File.ReadAllLines(caminho);
+
+            int minimo = 0;
+            int maximo = dados.Length;
+            int medio;
+
+            while (minimo <= maximo)
+            {
+                medio = (minimo + maximo) / 2;
+
+                if (id > medio)
+                    minimo = medio + 1;
+                else if (id < medio)
+                    maximo = medio - 1;
+                else
+                    return (medio != 0) ? dados[medio - 1] : null;
+            }
+
+            return null;
         }
 
         public void Excluir()
@@ -49,5 +112,7 @@ namespace VendasProdutos
         public void ImpressaoPorRegistro()
         {
         }
+
+
     }
 }
