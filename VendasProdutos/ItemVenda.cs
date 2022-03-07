@@ -25,14 +25,6 @@ namespace VendasProdutos
             TotalItem = quantidade * valorUnitario;
         }
 
-        public ItemVenda(string produto, int quantidade, decimal valorUnitario)
-        {
-            Produto = produto;
-            Quantidade = quantidade;
-            ValorUnitario = valorUnitario;
-            TotalItem = quantidade * valorUnitario;
-        }
-
         public override string ToString()
         {
             return $"{Id.ToString().PadLeft(5, '0')}\t{Produto}\t{Quantidade.ToString().PadLeft(3, '0')}\t{ValorUnitario.ToString("000.00").TrimStart('0')}\t\t{TotalItem.ToString("0000.00").TrimStart('0')}";
@@ -60,7 +52,6 @@ namespace VendasProdutos
 
         public List<ItemVenda> Localizar(int idVenda)
         {
-
             try
             {
                 StreamReader sr = new StreamReader(caminho.ArquivoItemVenda);
@@ -96,6 +87,6 @@ namespace VendasProdutos
 
             return null;
         }
-
+    
     }
 }
