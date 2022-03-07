@@ -1,3 +1,4 @@
+
 using System;
 using System.IO;
 using VendasProdutos;
@@ -9,6 +10,18 @@ namespace ProjBiltiful
 {
     internal class Program
     {
+        public static void GerarPastas()
+        {
+            string caminhoInicial = Directory.GetCurrentDirectory();
+            Console.WriteLine(caminhoInicial);
+            string caminhoFinal = Path.Combine(caminhoInicial, "ProjBiltiful");
+            Directory.CreateDirectory(caminhoFinal);
+
+            string pastaProducao = Path.Combine(caminhoFinal, "ProducaoCosmeticos");
+            Directory.CreateDirectory(pastaProducao);
+
+        }
+
         static void Main(string[] args)
         {
 
@@ -16,21 +29,27 @@ namespace ProjBiltiful
             cultureInformation.NumberFormat.CurrencySymbol = "R$";
             CultureInfo.DefaultThreadCurrentCulture = cultureInformation;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInformation;
+          
+            GerarPastas();
 
-            int value;
-
-            do
+            //Este menu sera utilizado para testes
+            int value = -1;
+            while (value != 0)
             {
                 Console.Clear();
                 Console.Write(@"=============== BITIFUL ===============
 1. Cadastros
 2. Vendas
-3. Compra de Materia-Prima
-4. Producao
-0. Sair
-:: ");
+2. Compra de Materia-Prima
+3. Producao
+0 - Sair
+Insira uma opcao valida: 
+");
+                value = int.Parse(Console.ReadLine());
 
-                switch (value = int.Parse(Console.ReadLine()))
+
+
+                switch (value)
                 {
                     case 0:
                         Environment.Exit(0);
