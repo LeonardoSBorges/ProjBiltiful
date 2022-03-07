@@ -38,14 +38,14 @@
 
 //        //}
         
-        public void GravarProduto(Produto produto)
-        {
+//        public void GravarProduto(Produto produto)
+//        {
             
-            using (StreamWriter sw = new StreamWriter(Path.Combine(caminhoFinal, pastaProduto) + "Cosmetico.dat"))
-            {
-                sw.WriteLine(produto.ToString());
-            }
-        }
-    }
-}
+//            using (StreamWriter sw = new StreamWriter(Path.Combine(caminhoFinal, pastaProduto) + "Cosmetico.dat"))
+//            {
+//                sw.WriteLine(produto.ToString());
+//            }
+//        }
+//    }
+//}
 
