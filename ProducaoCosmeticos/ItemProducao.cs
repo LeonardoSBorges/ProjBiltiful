@@ -1,4 +1,4 @@
-﻿using CadastrosBasicos;
+using CadastrosBasicos;
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -13,6 +13,7 @@ namespace ProducaoCosmeticos
         public DateTime dproducao { get; set; }
         public string mprima { get; set; }
         public decimal qtdmp { get; set; }
+
 
         #endregion
 
