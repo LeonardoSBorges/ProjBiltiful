@@ -32,10 +32,14 @@ namespace ProjBiltiful
             CultureInfo.DefaultThreadCurrentCulture = cultureInformation;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInformation;
 
-            
 
-            Produto a = new Produto();
-            a.Cadastrar();
+            MPrima b = new MPrima();
+            b.Menu();
+            /*Produto a = new Produto();
+            a.Cadastrar();*/
+        }
+    }
+}
 
             /*int value = -1;
             while (value != 0)
@@ -77,4 +81,4 @@ Insira uma opcao valida: ");
             } while (value != 0);
         }
     }
-}
+}/*/
