@@ -11,7 +11,7 @@ namespace CadastrosBasicos
        
         public static void SubMenu()
         {
-            MenuCadastros menuCadastros;
+            //MenuCadastros menuCadastros;
             //Este menu sera utilizado para testes
             int value = -1;
             while (value != 0)

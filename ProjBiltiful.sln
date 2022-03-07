@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProducaoCosmeticos", "Produ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjBiltiful", "ProjBiltiful\ProjBiltiful.csproj", "{244F2098-526B-4C59-8CF6-D1A737522DC9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManipulaArquivos", "Arquivos\ManipulaArquivos.csproj", "{932612EC-1DBC-4CEB-BCC9-0C58287F6BB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{244F2098-526B-4C59-8CF6-D1A737522DC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{244F2098-526B-4C59-8CF6-D1A737522DC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{244F2098-526B-4C59-8CF6-D1A737522DC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{932612EC-1DBC-4CEB-BCC9-0C58287F6BB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{932612EC-1DBC-4CEB-BCC9-0C58287F6BB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{932612EC-1DBC-4CEB-BCC9-0C58287F6BB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{932612EC-1DBC-4CEB-BCC9-0C58287F6BB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.IO;
 using VendasProdutos;
 using CadastrosBasicos;
 using ProducaoCosmeticos;
@@ -10,10 +11,12 @@ namespace ProjBiltiful
     {
         static void Main(string[] args)
         {
+
             var cultureInformation = new CultureInfo("pt-BR");
             cultureInformation.NumberFormat.CurrencySymbol = "R$";
             CultureInfo.DefaultThreadCurrentCulture = cultureInformation;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInformation;
+          
             Producao producao = new Producao();
             producao.Menu();
 
