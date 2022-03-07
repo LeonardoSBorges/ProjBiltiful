@@ -79,7 +79,6 @@ namespace VendasProdutos
 
                 do
                 {
-
                     produto = new Produto();
 
                     Console.WriteLine("\nDigite o Código do Produto:");
@@ -97,6 +96,7 @@ namespace VendasProdutos
                 } while (produto == null);
 
                 int qtd = 0;
+                decimal totalItens;
 
                 do
                 {
@@ -110,9 +110,17 @@ namespace VendasProdutos
                         Console.Clear();
                     }
 
-                } while (qtd <= 0 || qtd > 999);
+                    totalItens = qtd * produto.ValorVenda;
+                    if (totalItens > (decimal) 9999.99)
+                    {
+                        Console.WriteLine("Valor total dos item passou o limite permitido de $ 9.999,99");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+                } while ((qtd <= 0 || qtd > 999) || totalItens > (decimal) 9999.99);
 
                 Console.Clear();
+
 
                 itensVenda.Add(new ItemVenda(venda.Id, produto.CodigoBarras, qtd, produto.ValorVenda));
 
