@@ -13,8 +13,8 @@ namespace VendasProdutos
         {
             new Arquivos();
 
+            string opcao;
 
-            bool flag = true;
             do
             {
                 Console.Clear();
@@ -25,10 +25,8 @@ namespace VendasProdutos
                 Console.WriteLine("3. Consultar Produtos de uma venda");
                 Console.WriteLine("4. Excluir Venda");
                 Console.WriteLine("0. Voltar");
-                string opcao = Console.ReadLine();
-                Console.Clear();
 
-                switch (opcao)
+                switch (opcao = Console.ReadLine())
                 {
                     case "1":
                         NovaVenda();
@@ -47,7 +45,6 @@ namespace VendasProdutos
                         break;
 
                     case "0":
-                        flag = false;
                         break;
 
                     default:
@@ -56,7 +53,9 @@ namespace VendasProdutos
                         break;
                 }
 
-            } while (flag == true);
+                Console.ReadKey();
+
+            } while (opcao != "0");
         }
 
 
@@ -79,7 +78,7 @@ namespace VendasProdutos
 
             List<ItemVenda> itensVenda = new List<ItemVenda>();
 
-            int itens = 0;
+            int itens = 1;
             string escolha;
 
             do
@@ -116,32 +115,35 @@ namespace VendasProdutos
                 });
 
                 Console.WriteLine("------------------------------------------------------");
-                Console.WriteLine($"\t\t\t\t\t\t{venda.VTotal}");
+                Console.WriteLine($"\t\t\t\t\t\t{venda.VTotal.ToString("#.00")}");
 
-                if (itens < 2)
+
+                do
                 {
-                    do
-                    {
-                        Console.WriteLine("\nAdicionar novo produto?");
-                        Console.WriteLine("[ S ] Sim\t[ N ] Não");
-                        escolha = Console.ReadLine().ToUpper();
+                    Console.WriteLine("\nAdicionar novo produto?");
+                    Console.WriteLine("[ S ] Sim\t[ N ] Não");
+                    escolha = Console.ReadLine().ToUpper();
 
-                        Console.Clear();
-                    } while (escolha != "S" && escolha != "N");
+                    Console.Clear();
+                } while (escolha != "S" && escolha != "N");
 
 
-                    if (escolha == "S")
-                        itens++;
-                    else
-                        break;
-                }
+                if (escolha == "S")
+                    itens++;
                 else
+                    break;
+
+                if (itens == 4)
                 {
                     Console.Clear();
                     Console.WriteLine("Seu carrinho está cheio!");
+                    Console.ReadKey();
                     break;
                 }
-            } while (itens < 3);
+
+            } while (itens != 4);
+
+            Console.Clear();
 
             do
             {
@@ -152,7 +154,7 @@ namespace VendasProdutos
                 Console.WriteLine("------------------------------------------------------");
                 itensVenda.ForEach(item => Console.WriteLine(item.ToString()));
                 Console.WriteLine("------------------------------------------------------");
-                Console.WriteLine($"\t\t\t\t\t\t{venda.VTotal}");
+                Console.WriteLine($"\t\t\t\t\t\t{venda.VTotal.ToString("#.00")}");
 
                 Console.WriteLine("\n\n");
 
@@ -167,8 +169,7 @@ namespace VendasProdutos
                 itemVenda.Cadastrar(itensVenda);
 
                 venda.Cadastrar();
-                Console.WriteLine("venda cadastrada com sucesso!\nPressione ENTER para voltar ao Menu Vendas...");
-                Console.ReadKey();
+                Console.WriteLine("\n\nVenda cadastrada com sucesso!\nPressione ENTER para voltar ao Menu Vendas...");
             }
         }
 
@@ -304,52 +305,6 @@ namespace VendasProdutos
                 Console.WriteLine("Operação realizada com sucesso.\nPressione ENTER para voltar");
             }
             Console.ReadKey();
-        }
-
-        public static bool VerificaCpf(string cpf)
-        {
-            int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-            int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-            string tempCpf;
-            string digito;
-            int soma;
-            int resto;
-
-            cpf = cpf.Trim();
-            cpf = cpf.Replace(".", "").Replace("-", "");
-
-            if (cpf.Length != 11)
-                return false;
-
-            tempCpf = cpf.Substring(0, 9);
-            soma = 0;
-
-            for (int i = 0; i < 9; i++)
-                soma += int.Parse(tempCpf[i].ToString()) * multiplicador1[i];
-
-            resto = soma % 11;
-            if (resto < 2)
-                resto = 0;
-            else
-                resto = 11 - resto;
-
-            digito = resto.ToString();
-
-            tempCpf = tempCpf + digito;
-
-            soma = 0;
-            for (int i = 0; i < 10; i++)
-                soma += int.Parse(tempCpf[i].ToString()) * multiplicador2[i];
-
-            resto = soma % 11;
-            if (resto < 2)
-                resto = 0;
-            else
-                resto = 11 - resto;
-
-            digito = digito + resto.ToString();
-
-            return cpf.EndsWith(digito);
         }
 
     }

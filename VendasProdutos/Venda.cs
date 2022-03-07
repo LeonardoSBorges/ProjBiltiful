@@ -29,7 +29,7 @@ namespace VendasProdutos
 
         public override string ToString()
         {
-            return $"Venda número {Id}\tData: {DVenda.ToString("dd/MM/yyyy")}\nCliente: {Cliente}\nTotal da Venda: {VTotal.ToString("N2")}";
+            return $"Venda número {Id.ToString().PadLeft(5, '0')}\tData: {DVenda.ToString("dd/MM/yyyy")}\nCliente: {Cliente}\nTotal da Venda: {VTotal.ToString("#.00")}";
         }
 
         public int NovoIdVenda()
@@ -52,7 +52,7 @@ namespace VendasProdutos
             {
                 StreamWriter sw = new StreamWriter(caminho.ArquivoVenda, append: true);
 
-                sw.WriteLine(Id.ToString().PadLeft(5, '0') + Cliente + DVenda.ToString("dd/MM/yyyy") + VTotal.ToString("N2").PadLeft(9, '0'));
+                sw.WriteLine(Id.ToString().PadLeft(5, '0') + Cliente.Replace(".", "").Replace("-", "") + DVenda.ToString("dd/MM/yyyy").Replace("/", "") + VTotal.ToString("#.00").PadLeft(8, '0'));
 
                 sw.Close();
             }
@@ -64,16 +64,18 @@ namespace VendasProdutos
 
         public Venda Localizar(int id)
         {
-            string linha = BuscaBinaria(id);
+            string linha = LocalizarVendaPorId(id);
 
             if (linha != null)
             {
                 string idVenda = linha.Substring(0, 5);
                 string cliente = linha.Substring(5, 11);
-                string data = linha.Substring(16, 10);
-                string vtotal = linha.Substring(26, 5);
+                string data = linha.Substring(16, 8);
+                string vtotal = linha.Substring(24, 8);
 
-                Venda venda = new Venda(int.Parse(idVenda), cliente, DateTime.Parse(data), Decimal.Parse(vtotal));
+                DateTime.TryParse(data.Insert(2, "/").Insert(5, "/"), out DateTime dt);
+
+                Venda venda = new Venda(int.Parse(idVenda), cliente.Insert(3, ".").Insert(7, ".").Insert(11, "-"), dt, Decimal.Parse(vtotal));
 
                 return venda;
             }
@@ -81,7 +83,7 @@ namespace VendasProdutos
             return null;
         }
 
-        public string BuscaBinaria(int id)
+        public string LocalizarVendaPorId(int id)
         {
             string[] dados = File.ReadAllLines(caminho.ArquivoVenda);
 
@@ -106,6 +108,7 @@ namespace VendasProdutos
 
         public void Excluir()
         {
+
         }
 
         public void ImpressaoPorRegistro()

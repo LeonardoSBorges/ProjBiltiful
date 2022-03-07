@@ -27,7 +27,7 @@ namespace VendasProdutos
 
         public override string ToString()
         {
-            return $"{Id}\t{Produto}\t{Qtd}\t{VUnitario}\t\t{TItem}";
+            return $"{Id.ToString().PadLeft(5, '0')}\t{Produto}\t{Qtd.ToString().PadLeft(3, '0')}\t{VUnitario.ToString("#.00")}\t\t{TItem.ToString("#.00")}";
         }
 
         public void Cadastrar(List<ItemVenda> itens)
@@ -38,7 +38,7 @@ namespace VendasProdutos
 
                 itens.ForEach(item =>
                 {
-                    string linha = item.Id.ToString().PadLeft(5, '0') + item.Produto + item.Qtd.ToString().PadLeft(3, '0') + item.VUnitario.ToString("N2").PadLeft(5, '0') + item.TItem.ToString("N2").PadLeft(5, '0');
+                    string linha = item.Id.ToString().PadLeft(5, '0') + item.Produto + item.Qtd.ToString().PadLeft(3, '0') + item.VUnitario.ToString("#.00").PadLeft(6, '0') + item.TItem.ToString("#.00").PadLeft(7, '0');
                     sw.WriteLine(linha);
                 });
 
