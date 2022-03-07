@@ -1,30 +1,31 @@
-﻿using System;
+﻿using CadastrosBasicos;
+using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace ProducaoCosmeticos
 {
     public class ItemProducao
     {
-        #region Atributos e Propriedades da Classe Produção
+        #region Atributos e Propriedades da Classe ItemProdução
 
-        public int id { get; set; }
+        public string Id { get; set; }
         public DateTime dproducao { get; set; }
         public string mprima { get; set; }
-        public float qtdmp { get; set; }
-
-        #endregion
-
-        #region Variáveis
-        
-        
+        public decimal qtdmp { get; set; }
 
         #endregion
 
         #region Construtor
 
-        public ItemProducao(int id, DateTime dproducao, string mprima, float qtdmp)
+        public ItemProducao()
         {
-            this.id = id;
+
+        }
+
+        public ItemProducao(string id, DateTime dproducao, string mprima, decimal qtdmp)
+        {
+            Id = id;
             this.dproducao = dproducao;
             this.mprima = mprima;
             this.qtdmp = qtdmp;
@@ -34,10 +35,44 @@ namespace ProducaoCosmeticos
 
         #region Métodos 
 
+        public void BuscarMateriaPrima()
+        {
+            string caminhoInicial = Directory.GetCurrentDirectory();
+            Console.WriteLine(caminhoInicial);
+            string caminhoFinal = Path.Combine(caminhoInicial, "\\ProjBiltiful\\");
+            Directory.CreateDirectory(caminhoFinal);
 
+            string pastaProducao = Path.Combine(caminhoFinal, "ProducaoCosmeticos\\");
+            Directory.CreateDirectory(pastaProducao);
 
-        #endregion
+            string arquivoFinal = Path.Combine(pastaProducao + "ItemProducao.dat");
+
+            List<MPrima> ListaMateriasPrimas = new List<MPrima>();
+            if (File.Exists(arquivoFinal))
+            {
+                try
+                {
+                    using (StreamReader sr = new StreamReader(arquivoFinal))
+                    {
+                        string line = sr.ReadLine();
+                        do
+                        {
+                            if (line.Substring(54, 1) != "I")
+                            {
+                                ListaMateriasPrimas.Add(
+                                    new MPrima()
+                                    );
+                            }
+                        } while (line != null);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Ex -> " + ex.Message);
+                }
+            }
+
+            #endregion
+        }
     }
 }
-
-

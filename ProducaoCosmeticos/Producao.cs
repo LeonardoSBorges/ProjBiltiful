@@ -10,7 +10,7 @@ namespace ProducaoCosmeticos
     {
         #region Propriedades da Produção
 
-        public int id { get; set; }
+        public int Id { get; set; }
         public DateTime dproducao { get; set; }
         public string produto { get; set; }
         public float qtd { get; set; }
@@ -19,9 +19,14 @@ namespace ProducaoCosmeticos
 
         #region Construtor
 
+        public Producao()
+        {
+
+        }
+
         public Producao(int id, DateTime dproducao, string produto, float qtd)
         {
-            this.id = id;
+            Id = id;
             this.dproducao = dproducao;
             this.produto = produto;
             this.qtd = qtd;
