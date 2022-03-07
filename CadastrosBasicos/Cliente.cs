@@ -1,5 +1,4 @@
-﻿using CadastrosBasicos.ManipulaArquivo;
-using CadastrosBasicos.ManipulaArquivos;
+﻿using CadastrosBasicos.ManipulaArquivos;
 using System;
 
 namespace CadastrosBasicos
@@ -93,7 +92,7 @@ namespace CadastrosBasicos
             }
             return cliente;
         }
-        public string RetornoArquivo()
+        public string RetornaArquivo()
         {
             return $"{CPF}{Nome}{DataNascimento.ToString("dd/MM/yyyy")}{Sexo}{UltimaVenda.ToString("dd/MM/yyyy")}{DataCadastro.ToString("dd/MM/yyyy")}{Situacao}";
 

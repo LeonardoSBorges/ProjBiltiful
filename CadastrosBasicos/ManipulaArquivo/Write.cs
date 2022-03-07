@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CadastrosBasicos.ManipulaArquivo;
 
 namespace CadastrosBasicos.ManipulaArquivos
 {
@@ -13,7 +12,9 @@ namespace CadastrosBasicos.ManipulaArquivos
         public string CaminhoFinal { get; set; }
         public string CaminhoCadastro { get; set; }
         public string ClienteInadimplente { get; set; }
-        public string CadatroFornecedor { get; set; }
+        public string CaminhoFornecedor { get; set; }
+        public string CaminhoBloqueado { get; set; }
+
         public Write()
         {
             AcharArquivos();
@@ -30,12 +31,31 @@ namespace CadastrosBasicos.ManipulaArquivos
             CaminhoCadastro = CaminhoFinal + "\\Cliente.dat";
             if (!File.Exists(CaminhoCadastro))
                 File.Create(CaminhoCadastro).Close();
-            ClienteInadimplente = CaminhoFinal + "\\ClientesInadimplentes.dat";
+            ClienteInadimplente = CaminhoFinal + "\\Risco.dat";
             if (!File.Exists(ClienteInadimplente))
                 File.Create(ClienteInadimplente).Close();
-            CadatroFornecedor = CaminhoFinal + "\\Fornecedor.dat";
-            if (!File.Exists(ClienteInadimplente))
-                File.Create(ClienteInadimplente).Close();
+            CaminhoBloqueado = CaminhoFinal + "\\Bloqueado.dat";
+            if (!File.Exists(CaminhoBloqueado))
+                File.Create(CaminhoBloqueado).Close();
+            CaminhoFornecedor = CaminhoFinal + "\\Fornecedor.dat";
+            if (!File.Exists(CaminhoFornecedor))
+                File.Create(CaminhoFornecedor).Close();
+        }
+        public void BloquearFornecedor(string cnpj)
+        {
+
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(CaminhoBloqueado, append: true))
+                {
+                    sw.WriteLine(cnpj);
+                    Console.WriteLine("Fornecedor Bloqueado");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
         }
         public void BloqueiaCliente(string cpf)
         {
@@ -74,7 +94,7 @@ namespace CadastrosBasicos.ManipulaArquivos
                     posicao = 0;
                     while (clientes[posicao] != null)
                     {
-                        sw.WriteLine(clientes[posicao].RetornoArquivo());
+                        sw.WriteLine(clientes[posicao].RetornaArquivo());
                     }
                     Console.WriteLine("Registro atualizado");
                 }
@@ -84,14 +104,44 @@ namespace CadastrosBasicos.ManipulaArquivos
                 Console.WriteLine("Ocorreu um erro: " + ex.Message);
             }
         }
+        public void EditarFornecedor(Fornecedor fornecedorAtualizado)
+        {
 
+            Read read = new Read();
+            List<Fornecedor> fornecedores = read.ListaArquivoFornecedor();
+            int posicao = 0;
+            try
+            {
+                while (fornecedores[posicao] != null)
+                {
+                    if (fornecedorAtualizado.CNPJ == fornecedores[posicao].CNPJ)
+                    {
+                        fornecedores[posicao] = fornecedorAtualizado;
+                    }
+                    posicao++;
+                }
+                using (StreamWriter sw = new StreamWriter(CaminhoFornecedor))
+                {
+                    posicao = 0;
+                    while (fornecedores[posicao] != null)
+                    {
+                        sw.WriteLine(fornecedores[posicao].RetornaArquivo());
+                    }
+                    Console.WriteLine("Registro atualizado");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
+        }
         //Gravar novo cliente no arquivo
         public void GravarNovoCliente(Cliente cliente)
         {
             try
             {
 
-                string total = cliente.RetornoArquivo();
+                string total = cliente.RetornaArquivo();
 
 
                 using (StreamWriter sw = new StreamWriter(CaminhoCadastro, append: true))
@@ -110,12 +160,12 @@ namespace CadastrosBasicos.ManipulaArquivos
         {
             try
             {
-                string total = fornecedor.CNPJ + fornecedor.RSocial + fornecedor.DAbertura.ToString("dd/MM/yyyy") + fornecedor.UCompra.ToString("dd/MM/yyyy") + fornecedor.DCadastro.ToString("dd/MM/yyyy") + fornecedor.Situacao;
+                string total = fornecedor.RetornaArquivo();
 
-                using (StreamWriter sw = new StreamWriter(CaminhoCadastro, append: true))
+                using (StreamWriter sw = new StreamWriter(CaminhoFornecedor, append: true))
                 {
                     sw.WriteLine(total);
-                    Console.WriteLine("Cliente inserido com sucesso");
+                    Console.WriteLine("Fornecedor inserido com sucesso");
                 }
 
             }

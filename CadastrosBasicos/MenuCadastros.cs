@@ -1,5 +1,4 @@
-﻿using CadastrosBasicos.ManipulaArquivo;
-using CadastrosBasicos.ManipulaArquivos;
+﻿using CadastrosBasicos.ManipulaArquivos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +16,9 @@ namespace CadastrosBasicos
         {
             Cliente cliente;
             Fornecedor fornecedor;
-           //Risco risco = new Risco();
-            
+           
+            //Risco risco = new Risco();
+
 
             //Este menu sera utilizado para testes
             int value = -1;
@@ -26,14 +26,15 @@ namespace CadastrosBasicos
             {
                 Console.Write(@"1. Cadastrar cliente
 2. Editar registro de cliente
-3. Bloquear cliente
+3. Cliente Inadimplente 
 4. Cadastrar fornecedor
 5. Editar registro de fornecedor
-6. Cadastrar materia prima
-7. Cadastrar produtos
-8. Cadastro de Inadimplentes
-9. Cadastro de Fornecedores Bloqueados
-0 - Voltar ao menu anterior
+6. Bloquear fornecedor
+7. Cadastrar materia prima
+8. Cadastrar produtos
+9. Cadastro de Inadimplentes
+10. Cadastro de Fornecedores Bloqueados
+0. Voltar ao menu anterior
 Insira uma opcao valida: 
 ");
                 value = int.Parse(Console.ReadLine());
@@ -59,12 +60,12 @@ Insira uma opcao valida:
                         }
                         break;
                     case 2:
-                        Cliente cliente2 = new Cliente();
-                        cliente2.Editar();
+                        cliente = new Cliente();
+                        cliente.Editar();
                         break;
                     case 3:
-                        Cliente cliente3 = new Cliente();
-                        cliente3.BloqueiaCadastro();
+                        cliente = new Cliente();
+                        cliente.BloqueiaCadastro();
                         break;
                     case 4:
                         DateTime dCriacao;
@@ -80,10 +81,18 @@ Insira uma opcao valida:
                         }
                         break;
                     case 5:
+                        fornecedor = new Fornecedor();
+                        fornecedor.Editar();
                         break;
                     case 6:
-                       
+                        fornecedor = new Fornecedor();
+                        fornecedor.BloqueiaFornecedor();
+                        break;
                     case 7:
+                        break;
+                    case 8:
+                        break;
+                    case 10:
                         break;
 
                 }

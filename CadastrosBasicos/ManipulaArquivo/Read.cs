@@ -5,13 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CadastrosBasicos.ManipulaArquivo
+namespace CadastrosBasicos.ManipulaArquivos
 {
     public class Read
     {
         public string CaminhoFinal { get; set; }
         public string CaminhoCadastro { get; set; }
         public string ClienteInadimplente { get; set; }
+        public string CaminhoFornecedor { get; set; }
+        public string CaminhoBloqueado { get; set; }
+
         public Read()
         {
             AcharArquivos();
@@ -25,16 +28,51 @@ namespace CadastrosBasicos.ManipulaArquivo
             {
                 Directory.CreateDirectory(CaminhoFinal);
             }
-
-            
             CaminhoCadastro = CaminhoFinal + "\\Cliente.dat";
             if (!File.Exists(CaminhoCadastro))
                 File.Create(CaminhoCadastro).Close();
-            ClienteInadimplente = CaminhoFinal + "\\ClientesInadimplentes.dat";
+            ClienteInadimplente = CaminhoFinal + "\\Risco.dat";
             if (!File.Exists(ClienteInadimplente))
                 File.Create(ClienteInadimplente).Close();
+            CaminhoBloqueado = CaminhoFinal + "\\Bloqueado.dat";
+            if (!File.Exists(CaminhoBloqueado))
+                File.Create(CaminhoBloqueado).Close();
+            CaminhoFornecedor = CaminhoFinal + "\\Fornecedor.dat";
+            if (!File.Exists(CaminhoFornecedor))
+                File.Create(CaminhoFornecedor).Close();
         }
+        public bool ProcurarCNPJBloqueado(string cnpj)
+        {
 
+            cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
+            string cnpjBloqueado = "";
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(CaminhoBloqueado))
+                {
+                    cnpjBloqueado = sr.ReadLine();
+
+                    while (cnpjBloqueado != null)
+                    {
+                        if (cnpjBloqueado == cnpj)
+                        {
+                            return true;
+                        }
+                        cnpjBloqueado = sr.ReadLine();
+                    }
+
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
+
+            return false;
+
+        }
         public bool ProcurarCPFBloqueado(string cpf)
         {
 
@@ -67,6 +105,43 @@ namespace CadastrosBasicos.ManipulaArquivo
             return false;
 
         }
+        public List<Fornecedor> ListaArquivoFornecedor()
+        {
+            List<Fornecedor> fornecedores = new List<Fornecedor>();
+            string procuraFornecedor = "", rSocial = "", cnpj = "";
+            DateTime dAbertura, uCompra, dCadastro;
+            char situacao;
+            Fornecedor buscaFornecedor;
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(CaminhoFornecedor))
+                {
+                    procuraFornecedor = sr.ReadLine();
+                    while (procuraFornecedor != null)
+                    {
+                        cnpj = procuraFornecedor.Substring(0, 14); ;
+                        rSocial = procuraFornecedor.Substring(14, 20);
+                        dAbertura = DateTime.Parse(procuraFornecedor.Substring(64, 10));
+                        uCompra = DateTime.Parse(procuraFornecedor.Substring(74, 10));
+                        dCadastro = DateTime.Parse(procuraFornecedor.Substring(84, 10));
+                        situacao = char.Parse(procuraFornecedor.Substring(94, 1));
+                        buscaFornecedor = new Fornecedor(cnpj, rSocial, dAbertura, uCompra, dCadastro, situacao);
+                        
+                        fornecedores.Add(buscaFornecedor);
+
+                        procuraFornecedor = sr.ReadLine();
+                    }
+                }
+            }
+            
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
+            return null;
+        }
+        //Retorna lista de clientes
         public List<Cliente> ListaArquivoCliente()
         {
             List<Cliente> clientes = new List<Cliente>();
@@ -111,16 +186,16 @@ namespace CadastrosBasicos.ManipulaArquivo
         public Fornecedor ProcurarFornecedor(string procuraCnpj)
         {
             string procuraFornecedor = "", rSocial = "";
+            procuraCnpj = procuraCnpj.Replace(".", "").Replace("-", "");
             DateTime dAbertura, uCompra, dCadastro;
             char situacao;
-            string file = CaminhoFinal + "\\Fornecedor.dat";
             Fornecedor fornecedor;
-            if (!File.Exists(file))
-                File.Create(file).Close();
+            if (!File.Exists(CaminhoFornecedor))
+                File.Create(CaminhoFornecedor).Close();
             try
             {
 
-                using (StreamReader sr = new StreamReader(file))
+                using (StreamReader sr = new StreamReader(CaminhoFornecedor))
                 {
                     procuraFornecedor = sr.ReadLine();
 
@@ -135,8 +210,6 @@ namespace CadastrosBasicos.ManipulaArquivo
                             dCadastro = DateTime.Parse(procuraFornecedor.Substring(84, 10));
                             situacao = char.Parse(procuraFornecedor.Substring(94, 1));
                             fornecedor = new Fornecedor(cnpj, rSocial, dAbertura, uCompra, dCadastro, situacao);
-                            Console.WriteLine(fornecedor.ToString());
-                            Console.WriteLine();
                             return fornecedor;
                         }
 
