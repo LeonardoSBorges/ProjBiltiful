@@ -27,8 +27,8 @@ namespace ProjBiltiful
 2. Vendas
 3. Compra de Materia-Prima
 4. Producao
-0 - Sair
-Insira uma opcao valida: ");
+0. Sair
+:: ");
 
                 switch (value = int.Parse(Console.ReadLine()))
                 {

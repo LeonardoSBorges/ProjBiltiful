@@ -71,9 +71,9 @@ namespace VendasProdutos
             Venda venda = new Venda();
 
             venda.Cliente = Cliente;
-            venda.DVenda = DateTime.Now.Date;
+            venda.DataVenda = DateTime.Now.Date;
 
-            Console.Write($"Venda Nº {venda.Id.ToString().PadLeft(5, '0')}\tData: {venda.DVenda.ToString("dd/MM/yyyy")}");
+            Console.Write($"Venda Nº {venda.Id.ToString().PadLeft(5, '0')}\tData: {venda.DataVenda.ToString("dd/MM/yyyy")}");
             Console.WriteLine();
 
             List<ItemVenda> itensVenda = new List<ItemVenda>();
@@ -110,12 +110,12 @@ namespace VendasProdutos
                 itensVenda.ForEach(item =>
                 {
                     Console.WriteLine(item.ToString());
-                    valorTotal += item.TItem;
-                    venda.VTotal = valorTotal;
+                    valorTotal += item.TotalItem;
+                    venda.ValorTotal = valorTotal;
                 });
 
                 Console.WriteLine("------------------------------------------------------");
-                Console.WriteLine($"\t\t\t\t\t\t{venda.VTotal.ToString("#.00")}");
+                Console.WriteLine($"\t\t\t\t\t\t{venda.ValorTotal.ToString("#.00")}");
 
 
                 do
@@ -147,14 +147,14 @@ namespace VendasProdutos
 
             do
             {
-                Console.Write($"\nVenda Nº {venda.Id.ToString().PadLeft(5, '0')}\tData: {venda.DVenda.ToString("dd/MM/yyyy")}");
+                Console.Write($"\nVenda Nº {venda.Id.ToString().PadLeft(5, '0')}\tData: {venda.DataVenda.ToString("dd/MM/yyyy")}");
                 Console.WriteLine("\n\n");
 
                 Console.WriteLine("Id\tProduto\t\tQtd\tV.Unitário\tT.Item");
                 Console.WriteLine("------------------------------------------------------");
                 itensVenda.ForEach(item => Console.WriteLine(item.ToString()));
                 Console.WriteLine("------------------------------------------------------");
-                Console.WriteLine($"\t\t\t\t\t\t{venda.VTotal.ToString("#.00")}");
+                Console.WriteLine($"\t\t\t\t\t\t{venda.ValorTotal.ToString("#.00")}");
 
                 Console.WriteLine("\n\n");
 
