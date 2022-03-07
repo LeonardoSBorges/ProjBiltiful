@@ -8,26 +8,31 @@ using System.Threading.Tasks;
 
 namespace CadastrosBasicos
 {
+    
     public class MenuCadastros
     {
-
+        public static Write write = new Write();
+        public static Read read = new Read();
         public static void SubMenu()
         {
             Cliente cliente;
             Fornecedor fornecedor;
-            Risco risco;
-            Read read = new Read();
-            Write write = new Write();
+           //Risco risco = new Risco();
+            
+
             //Este menu sera utilizado para testes
             int value = -1;
             while (value != 0)
             {
                 Console.Write(@"1. Cadastrar cliente
-2. Cadastrar fornecedor
-3. Cadastrar materia prima
-4. Cadastrar produtos
-5. Cadastro de Inadimplentes
-6. Cadastro de Fornecedores Bloqueados
+2. Editar registro de cliente
+3. Bloquear cliente
+4. Cadastrar fornecedor
+5. Editar registro de fornecedor
+6. Cadastrar materia prima
+7. Cadastrar produtos
+8. Cadastro de Inadimplentes
+9. Cadastro de Fornecedores Bloqueados
 0 - Voltar ao menu anterior
 Insira uma opcao valida: 
 ");
@@ -51,34 +56,34 @@ Insira uma opcao valida:
                         if (Validacoes.CalculaData(dNascimento))
                         {
                             cliente = RegistrarCliente(dNascimento);
-                            write.GravarNovoCliente(cliente);
                         }
                         break;
                     case 2:
+                        Cliente cliente2 = new Cliente();
+                        cliente2.Editar();
+                        break;
+                    case 3:
+                        Cliente cliente3 = new Cliente();
+                        cliente3.BloqueiaCadastro();
+                        break;
+                    case 4:
                         DateTime dCriacao;
                         Console.Write("Data de criacao da empresa:");
-                        do { 
-                        flag = DateTime.TryParse(Console.ReadLine(), out dCriacao);
+                        do
+                        {
+                            flag = DateTime.TryParse(Console.ReadLine(), out dCriacao);
                         } while (flag != true);
-                        if (Validacoes.CalculaCriacao(dCriacao)) 
+                        if (Validacoes.CalculaCriacao(dCriacao))
                         {
                             fornecedor = RegistrarFornecedor(dCriacao);
                             write.GravarNovoFornecedor(fornecedor);
                         }
                         break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
                     case 5:
-                        Console.Write("CPF: ");
-                        string cpf = Console.ReadLine();
-                        risco = new Risco(cpf);
-                        cliente = read.ProcuraCliente(cpf);
-                        if(cliente == null)
-                            Console.WriteLine("Nenhum cadastro encontrado");
                         break;
                     case 6:
+                       
+                    case 7:
                         break;
 
                 }
@@ -90,10 +95,10 @@ Insira uma opcao valida:
         }
         public static Fornecedor RegistrarFornecedor(DateTime dFundacao)
         {
-            string rSocial = "",cnpj = "";
+            string rSocial = "", cnpj = "";
             Read read = new Read();
             char situacao;
-            do 
+            do
             {
                 Console.Write("CNPJ: ");
                 cnpj = Console.ReadLine();
@@ -101,7 +106,8 @@ Insira uma opcao valida:
                 cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
             } while (Validacoes.ValidarCnpj(cnpj) == false);
             Fornecedor f = read.ProcurarFornecedor(cnpj);
-            if (f == null) {
+            if (f == null)
+            {
                 Console.Write("Razao social: ");
                 rSocial = Console.ReadLine().Trim().PadLeft(50, ' ');
                 Console.Write("Situacao (A - Ativo/ I - Inativo): ");
@@ -124,8 +130,10 @@ Insira uma opcao valida:
                 cpf = Console.ReadLine();
                 cpf = cpf.Trim();
                 cpf = cpf.Replace(".", "").Replace("-", "");
+
             } while (Validacoes.ValidarCpf(cpf) == false);
             Cliente c = read.ProcuraCliente(cpf);
+
             if (c == null)
             {
                 Console.Write("Nome: ");
@@ -134,11 +142,14 @@ Insira uma opcao valida:
                 sexo = char.Parse(Console.ReadLine());
                 Console.Write("Situacao (A - Ativo/ I - Inativo): ");
                 situacao = char.Parse(Console.ReadLine());
+                write.GravarNovoCliente(new Cliente(cpf, nome, dNascimento, sexo, situacao));
             }
             else
+            {
+                Console.WriteLine("Cliente ja cadastrado!!");
                 return c;
-
-            return new Cliente(cpf, nome, dNascimento, sexo, situacao);
+            }
+            return null;
         }
         public void EscreverArquivo(Cliente cliente)
         {

@@ -4,76 +4,102 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CadastrosBasicos.ManipulaArquivo;
 
 namespace CadastrosBasicos.ManipulaArquivos
 {
     public class Write
     {
-        public string caminhoFinal { get; set; }
-        public string pastaCliente { get; set; }
-        public string pastaFornecedor { get; set; }
-        public string pastaMateriaPrima { get; set; }
-        public string pastaProduto { get; set; }
-        public string pastaRisco { get; set; }
-        public string pastaBloqueado { get; set; }
-        public string pastaVenda { get; set; }
-
+        public string CaminhoFinal { get; set; }
+        public string CaminhoCadastro { get; set; }
+        public string ClienteInadimplente { get; set; }
+        public string CadatroFornecedor { get; set; }
         public Write()
         {
-            GerarPastas();
+            AcharArquivos();
         }
 
-        public void GerarPastas()
+        public void AcharArquivos()
         {
             string caminhoInicial = Directory.GetCurrentDirectory();
-            caminhoFinal = Path.Combine(caminhoInicial, "ProjBiltiful");
-            Directory.CreateDirectory(caminhoFinal);
-
-            pastaCliente = Path.Combine(caminhoFinal, "Cliente");
-            Directory.CreateDirectory(pastaCliente);
-
-            pastaFornecedor = Path.Combine(caminhoFinal, "Fornecedor");
-            Directory.CreateDirectory(pastaFornecedor);
-
-            pastaMateriaPrima = Path.Combine(caminhoFinal, "MateriaPrima");
-            Directory.CreateDirectory(pastaMateriaPrima);
-
-            pastaProduto = Path.Combine(caminhoFinal, "Produto");
-            Directory.CreateDirectory(pastaProduto);
-
-            pastaRisco = Path.Combine(caminhoFinal, "Risco");
-            Directory.CreateDirectory(pastaRisco);
-
-            pastaBloqueado = Path.Combine(caminhoFinal, "Bloqueado");
-            Directory.CreateDirectory(pastaBloqueado);
-
-            pastaVenda = Path.Combine(caminhoFinal, "Venda");
-            Directory.CreateDirectory(pastaVenda);
-
+            CaminhoFinal = Path.Combine(caminhoInicial, "DataBase");
+            if (!File.Exists(CaminhoFinal))
+            {
+                Directory.CreateDirectory(CaminhoFinal);
+            }
+            CaminhoCadastro = CaminhoFinal + "\\Cliente.dat";
+            if (!File.Exists(CaminhoCadastro))
+                File.Create(CaminhoCadastro).Close();
+            ClienteInadimplente = CaminhoFinal + "\\ClientesInadimplentes.dat";
+            if (!File.Exists(ClienteInadimplente))
+                File.Create(ClienteInadimplente).Close();
+            CadatroFornecedor = CaminhoFinal + "\\Fornecedor.dat";
+            if (!File.Exists(ClienteInadimplente))
+                File.Create(ClienteInadimplente).Close();
         }
+        public void BloqueiaCliente(string cpf)
+        {
+
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(ClienteInadimplente, append: true))
+                {
+                    sw.WriteLine(cpf);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
+        }
+        //editar cliente
+        public void EditarCliente(Cliente clienteAtualizado)
+        {
+
+            Read read = new Read();
+            List<Cliente> clientes = read.ListaArquivoCliente();
+            int posicao = 0;
+            try
+            {
+                while (clientes[posicao] != null)
+                {
+                    if (clienteAtualizado.CPF == clientes[posicao].CPF)
+                    {
+                        clientes[posicao] = clienteAtualizado;
+                    }
+                    posicao++;
+                }
+                using (StreamWriter sw = new StreamWriter(ClienteInadimplente))
+                {
+                    posicao = 0;
+                    while (clientes[posicao] != null)
+                    {
+                        sw.WriteLine(clientes[posicao].RetornoArquivo());
+                    }
+                    Console.WriteLine("Registro atualizado");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
+        }
+
+        //Gravar novo cliente no arquivo
         public void GravarNovoCliente(Cliente cliente)
         {
             try
             {
-                string total = $"{cliente.CPF}{cliente.Nome}{cliente.DataNascimento.ToString("dd/MM/yyyy")}{cliente.Sexo}{cliente.UltimaVenda.ToString("dd/MM/yyyy")}{cliente.DataCadastro.ToString("dd/MM/yyyy")}{cliente.Situacao}";
 
-                string local = pastaCliente + "\\Cliente.dat";
-                if (!File.Exists(local))
+                string total = cliente.RetornoArquivo();
+
+
+                using (StreamWriter sw = new StreamWriter(CaminhoCadastro, append: true))
                 {
-                    using (StreamWriter sw = new StreamWriter(local))
-                    {
-                        Console.WriteLine("Arquivo criado com sucesso!\nCliente inserido com sucesso");
-                        sw.WriteLine(total);
-                    }
+                    sw.WriteLine(total);
+                    Console.WriteLine("Cliente inserido com sucesso");
                 }
-                else
-                {
-                    using (StreamWriter sw = new StreamWriter(local, append: true))
-                    {
-                        sw.WriteLine(total);
-                        Console.WriteLine("Cliente inserido com sucesso");
-                    }
-                }
+
             }
             catch (Exception ex)
             {
@@ -85,25 +111,13 @@ namespace CadastrosBasicos.ManipulaArquivos
             try
             {
                 string total = fornecedor.CNPJ + fornecedor.RSocial + fornecedor.DAbertura.ToString("dd/MM/yyyy") + fornecedor.UCompra.ToString("dd/MM/yyyy") + fornecedor.DCadastro.ToString("dd/MM/yyyy") + fornecedor.Situacao;
-                string local = pastaFornecedor + "\\Fornecedor.dat";
 
-                
-                if (!File.Exists(local))
+                using (StreamWriter sw = new StreamWriter(CaminhoCadastro, append: true))
                 {
-                    using (StreamWriter sw = new StreamWriter(local))
-                    {
-                        Console.WriteLine("Arquivo criado com sucesso!\nCliente inserido com sucesso");
-                        sw.WriteLine(total);
-                    }
+                    sw.WriteLine(total);
+                    Console.WriteLine("Cliente inserido com sucesso");
                 }
-                else
-                {
-                    using (StreamWriter sw = new StreamWriter(local, append: true))
-                    {
-                        sw.WriteLine(total);
-                        Console.WriteLine("Cliente inserido com sucesso");
-                    }
-                }
+
             }
             catch (Exception ex)
             {
