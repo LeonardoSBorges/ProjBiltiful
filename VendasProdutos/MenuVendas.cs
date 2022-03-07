@@ -75,10 +75,13 @@ namespace VendasProdutos
 
             do
             {
-                Produto produto = new Produto();
+                Produto produto;
 
                 do
                 {
+
+                    produto = new Produto();
+
                     Console.WriteLine("\nDigite o Código do Produto:");
                     string codProduto = Console.ReadLine();
 
@@ -86,7 +89,7 @@ namespace VendasProdutos
 
                     if (produto == null)
                     {
-                        Console.WriteLine("\nProduto não encontrado. Informe um código válido.");
+                        Console.WriteLine("\nProduto não encontrado ou código inválido.");
                         Console.ReadKey();
                         Console.Clear();
                     }
@@ -100,14 +103,14 @@ namespace VendasProdutos
                     Console.WriteLine("\nInforme a quantidade:");
                     qtd = int.Parse(Console.ReadLine());
 
-                    if (qtd < 1 || qtd > 999)
+                    if (qtd <= 0 || qtd > 999)
                     {
                         Console.WriteLine("Informe uma quantidade entre 1 e 999");
                         Console.ReadKey();
                         Console.Clear();
                     }
 
-                } while (qtd < 1 && qtd > 999);
+                } while (qtd <= 0 || qtd > 999);
 
                 Console.Clear();
 
@@ -154,10 +157,11 @@ namespace VendasProdutos
 
             } while (itens != 4);
 
-            Console.Clear();
 
             do
             {
+                Console.Clear();
+
                 Console.Write($"\nVenda Nº {venda.Id.ToString().PadLeft(5, '0')}\tData: {venda.DataVenda.ToString("dd/MM/yyyy")}");
                 Console.WriteLine("\n\n");
 
@@ -171,13 +175,15 @@ namespace VendasProdutos
 
                 Console.WriteLine("[ F ] Finalizar venda\t[ C ] Cancelar venda");
                 escolha = Console.ReadLine().ToUpper();
+
             } while (escolha != "F" && escolha != "C");
 
             if (escolha == "F")
             {
                 ItemVenda itemVenda = new ItemVenda();
 
-                itensVenda.ForEach(item => {
+                itensVenda.ForEach(item =>
+                {
                     new Produto().Atualizar(item.Produto, venda.DataVenda.ToString("dd/MM/yyyy"));
                 });
 

@@ -106,13 +106,9 @@ namespace VendasProdutos
             return null;
         }
 
-        public void Excluir()
-        {
-
-        }
-
         public void ImpressaoPorRegistro()
         {
+
         }
 
 

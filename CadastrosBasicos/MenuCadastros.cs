@@ -17,15 +17,15 @@ namespace CadastrosBasicos
             int value = -1;
             while (value != 0)
             {
-                Console.Write(@"1. Cadastrar cliente
+                Console.Write(@"=============== CADASTROS ===============
+1. Cadastrar cliente
 2. Cadastrar fornecedor
 3. Cadastrar materia prima
 4. Cadastrar produtos
 5. Cadastro de Inadimplentes
 6. Cadastro de Fornecedores Bloqueados
-0 - Voltar ao menu anterior
-Insira uma opcao valida: 
-");
+0. Voltar ao menu anterior
+::  ");
                 value = int.Parse(Console.ReadLine());
 
 
