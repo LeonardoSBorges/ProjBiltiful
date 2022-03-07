@@ -12,22 +12,22 @@ namespace CadastrosBasicos
 {
     public class Produto
     {
-        public string CBarras { get; set; }
+        public string CodigoBarras { get; set; }
         public string Nome { get; set; }
-        public decimal VVenda { get; set; }
-        public DateTime UVenda { get; set; }
-        public DateTime DCadastro { get; set; }
+        public decimal ValorVenda { get; set; }
+        public DateTime UltimaVenda { get; set; }
+        public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
         // nome arquivo: Cosmetico.dat
 
         public override string ToString()
         {
-            return CBarras
+            return CodigoBarras
                 + Nome.PadLeft(20, ' ')
-                + VVenda.ToString("000.#0").Replace(",", "")
-                + UVenda.ToString("dd/MM/yyyy").Replace("/", "")
-                + DCadastro.ToString("dd/MM/yyyy").Replace("/", "")
+                + ValorVenda.ToString("000.#0").Replace(",", "")
+                + UltimaVenda.ToString("dd/MM/yyyy").Replace("/", "")
+                + DataCadastro.ToString("dd/MM/yyyy").Replace("/", "")
                 + Situacao;
         }
 
@@ -38,11 +38,11 @@ namespace CadastrosBasicos
 
         public Produto(string cBarras, string nome, decimal vVenda, DateTime uVenda, DateTime dCadastro, char situacao)
         {
-            CBarras = cBarras;
+            CodigoBarras = cBarras;
             Nome = nome;
-            VVenda = vVenda;
-            UVenda = uVenda;
-            DCadastro = dCadastro;
+            ValorVenda = vVenda;
+            UltimaVenda = uVenda;
+            DataCadastro = dCadastro;
             Situacao = situacao;
         }
 
@@ -169,11 +169,11 @@ namespace CadastrosBasicos
                         {
                             flag = false;
 
-                            produto.CBarras = cod;
+                            produto.CodigoBarras = cod;
                             produto.Nome = nomeTemp;
-                            produto.VVenda = valorVenda;
-                            produto.UVenda = DateTime.Now.Date;
-                            produto.DCadastro = DateTime.Now.Date;
+                            produto.ValorVenda = valorVenda;
+                            produto.UltimaVenda = DateTime.Now.Date;
+                            produto.DataCadastro = DateTime.Now.Date;
                             produto.Situacao = sit;
 
                             GravarProduto(produto);
@@ -481,11 +481,11 @@ namespace CadastrosBasicos
                 situacao = "Inativo";
 
             return "\n"
-                + "\n Codigo: \t" + produto.CBarras
+                + "\n Codigo: \t" + produto.CodigoBarras
                 + "\n Nome: \t" + produto.Nome
-                + "\n Valor Venda: \t" + produto.VVenda.ToString("000.#0")
-                + "\n Ultima Venda: \t" + produto.UVenda.ToString("dd/MM/yyyy")
-                + "\n Data Cadastro: " + produto.DCadastro.ToString("dd/MM/yyyy")
+                + "\n Valor Venda: \t" + produto.ValorVenda.ToString("000.#0")
+                + "\n Ultima Venda: \t" + produto.UltimaVenda.ToString("dd/MM/yyyy")
+                + "\n Data Cadastro: " + produto.DataCadastro.ToString("dd/MM/yyyy")
                 + "\n Situacao: \t" + situacao
                 + "\n";
         }
