@@ -16,54 +16,49 @@ namespace ProjBiltiful
             cultureInformation.NumberFormat.CurrencySymbol = "R$";
             CultureInfo.DefaultThreadCurrentCulture = cultureInformation;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInformation;
+          
+            Producao producao = new Producao();
+            producao.Menu();
 
-
-            MPrima b = new MPrima();
-            b.Menu();
-            /*Produto a = new Produto();
-            a.Cadastrar();*/
         }
     }
 }
 
-            /*int value = -1;
-            while (value != 0)
-            {
-                Console.Clear();
-                Console.Write(@"=============== BITIFUL ===============
-1. Cadastros
-2. Vendas
-3. Compra de Materia-Prima
-4. Producao
-0 - Sair
-Insira uma opcao valida: ");
+//            //Este menu sera utilizado para testes
+//            int value = -1;
+//            while (value != 0)
+//            {
+//                Console.Write(@"============= BITIFUL =============
+//1. Cadastros
+//2. Vendas
+//2. Compra de Materia-Prima
+//3. Producao
+//0 - Sair
+//Insira uma opcao valida: 
+//");
+//                value = int.Parse(Console.ReadLine());
 
-                switch (value = int.Parse(Console.ReadLine()))
-                {
-                    case 0:
-                        Environment.Exit(0);
-                        break;
 
-                    case 1:
-                        break;
 
-                    case 2:
-                        MenuVendas.SubMenu();
-                        break;
+//                switch (value)
+//                {
+//                    case 0:
+//                        // sair
+//                        break;
+//                    case 1:
+//                        //Cadastrar
+//                        MenuCadastros.SubMenu();
+//                        break;
+//                    case 2:
+//                        break;
+//                    case 3:
+//                        break;
 
-                    case 3:
-                        break;
+//                }
 
-                    case 4:
-                        break;
-
-                    default:
-                        Console.Clear();
-                        Console.WriteLine("Opção inválida");
-                        Console.ReadKey();
-                        break;
-                }
-            } while (value != 0);
-        }
-    }
-}/*/
+//                Console.ReadKey();
+//                Console.Clear();
+//            }
+//        }
+//    }
+//}
