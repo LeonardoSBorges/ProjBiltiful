@@ -19,7 +19,6 @@ namespace VendasProdutos
             ArquivoVenda = VerificaArquivo("Venda.dat");
             ArquivoItemVenda = VerificaArquivo("ItemVenda.dat");
         }
-
         private string Caminho()
         {
             string caminho = Path.Combine(Directory.GetCurrentDirectory(), "ProjBiltiful", "Venda");

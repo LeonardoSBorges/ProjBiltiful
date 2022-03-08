@@ -29,7 +29,6 @@ namespace ProducaoCosmeticos
 
         public Producao()
         {
-
             Contador = 1;
 
         }

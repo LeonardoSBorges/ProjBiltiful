@@ -10,26 +10,26 @@ namespace VendasProdutos
 
         public int Id { get; set; }
         public string Cliente { get; set; }
-        public DateTime DVenda { get; set; }
-        public decimal VTotal { get; set; }
+        public DateTime DataVenda { get; set; }
+        public decimal ValorTotal { get; set; }
 
         public Venda()
         {
             Id = NovoIdVenda();
-            VTotal = 0;
+            ValorTotal = 0;
         }
 
-        public Venda(int id, string cliente, DateTime dVenda, decimal vTotal)
+        public Venda(int id, string cliente, DateTime dataVenda, decimal vTotal)
         {
             Id = id;
             Cliente = cliente;
-            DVenda = dVenda;
-            VTotal = vTotal;
+            DataVenda = dataVenda;
+            ValorTotal = vTotal;
         }
 
         public override string ToString()
         {
-            return $"Venda número {Id.ToString().PadLeft(5, '0')}\tData: {DVenda.ToString("dd/MM/yyyy")}\nCliente: {Cliente}\nTotal da Venda: {VTotal.ToString("#.00")}";
+            return $"Venda Nº {Id.ToString().PadLeft(5, '0')}\tData: {DataVenda.ToString("dd/MM/yyyy")}\nCliente: {Cliente}\nTotal da Venda: {ValorTotal.ToString("00000.00").TrimStart('0')}";
         }
 
         public int NovoIdVenda()
@@ -52,7 +52,7 @@ namespace VendasProdutos
             {
                 StreamWriter sw = new StreamWriter(caminho.ArquivoVenda, append: true);
 
-                sw.WriteLine(Id.ToString().PadLeft(5, '0') + Cliente.Replace(".", "").Replace("-", "") + DVenda.ToString("dd/MM/yyyy").Replace("/", "") + VTotal.ToString("#.00").PadLeft(8, '0'));
+                sw.WriteLine(Id.ToString().PadLeft(5, '0') + Cliente.Replace(".", "").Replace("-", "") + DataVenda.ToString("dd/MM/yyyy").Replace("/", "") + ValorTotal.ToString("00000.00").Replace(",", ""));
 
                 sw.Close();
             }
@@ -71,11 +71,11 @@ namespace VendasProdutos
                 string idVenda = linha.Substring(0, 5);
                 string cliente = linha.Substring(5, 11);
                 string data = linha.Substring(16, 8);
-                string vtotal = linha.Substring(24, 8);
+                string vtotal = linha.Substring(24, 7);
 
                 DateTime.TryParse(data.Insert(2, "/").Insert(5, "/"), out DateTime dt);
 
-                Venda venda = new Venda(int.Parse(idVenda), cliente.Insert(3, ".").Insert(7, ".").Insert(11, "-"), dt, Decimal.Parse(vtotal));
+                Venda venda = new Venda(int.Parse(idVenda), cliente.Insert(3, ".").Insert(7, ".").Insert(11, "-"), dt, Decimal.Parse(vtotal.Insert(vtotal.Length - 2, ",")));
 
                 return venda;
             }
