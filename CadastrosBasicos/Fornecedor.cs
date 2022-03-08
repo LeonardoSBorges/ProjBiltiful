@@ -39,13 +39,13 @@ namespace CadastrosBasicos
         }
         public void Navegar()
         {
-            Console.WriteLine("============== Clientes ==============");
+            Console.WriteLine("============== Fornecedores ==============");
             List<Fornecedor> lista = read.ListaArquivoFornecedor();
             int opcao = 0, posicao = 0;
             bool flag = false;
             do
             {
-                Console.WriteLine("============== Clientes ==============");
+                Console.WriteLine("============== Fornecedores ==============");
 
                 if (opcao == 0)
                 {
