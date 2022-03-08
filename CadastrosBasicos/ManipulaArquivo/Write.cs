@@ -132,7 +132,7 @@ namespace CadastrosBasicos.ManipulaArquivos
                     {
                         sw.WriteLine(fornecedores[posicao].RetornaArquivo());
                         posicao++;
-                    } while (posicao < fornecedores.Count);+
+                    } while (posicao < fornecedores.Count);
                         Console.WriteLine("Registro atualizado");
                 }
             }
