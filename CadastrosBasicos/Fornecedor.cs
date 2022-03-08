@@ -1,82 +1,166 @@
-﻿using System;
+﻿using CadastrosBasicos.ManipulaArquivos;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CadastrosBasicos
 {
     public class Fornecedor
     {
-        //Classe fornecdor novamente
-        public string cnpj { get; set; }
-        public string rsocial { get; set; }
-        public DateTime dabertudora { get; set; }
-        public DateTime ucompra { get; set; }
-        public DateTime dcadastro { get; set; }
-        public char situacao { get; set; }
+        public Write write = new Write();
+        public Read read = new Read();
+        public string CNPJ { get; set; }
+        public string RSocial { get; set; }
+        public DateTime DAbertura { get; set; }
+        public DateTime UCompra { get; set; }
+        public DateTime DCadastro { get; set; }
+        public char Situacao { get; set; }
 
         public Fornecedor()
         {
-            cnpj = CNPJ();
-            rsocial = RSocial();
-            situacao = Situacao();
-            dabertudora = DateTime.Now;
-            ucompra = DateTime.Now;
-            dcadastro = DateTime.Now;
-            
+
         }
-        public string RSocial()
+        public Fornecedor(string cnpj, string rSocial, DateTime dAbertura,char situacao)
         {
-            string nome;
+            CNPJ = cnpj;
+            RSocial = rSocial;
+            DAbertura = dAbertura;
+            UCompra = DateTime.Now;
+            DCadastro = DateTime.Now;
+            Situacao = situacao;
+        }
+        public Fornecedor(string cnpj, string rSocial, DateTime dAbertura, DateTime uCompra, DateTime dCadastro, char situacao)
+        {
+            CNPJ = cnpj;
+            RSocial = rSocial;
+            DAbertura = dAbertura;
+            UCompra = DateTime.Now;
+            DCadastro = DateTime.Now;
+            Situacao = situacao;
+        }
+        public void Navegar()
+        {
+            Console.WriteLine("============== Fornecedores ==============");
+            List<Fornecedor> lista = read.ListaArquivoFornecedor();
+            int opcao = 0, posicao = 0;
             bool flag = false;
             do
             {
-                Console.Write("Razao social: ");
-                nome = Console.ReadLine().Trim();
-                if (nome.Length <= 50)
-                    flag = true;
-            } while (flag != true);
-            return nome;
-        }
+                Console.WriteLine("============== Fornecedores ==============");
 
-        public string CNPJ()
-        {
-            bool flag = false;
-            string value;
-            do
-            {
-                Console.Write("CNPJ: ");
-                value = Console.ReadLine().Trim();
-
-                if (value.Length <= 18)
+                if (opcao == 0)
                 {
-                    if (Validacoes.ValidarCnpj(value))
-                        flag = true;
+                    Console.WriteLine(lista[posicao].ToString());
+                }
+                else if (opcao == 1)
+                {
+                    if (posicao == lista.Count)
+                        posicao = 0;
                     else
-                    {
-                        Console.WriteLine("CNPJ invalido!");
-                        continue;
-                    }
+                     posicao++;
+                    Console.WriteLine(lista[posicao].ToString());
+                }
+                else if (opcao == 2)
+                {
+                    if (posicao == 0)
+                        posicao = lista.Count;
+                    else
+                        posicao--;
+                    Console.WriteLine(lista[posicao].ToString());
+                }
+                else if (opcao == 3)
+                {
+                    posicao = 0;
+                    Console.WriteLine(lista[posicao].ToString());
+                }
+                else if (opcao == 4)
+                {
+                    posicao = lista.Count;
+                    Console.WriteLine(lista[posicao].ToString());
                 }
 
-            } while (flag != true);
-            return value;
+
+                Console.WriteLine(@"1. Proximo 
+2. Anterior
+3. Primeiro
+4. Ultimo
+
+");
+                do
+                {
+                    flag = int.TryParse(Console.ReadLine(), out opcao);
+                } while (flag != true);
+
+            } while (opcao != 0);
         }
-
-        public char Situacao()
+        public void BloqueiaFornecedor()
         {
-            char sit;
-            bool flag = false;
-            do
-            {
-                Console.Write("Fornecedor (A – Ativo ou I – Inativo): ");
-                flag = char.TryParse(Console.ReadLine().ToUpper().Trim(), out sit);
-                if (flag != true)
-                    Console.WriteLine("Insira um valor correto");
+            Fornecedor fornecedor;
+            Console.WriteLine("Insira o CNPJ para bloqueio: ");
+            string cnpj = Console.ReadLine();
+            cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
 
-            } while (flag != true);
-            return sit;
+            if (read.ProcurarCNPJBloqueado(cnpj))
+            {
+                bool flag = false;
+                int opcao;
+                Console.WriteLine("Ja esta bloqueado");
+                Console.WriteLine("Deseja desbloqueado ? [1 - Sim/ 2 - Nao]");
+
+                do
+                {
+                    flag = int.TryParse(Console.ReadLine(), out opcao);
+                } while (flag != true);
+
+                if(opcao == 1)
+                {
+
+                }
+            }
+            else
+            {
+                if (Validacoes.ValidarCnpj(cnpj))
+                {
+                    fornecedor = read.ProcurarFornecedor(cnpj);
+                    if (fornecedor != null)
+                    {
+                        write.BloquearFornecedor(fornecedor.CNPJ);
+                        Console.WriteLine("CNPJ bloqueado!");
+                    }
+                }
+                else
+                    Console.WriteLine("CNPJ incorreto!");
+            }
+        }
+        public string RetornaArquivo()
+        {
+            return CNPJ + RSocial + DAbertura.ToString("dd/MM/yyyy") + UCompra.ToString("dd/MM/yyyy") + DCadastro.ToString("dd/MM/yyyy") + Situacao;
+        }
+        public Fornecedor Editar()
+        {
+            Fornecedor fornecedor;
+            Console.WriteLine("Somente algumas informacoes podem ser alterada como (Razao social/situacao), caso nao queira alterar alguma informacao pressione enter!");
+            Console.Write("CNPJ: ");
+            string cnpj = Console.ReadLine();
+
+            fornecedor = read.ProcurarFornecedor(cnpj);
+            if (fornecedor != null)
+            {
+                Console.WriteLine("Razao social: ");
+                string nome = Console.ReadLine().Trim().PadLeft(50, ' ');
+                Console.WriteLine("Situacao: ");
+                bool flagSituacao = char.TryParse(Console.ReadLine(), out char situacao);
+
+                fornecedor.RSocial = nome == "" ? fornecedor.RSocial : nome;
+
+                fornecedor.Situacao = flagSituacao == false ? fornecedor.Situacao : situacao;
+
+                write.EditarFornecedor(fornecedor);
+            }
+            return fornecedor;
+        }
+        public override string ToString()
+        {
+            return $"CNPJ: {CNPJ}\nRSocial: {RSocial.Trim()}\nData de Abertura da empresa: {DAbertura.ToString("dd/MM/yyyy")}\nUltima Compra: {UCompra.ToString("dd/MM/yyyy")}\nData de Cadastro: {DCadastro.ToString("dd/MM/yyyy")}\nSituacao: {Situacao}";
         }
     }
 }
