@@ -107,6 +107,22 @@ namespace CadastrosBasicos
                 Console.ReadKey();
             }
         }
+        public void Localizar()
+        {
+            Console.WriteLine("Insira o cpf para localizar: ");
+            string cnpj = Console.ReadLine();
+
+            Fornecedor fornecedor = read.ProcurarFornecedor(cnpj);
+
+            if (fornecedor != null)
+            {
+                Console.WriteLine(fornecedor.ToString());
+            }
+            else
+                Console.WriteLine("Nenhum cadastrado foi encontrado!");
+            Console.WriteLine("Pressione enter para voltar ao menu.");
+            Console.ReadKey();
+        }
         public void BloqueiaFornecedor()
         {
             Fornecedor fornecedor;
@@ -118,7 +134,7 @@ namespace CadastrosBasicos
             {
                 bool flag = false;
                 int opcao;
-                Console.WriteLine("Ja esta bloqueado");
+                Console.WriteLine("Fornecedor ja esta bloqueado");
                 Console.WriteLine("Deseja desbloqueado ? [1 - Sim/ 2 - Nao]");
 
                 do
@@ -128,7 +144,7 @@ namespace CadastrosBasicos
 
                 if (opcao == 1)
                 {
-
+                    new Write().DesbloqueiaFornecedor(cnpj);
                 }
             }
             else
@@ -145,7 +161,7 @@ namespace CadastrosBasicos
                 else
                     Console.WriteLine("CNPJ incorreto!");
             }
-        }
+        } 
         public string RetornaArquivo()
         {
             return CNPJ + RazaoSocial + DataAbertura.ToString("dd/MM/yyyy") + UltimaCompra.ToString("dd/MM/yyyy") + DataCadastro.ToString("dd/MM/yyyy") + Situacao;
@@ -162,7 +178,7 @@ namespace CadastrosBasicos
             {
                 Console.WriteLine("Razao social: ");
                 string nome = Console.ReadLine().Trim().PadLeft(50, ' ');
-                Console.WriteLine("Situacao: ");
+                Console.WriteLine("Situacao [A - Ativo/ I - inativo]: ");
                 bool flagSituacao = char.TryParse(Console.ReadLine(), out char situacao);
 
                 fornecedor.RazaoSocial = nome == "" ? fornecedor.RazaoSocial : nome;
@@ -172,6 +188,25 @@ namespace CadastrosBasicos
                 write.EditarFornecedor(fornecedor);
             }
             return fornecedor;
+        }
+        public void FornecedorBloqueado()
+        {
+            Console.WriteLine("Insira o CNPJ para pesquisa: ");
+            string cnpj = Console.ReadLine();
+            bool flag = new Read().ProcurarCNPJBloqueado(cnpj);
+
+            if (flag)
+            {
+                Fornecedor fornecedor = new Read().ProcurarFornecedor(cnpj);
+                Console.WriteLine(fornecedor.ToString());
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.WriteLine("Fornecedor bloqueado nao encontrado");
+                Console.ReadKey();
+            }
+
         }
         public override string ToString()
         {

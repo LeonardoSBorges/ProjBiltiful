@@ -57,7 +57,6 @@ namespace CadastrosBasicos
 
         }
 
-
         public static void SubMenuClientesFornecedores()
         {
             string escolha;
@@ -68,14 +67,18 @@ namespace CadastrosBasicos
 
                 Console.WriteLine("=============== CLIENTES / FORNECEDORES ===============");
                 Console.WriteLine("1. Cadastar cliente");
-                Console.WriteLine("2. Imprimir clientes");
+                Console.WriteLine("2. Listar clientes");
                 Console.WriteLine("3. Editar registro de cliente");
-                Console.WriteLine("4. Bloquear cliente (Inadimplente)");
+                Console.WriteLine("4. Bloquear/Desbloqueia cliente (Inadimplente)");
+                Console.WriteLine("5. Localizar cliente");
+                Console.WriteLine("6. Localizar cliente bloqueado");
                 Console.WriteLine("-------------------------------------------------------");
-                Console.WriteLine("5. Cadastar fornecedor");
-                Console.WriteLine("6. Imprimir fornecedores");
-                Console.WriteLine("7. Editar registro de fornecedor");
-                Console.WriteLine("8. Bloquear fornecedor");
+                Console.WriteLine("7. Cadastar fornecedor");
+                Console.WriteLine("8. Listar fornecedores");
+                Console.WriteLine("9. Editar registro de fornecedor");
+                Console.WriteLine("10. Bloquear/Desbloqueia fornecedor");
+                Console.WriteLine("11. Localizar fornecedor");
+                Console.WriteLine("12. Localizar fornecedor bloqueado");
                 Console.WriteLine("-------------------------------------------------------");
                 Console.WriteLine("0. Voltar ao menu anterior");
                 Console.Write("\nEscolha: ");
@@ -99,25 +102,36 @@ namespace CadastrosBasicos
 
                     case "4":
                         new Cliente().BloqueiaCadastro();
+                        
                         break;
 
                     case "5":
-                        NovoFornecedor();
+                        new Cliente().Localizar();
                         break;
 
                     case "6":
-                        new Fornecedor().Navegar();
+                        new Cliente().ClientesBloqueados();
                         break;
 
                     case "7":
-                        new Fornecedor().Editar();
-
+                        NovoFornecedor();
                         break;
 
                     case "8":
+                        new Fornecedor().Navegar();
+                        break;
+                    case "9":
+                        new Fornecedor().Editar();
+                        break;
+                    case "10":
                         new Fornecedor().BloqueiaFornecedor();
                         break;
-
+                    case "11":
+                        new Fornecedor().Localizar();
+                        break;
+                    case "12":
+                        new Fornecedor().FornecedorBloqueado();
+                        break;
                     default:
                         Console.Clear();
                         Console.WriteLine("Opção inválida");
