@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using VendasProdutos;
 using CadastrosBasicos;
 using CadastrosBasicos.ManipulaArquivos;
@@ -11,45 +12,52 @@ namespace ProjBiltiful
     {
         static void Main(string[] args)
         {
+
             var cultureInformation = new CultureInfo("pt-BR");
             cultureInformation.NumberFormat.CurrencySymbol = "R$";
             CultureInfo.DefaultThreadCurrentCulture = cultureInformation;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInformation;
-            Write w = new Write();
 
-            int value = -1;
-            while (value != 0)
+            int value;
+
+            do
             {
-                Console.Write(@"============= BITIFUL =============
+                Console.Clear();
+                Console.Write(@"=============== BITIFUL ===============
 1. Cadastros
 2. Vendas
-2. Compra de Materia-Prima
-3. Producao
-0 - Sair
-Insira uma opcao valida: 
-");
-                value = int.Parse(Console.ReadLine());
+3. Compra de Materia-Prima
+4. Producao
+0. Sair
+:: ");
 
-
-
-                switch (value)
+                switch (value = int.Parse(Console.ReadLine()))
                 {
                     case 0:
-                        // sair
+                        Environment.Exit(0);
                         break;
+
                     case 1:
-                        //Cadastrar
                         MenuCadastros.SubMenu();
                         break;
+
                     case 2:
+                        MenuVendas.SubMenu();
                         break;
+
                     case 3:
                         break;
 
+                    case 4:
+                        break;
+
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Opção inválida");
+                        Console.ReadKey();
+                        break;
                 }
-
-
-            }
+            } while (value != 0);
         }
     }
 }

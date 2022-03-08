@@ -1,4 +1,4 @@
-﻿using CadastrosBasicos.ManipulaArquivos;
+using CadastrosBasicos.ManipulaArquivos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +15,8 @@ namespace CadastrosBasicos
         
         public static void SubMenu()
         {
+            Console.Clear();
+            //MenuCadastros menuCadastros;
             Cliente cliente;
             Fornecedor fornecedor;
 
@@ -25,6 +27,15 @@ namespace CadastrosBasicos
             int value = -1;
             while (value != 0)
             {
+                Console.Write(@"=============== CADASTROS ===============
+1. Cadastrar cliente
+2. Cadastrar fornecedor
+3. Cadastrar materia prima
+4. Cadastrar produtos
+5. Cadastro de Inadimplentes
+6. Cadastro de Fornecedores Bloqueados
+0. Voltar ao menu anterior
+::  ");
                 Console.Write(@"1. Cadastrar cliente
 2. Editar registro de cliente
 3. Cliente Inadimplente
@@ -64,6 +75,7 @@ Insira uma opcao valida:
                         cliente.Editar();
                         break;
                     case 3:
+                        new MPrima().Menu();
                         cliente = new Cliente();
                         cliente.BloqueiaCadastro();
                         break;
