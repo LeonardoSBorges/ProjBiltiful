@@ -38,57 +38,44 @@ namespace ProducaoCosmeticos
         public void SubMenu()
         {
 
-            int escolha;
+            string escolha;
 
             do
             {
 
                 Console.Clear();
-                Console.WriteLine("********** Menu *********");
-                Console.WriteLine("\n    Escolha uma opção\n");
-                Console.WriteLine("(1) Cadastrar uma produção");
-                Console.WriteLine("(2) Localizar um registro");
-                Console.WriteLine("(3) Imprimir por registro");
-                Console.WriteLine("(4) Sair");
-                Console.WriteLine("\n*************************");
+                Console.WriteLine("\n=============== PRODUÇÃO ===============");
+                Console.WriteLine("1. Cadastrar uma produção");
+                Console.WriteLine("2. Localizar um registro");
+                Console.WriteLine("3. Imprimir por registro");
+                Console.WriteLine("---------------------------------------");
+                Console.WriteLine("0. Voltar ao menu anterior");
+                Console.Write("\nEscolha: ");
 
-                Console.Write("Opção: "); escolha = int.Parse(Console.ReadLine());
-
-                switch (escolha)
+                switch (escolha = Console.ReadLine())
                 {
-
-                    case 1:
-
+                    case "0":
+                        break;
+                    case "1":
                         Console.Clear();
                         Cadastrar();
-
                         break;
-
-                    case 2:
-
+                    case "2":
                         Console.Clear();
                         Localizar();
-
                         break;
-
-                    case 3:
-
+                    case "3":
                         ImprimirPorRegistro();
                         Console.Clear();
-
                         break;
-
                     default:
-
+                        Console.WriteLine("\n Opção inválida.");
+                        Console.WriteLine("\n Pressione ENTER para voltar ao menu.");
+                        Console.ReadKey();
                         break;
-
                 }
 
-            } while (escolha > 0 && escolha < 4);
-
-
-            Console.ReadKey();
-
+            } while (escolha != "0");
         }
 
 
@@ -124,7 +111,7 @@ namespace ProducaoCosmeticos
 
                 Console.Write("ID: " + id);
 
-                Console.Write("\nData de produção: " + dataProducao +"\n");
+                Console.Write("\nData de produção: " + dataProducao + "\n");
 
 
                 do
@@ -232,7 +219,7 @@ namespace ProducaoCosmeticos
                 } while (opcao == 1);
 
                 Console.WriteLine("Gostaria de finalizar o registro ou deseja excluí-lo agora mesmo?");
-                Console.WriteLine("(1) Finalizar\n(2) Cancelar registro");
+                Console.WriteLine("1. Finalizar\n2. Cancelar registro");
 
                 Console.Write("Resposta: "); escolha = int.Parse(Console.ReadLine());
 
@@ -297,6 +284,7 @@ namespace ProducaoCosmeticos
             {
 
                 Console.WriteLine("Não existe nenhum registro de produção ainda!");
+                Console.ReadKey();
                 return null;
 
             }
@@ -350,7 +338,7 @@ namespace ProducaoCosmeticos
 
             if (listaProducao.Count == 0)
             {
-
+                Console.Clear();
                 Console.WriteLine("Não existe nenhum registro de produção ainda!");
                 Console.ReadKey();
                 Console.WriteLine("\n\n\t Pressione ENTER para continuar...");
@@ -367,11 +355,11 @@ namespace ProducaoCosmeticos
 
 
                     Console.WriteLine("\nO que você gostaria de fazer?\n");
-                    Console.WriteLine("(1) Ir para o próximo");
-                    Console.WriteLine("(2) Ir para o anterior");
-                    Console.WriteLine("(3) Ir para o primeiro");
-                    Console.WriteLine("(4) Ir para o ultimo");
-                    Console.WriteLine("(5) Sair\n");
+                    Console.WriteLine("1. Ir para o próximo");
+                    Console.WriteLine("2. Ir para o anterior");
+                    Console.WriteLine("3. Ir para o primeiro");
+                    Console.WriteLine("4. Ir para o ultimo");
+                    Console.WriteLine("0. Sair\n");
 
                     Console.Write("Opção: "); escolha = int.Parse(Console.ReadLine());
 
@@ -419,7 +407,7 @@ namespace ProducaoCosmeticos
                         case 4:
 
                             Console.WriteLine(listaProducao[listaProducao.Count - 1].ToString());
-                            BuscarItemProducao(listaProducao[listaProducao.Count -1].Id);
+                            BuscarItemProducao(listaProducao[listaProducao.Count - 1].Id);
 
                             break;
                         case 5:
@@ -427,7 +415,7 @@ namespace ProducaoCosmeticos
                             break;
                     }
                 }
-                while (escolha != 5);
+                while (escolha != 0);
             }
         }
 
@@ -662,7 +650,7 @@ namespace ProducaoCosmeticos
                 + "\nData de produção: " + DataProducao
                 + "\nProduto: " + Produto
                 + "\nQuantidade: " + Quantidade.ToString("000.#0");
-               
+
         }
 
         #endregion
