@@ -15,8 +15,6 @@ namespace CadastrosBasicos
         public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
-        // nome arquivo: Materia.dat
-
         public MPrima()
         {
             
@@ -48,12 +46,12 @@ namespace CadastrosBasicos
             do
             {
                 Console.Clear();
-                Console.WriteLine("\n Menu Materia-prima\n");
-                Console.WriteLine(" 1 - Cadastrar Materia-prima");
-                Console.WriteLine(" 2 - Localizar Materia-prima");
-                Console.WriteLine(" 3 - Imprimir Materias-primas");
-                Console.WriteLine(" 4 - Alterar Situacao da Materia-prima");
-                Console.WriteLine(" 5 - Voltar ao menu anterior");
+                Console.WriteLine("\n=============== MATÉRIA-PRIMA ===============");
+                Console.WriteLine("1. Cadastrar Materia-prima");
+                Console.WriteLine("2. Localizar Materia-prima");
+                Console.WriteLine("3. Imprimir Materias-primas");
+                Console.WriteLine("4. Alterar Situacao da Materia-prima");
+                Console.WriteLine("0. Voltar ao menu anterior");
                 Console.Write("\n Escolha: ");
                 escolha = Console.ReadLine();
                 int.TryParse(escolha, out opcao);

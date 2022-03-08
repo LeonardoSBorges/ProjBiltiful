@@ -18,8 +18,6 @@ namespace CadastrosBasicos
         public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
-        // nome arquivo: Cosmetico.dat
-
         public override string ToString()
         {
             return CodigoBarras
@@ -53,12 +51,12 @@ namespace CadastrosBasicos
             do
             {
                 Console.Clear();
-                Console.WriteLine("\n Menu Produto\n");
-                Console.WriteLine(" 1 - Cadastrar Produto");
-                Console.WriteLine(" 2 - Localizar Produto");
-                Console.WriteLine(" 3 - Imprimir Produtos");
-                Console.WriteLine(" 4 - Alterar Situacao do Produto");
-                Console.WriteLine(" 5 - Voltar ao menu anterior");
+                Console.WriteLine("\n=============== PRODUTO ===============");
+                Console.WriteLine("1. Cadastrar Produto");
+                Console.WriteLine("2. Localizar Produto");
+                Console.WriteLine("3. Imprimir Produtos");
+                Console.WriteLine("4. Alterar Situacao do Produto");
+                Console.WriteLine("0. Voltar ao menu anterior");
                 Console.Write("\n Escolha: ");
                 escolha = Console.ReadLine();
                 int.TryParse(escolha, out opcao);

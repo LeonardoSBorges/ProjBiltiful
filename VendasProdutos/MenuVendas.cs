@@ -55,13 +55,20 @@ namespace VendasProdutos
             Console.Clear();
 
             Console.WriteLine("informe o CPF do cliente:");
-            string Cliente = Console.ReadLine();
+            string cliente = Console.ReadLine();
+
+            // buscar cpf na lista de inadimplentes
+            // se existir manda procurar o gerente
+            // senão busco os dados do cliente
+
+            
+
 
             Console.Clear();
 
             Venda venda = new Venda();
 
-            venda.Cliente = Cliente;
+            venda.Cliente = cliente;
             venda.DataVenda = DateTime.Now.Date;
 
             Console.Write($"Venda Nº {venda.Id.ToString().PadLeft(5, '0')}\tData: {venda.DataVenda.ToString("dd/MM/yyyy")}");
