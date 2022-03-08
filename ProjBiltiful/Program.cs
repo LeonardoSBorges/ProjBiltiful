@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using VendasProdutos;
 using CadastrosBasicos;
+using ComprasMateriasPrimas;
 using CadastrosBasicos.ManipulaArquivos;
 using ProducaoCosmeticos;
 using System.Globalization;
@@ -47,6 +48,7 @@ namespace ProjBiltiful
                         break;
 
                     case "3":
+                        Compra.SubMenu();
                         break;
                     
                     case "4":
