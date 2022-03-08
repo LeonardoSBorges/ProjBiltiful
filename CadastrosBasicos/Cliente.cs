@@ -62,7 +62,12 @@ namespace CadastrosBasicos
                 } while (flag != true);
 
                 if (opcao == 1)
+                {
                     write.DesbloqueiaCliente(cpf);
+                    Console.WriteLine("Cliente desbloqueado");
+                    Console.WriteLine("Pressione enter para continuar...");
+                    Console.ReadKey();
+                }
                 
             }
             else
@@ -74,12 +79,15 @@ namespace CadastrosBasicos
                     {
                         write.BloqueiaCliente(cliente.CPF);
                         Console.WriteLine("CPF bloqueado!");
-                        Console.ReadLine();
                     }
                 }
                 else
+                {
                     Console.WriteLine("CPF incorreto!");
+                }
             }
+            Console.WriteLine("Pressione enter para continuar...");
+            Console.ReadKey();
         }
         public Cliente Editar()
         {
@@ -103,6 +111,10 @@ namespace CadastrosBasicos
                 cliente.Situacao = flagSituacao == false ? cliente.Situacao : situacao;
 
                 write.EditarCliente(cliente);
+
+                Console.WriteLine("Cliente Cadastrado com sucesso");
+                Console.WriteLine("Pressione enter para continuar...");
+                Console.ReadKey();
             }
             return cliente;
         }
@@ -176,7 +188,7 @@ namespace CadastrosBasicos
             {
                 Console.Clear();
                 Console.WriteLine("Ainda nao tem nenhum cliente cadastrado");
-                Console.WriteLine("Pressione enter para continuar");
+                Console.WriteLine("Pressione enter para continuar...");
                 Console.ReadKey();
             }
         }
@@ -190,10 +202,11 @@ namespace CadastrosBasicos
             if (cliente != null)
             {
                 Console.WriteLine(cliente.ToString());
+                
             }
             else
                 Console.WriteLine("Nenhum cadastrado foi encontrado!");
-            Console.WriteLine("Pressione enter para voltar ao menu.");
+            Console.WriteLine("Pressione enter para continuar...");
             Console.ReadKey();
         }
         public void ClientesBloqueados()
@@ -206,14 +219,13 @@ namespace CadastrosBasicos
             {
                 Cliente cliente = new Read().ProcuraCliente(cpf);
                 Console.WriteLine(cliente.ToString());
-                Console.ReadKey();
             }
             else
             {
                 Console.WriteLine("Cliente bloqueado nao encontrado");
-                Console.ReadKey();
             }
-
+            Console.WriteLine("Pressione enter para continuar...");
+            Console.ReadKey();
         }
         public override string ToString()
         {

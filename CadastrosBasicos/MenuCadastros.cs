@@ -159,6 +159,12 @@ namespace CadastrosBasicos
             {
                 RegistrarCliente(dNascimento);
             }
+            else
+            {
+                Console.WriteLine("Menor de 18 anos nao pode ser cadastrado");
+                Console.ReadKey();
+            }
+                
         }
 
         public static void NovoFornecedor()
@@ -245,6 +251,7 @@ namespace CadastrosBasicos
             else
             {
                 Console.WriteLine("Cliente ja cadastrado!!");
+                Console.ReadKey();
                 return c;
             }
             return null;

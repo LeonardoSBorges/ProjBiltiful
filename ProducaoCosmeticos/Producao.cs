@@ -35,7 +35,7 @@ namespace ProducaoCosmeticos
 
         #endregion
 
-        public static void SubMenu()
+        public void SubMenu()
         {
 
             string escolha;

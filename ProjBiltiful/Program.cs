@@ -45,7 +45,7 @@ namespace ProjBiltiful
                         break;
 
                     case "2":
-                        Producao.SubMenu();
+                        new Producao().SubMenu();
                         break;
 
                     case "3":
