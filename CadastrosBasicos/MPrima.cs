@@ -40,55 +40,45 @@ namespace CadastrosBasicos
 
         public void Menu()
         {
-            bool flag = true;
             string escolha;
-            int opcao = 0;
+
             do
             {
                 Console.Clear();
-                Console.WriteLine("\n=============== MATÉRIA-PRIMA ===============");
-                Console.WriteLine("1. Cadastrar Materia-prima");
-                Console.WriteLine("2. Localizar Materia-prima");
-                Console.WriteLine("3. Imprimir Materias-primas");
-                Console.WriteLine("4. Alterar Situacao da Materia-prima");
+                Console.WriteLine("\n=============== PRODUTO ===============");
+                Console.WriteLine("1. Cadastrar Matéria-Prima");
+                Console.WriteLine("2. Localizar Matéria-Prima");
+                Console.WriteLine("3. Imprimir Matérias-Primas");
+                Console.WriteLine("4. Alterar Situação da Matéria-Prima");
+                Console.WriteLine("-----------------------------------------");
                 Console.WriteLine("0. Voltar ao menu anterior");
-                Console.Write("\n Escolha: ");
-                escolha = Console.ReadLine();
-                int.TryParse(escolha, out opcao);
+                Console.Write("\nEscolha: ");
 
-                if ((opcao < 1) || (opcao > 5))
+                switch (escolha = Console.ReadLine())
                 {
-                    Console.WriteLine("\n Opcao invalida.");
-                    Console.WriteLine("\n Pressione ENTER para voltar ao menu.");
-                    Console.ReadKey();
+                    case "0":
+                        break;
+                    case "1":
+                        Cadastrar();
+                        break;
+                    case "2":
+                        Localizar();
+                        break;
+                    case "3":
+                        ImprimirMPrimas();
+                        break;
+                    case "4":
+                        AlterarSituacao();
+                        break;
+
+                    default:
+                        Console.WriteLine("\n Opção inválida.");
+                        Console.WriteLine("\n Pressione ENTER para voltar ao menu.");
+                        Console.ReadKey();
+                        break;
                 }
-                else
-                {
-                    switch (opcao)
-                    {
-                        case 1:
-                            Cadastrar();
-                            break;
-                        case 2:
-                            Localizar();
-                            break;
-                        case 3:
-                            ImprimirMPrimas();
-                            break;
-                        case 4:
-                            AlterarSituacao();
-                            break;
-                        case 5:
-                            flag = false;
-                            break;
-                        default:
-                            Console.WriteLine(" Opcao invalida.");
-                            Console.WriteLine(" Pressione ENTER para voltar ao menu.");
-                            Console.ReadKey();
-                            break;
-                    }
-                }
-            } while (flag);
+
+            } while (escolha != "0");
         }
 
         public void Cadastrar()
@@ -150,16 +140,13 @@ namespace CadastrosBasicos
 
         public void GravarMateriaPrima(MPrima mprima)
         {
-            string caminhoInicial = Directory.GetCurrentDirectory();
-
-            string caminhoFinal = Path.Combine(caminhoInicial + "\\ProjBiltiful\\");
+            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
             Directory.CreateDirectory(caminhoFinal);
 
-            string pastaMPrima = Path.Combine(caminhoFinal, "MateriaPrima\\");
-            Directory.CreateDirectory(pastaMPrima);
+            string arquivoFinal = Path.Combine(caminhoFinal, "Materia.dat");
 
-            string arquivoFinal = Path.Combine(pastaMPrima + "Materia.dat");
-            string idMPrima = Path.Combine(pastaMPrima + "IdMPrima.dat");
+            string idMPrima = Path.Combine(caminhoFinal, "IdMPrima.dat");
+
             int codAtual = 0;
 
             try
@@ -251,24 +238,15 @@ namespace CadastrosBasicos
                 Console.WriteLine($" Situacao: {situacao}");
                 Console.WriteLine("\n Pressione ENTER para voltar ao menu");
                 Console.ReadKey();
-
-                /*Atualizar(cod, "10/10/2020");
-                Console.WriteLine("\n AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                Console.ReadKey();*/
             }
         }
 
         public string Buscar(string cod, bool remover = false)
         {
-            string caminhoInicial = Directory.GetCurrentDirectory();
-
-            string caminhoFinal = Path.Combine(caminhoInicial + "\\ProjBiltiful\\");
+            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
             Directory.CreateDirectory(caminhoFinal);
 
-            string pastaMPrima = Path.Combine(caminhoFinal, "MateriaPrima\\");
-            Directory.CreateDirectory(pastaMPrima);
-
-            string arquivoFinal = Path.Combine(pastaMPrima + "Materia.dat");
+            string arquivoFinal = Path.Combine(caminhoFinal, "Materia.dat");
             string mPrima = null;
 
             if (File.Exists(arquivoFinal))
@@ -364,15 +342,10 @@ namespace CadastrosBasicos
             }
             else
             {
-                string caminhoInicial = Directory.GetCurrentDirectory();
-
-                string caminhoFinal = Path.Combine(caminhoInicial + "\\ProjBiltiful\\");
+                string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
                 Directory.CreateDirectory(caminhoFinal);
 
-                string pastaMPrima = Path.Combine(caminhoFinal, "MateriaPrima\\");
-                Directory.CreateDirectory(pastaMPrima);
-
-                string arquivoFinal = Path.Combine(pastaMPrima + "Materia.dat");
+                string arquivoFinal = Path.Combine(caminhoFinal, "Materia.dat");
 
                 List<string> MPrimas = new List<string>();
                 string novaMPrima = null;
@@ -450,15 +423,10 @@ namespace CadastrosBasicos
 
         public void ImprimirMPrimas()
         {
-            string caminhoInicial = Directory.GetCurrentDirectory();
-
-            string caminhoFinal = Path.Combine(caminhoInicial + "\\ProjBiltiful\\");
+            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
             Directory.CreateDirectory(caminhoFinal);
 
-            string pastaMPrima = Path.Combine(caminhoFinal, "MateriaPrima\\");
-            Directory.CreateDirectory(pastaMPrima);
-
-            string arquivoFinal = Path.Combine(pastaMPrima + "Materia.dat");
+            string arquivoFinal = Path.Combine(caminhoFinal, "Materia.dat");
 
             List<MPrima> MPrimas = new List<MPrima>();
 
