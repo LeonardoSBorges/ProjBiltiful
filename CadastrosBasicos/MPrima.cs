@@ -45,11 +45,11 @@ namespace CadastrosBasicos
             do
             {
                 Console.Clear();
-                Console.WriteLine("\n=============== MATÉRIA-PRIMA ===============");
-                Console.WriteLine("1. Cadastrar Matéria-Prima");
-                Console.WriteLine("2. Localizar Matéria-Prima");
-                Console.WriteLine("3. Imprimir Matérias-Primas");
-                Console.WriteLine("4. Alterar Situação da Matéria-Prima");
+                Console.WriteLine("\n=============== MATÃ‰RIA-PRIMA ===============");
+                Console.WriteLine("1. Cadastrar MatÃ©ria-Prima");
+                Console.WriteLine("2. Localizar MatÃ©ria-Prima");
+                Console.WriteLine("3. Imprimir MatÃ©rias-Primas");
+                Console.WriteLine("4. Alterar SituaÃ§Ã£o da MatÃ©ria-Prima");
                 Console.WriteLine("---------------------------------------------");
                 Console.WriteLine("0. Voltar ao menu anterior");
                 Console.Write("\nEscolha: ");
@@ -72,7 +72,7 @@ namespace CadastrosBasicos
                         break;
 
                     default:
-                        Console.WriteLine("\n Opção inválida.");
+                        Console.WriteLine("\n OpÃ§Ã£o invÃ¡lida.");
                         Console.WriteLine("\n Pressione ENTER para voltar ao menu.");
                         Console.ReadKey();
                         break;
@@ -569,13 +569,12 @@ namespace CadastrosBasicos
 
         public MPrima RetornaMateriaPrima(string cod)
         {
-            string caminhoInicial = Directory.GetCurrentDirectory();
-            string caminhoFinal = Path.Combine(caminhoInicial + "\\ProjBiltiful\\");
+            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
             Directory.CreateDirectory(caminhoFinal);
-            string pastaMPrima = Path.Combine(caminhoFinal, "MateriaPrima\\");
-            Directory.CreateDirectory(pastaMPrima);
-            string arquivoFinal = Path.Combine(pastaMPrima + "Materia.dat");
+
+            string arquivoFinal = Path.Combine(caminhoFinal, "Materia.dat");
             MPrima MPrima = null;
+
             if (File.Exists(arquivoFinal))
             {
                 try
@@ -594,8 +593,9 @@ namespace CadastrosBasicos
                                         Convert.ToDateTime(line.Substring(34, 8).Insert(2, "/").Insert(5, "/")).Date,
                                         Convert.ToChar(line.Substring(42, 1))
                                         );
+
                             line = sr.ReadLine();
-                        } while (line != null);
+                     } while (line != null);
                     }
                 }
                 catch (Exception ex)
@@ -605,7 +605,6 @@ namespace CadastrosBasicos
             }
             return MPrima;
         }
-    
     }
 }
 
