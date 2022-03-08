@@ -1,6 +1,7 @@
 ﻿using CadastrosBasicos.ManipulaArquivos;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace CadastrosBasicos
 {
@@ -9,88 +10,102 @@ namespace CadastrosBasicos
         public Write write = new Write();
         public Read read = new Read();
         public string CNPJ { get; set; }
-        public string RSocial { get; set; }
-        public DateTime DAbertura { get; set; }
-        public DateTime UCompra { get; set; }
-        public DateTime DCadastro { get; set; }
+        public string RazaoSocial { get; set; }
+        public DateTime DataAbertura { get; set; }
+        public DateTime UltimaCompra { get; set; }
+        public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
         public Fornecedor()
         {
 
         }
-        public Fornecedor(string cnpj, string rSocial, DateTime dAbertura,char situacao)
+        public Fornecedor(string cnpj, string rSocial, DateTime dAbertura, char situacao)
         {
             CNPJ = cnpj;
-            RSocial = rSocial;
-            DAbertura = dAbertura;
-            UCompra = DateTime.Now;
-            DCadastro = DateTime.Now;
+            RazaoSocial = rSocial;
+            DataAbertura = dAbertura;
+            UltimaCompra = DateTime.Now;
+            DataCadastro = DateTime.Now;
             Situacao = situacao;
         }
         public Fornecedor(string cnpj, string rSocial, DateTime dAbertura, DateTime uCompra, DateTime dCadastro, char situacao)
         {
             CNPJ = cnpj;
-            RSocial = rSocial;
-            DAbertura = dAbertura;
-            UCompra = DateTime.Now;
-            DCadastro = DateTime.Now;
+            RazaoSocial = rSocial;
+            DataAbertura = dAbertura;
+            UltimaCompra = DateTime.Now;
+            DataCadastro = DateTime.Now;
             Situacao = situacao;
         }
         public void Navegar()
         {
             Console.WriteLine("============== Fornecedores ==============");
-            List<Fornecedor> lista = read.ListaArquivoFornecedor();
-            int opcao = 0, posicao = 0;
-            bool flag = false;
-            do
+            bool verificaArquivo = read.VerificaListaFornecedor();
+            if (verificaArquivo == true)
             {
-                Console.WriteLine("============== Fornecedores ==============");
+                List<Fornecedor> lista = read.ListaArquivoFornecedor();
+                int opcao = 0, posicao = 0;
+                bool flag = false;
+                do
+                {
+                    Console.Clear();
+                    Console.WriteLine("============== Fornecedores ==============");
 
-                if (opcao == 0)
-                {
-                    Console.WriteLine(lista[posicao].ToString());
-                }
-                else if (opcao == 1)
-                {
-                    if (posicao == lista.Count)
+                    if (opcao == 0)
+                    {
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
+                    else if (opcao == 1)
+                    {
+                        if (posicao == lista.Count - 1)
+                            posicao = lista.Count - 1;
+                        else
+                            posicao++;
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
+                    else if (opcao == 2)
+                    {
+                        if (posicao == 0)
+                            posicao = 0;
+                        else
+                            posicao--;
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
+                    else if (opcao == 3)
+                    {
                         posicao = 0;
-                    else
-                     posicao++;
-                    Console.WriteLine(lista[posicao].ToString());
-                }
-                else if (opcao == 2)
-                {
-                    if (posicao == 0)
-                        posicao = lista.Count;
-                    else
-                        posicao--;
-                    Console.WriteLine(lista[posicao].ToString());
-                }
-                else if (opcao == 3)
-                {
-                    posicao = 0;
-                    Console.WriteLine(lista[posicao].ToString());
-                }
-                else if (opcao == 4)
-                {
-                    posicao = lista.Count;
-                    Console.WriteLine(lista[posicao].ToString());
-                }
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
+                    else if (opcao == 4)
+                    {
+                        posicao = lista.Count - 1;
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
 
 
-                Console.WriteLine(@"1. Proximo 
+                    Console.WriteLine(@"
+1. Proximo 
 2. Anterior
 3. Primeiro
 4. Ultimo
-
+0. Voltar para menu anterior.
 ");
-                do
-                {
-                    flag = int.TryParse(Console.ReadLine(), out opcao);
-                } while (flag != true);
+                    do
+                    {
+                        flag = int.TryParse(Console.ReadLine(), out opcao);
+                    } while (flag != true);
 
-            } while (opcao != 0);
+                } while (opcao != 0);
+
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Ainda nao tem nenhum fornecedor cadastrado");
+                Console.WriteLine("Pressione enter para continuar");
+                Console.ReadKey();
+            }
         }
         public void BloqueiaFornecedor()
         {
@@ -111,7 +126,7 @@ namespace CadastrosBasicos
                     flag = int.TryParse(Console.ReadLine(), out opcao);
                 } while (flag != true);
 
-                if(opcao == 1)
+                if (opcao == 1)
                 {
 
                 }
@@ -133,7 +148,7 @@ namespace CadastrosBasicos
         }
         public string RetornaArquivo()
         {
-            return CNPJ + RSocial + DAbertura.ToString("dd/MM/yyyy") + UCompra.ToString("dd/MM/yyyy") + DCadastro.ToString("dd/MM/yyyy") + Situacao;
+            return CNPJ + RazaoSocial + DataAbertura.ToString("dd/MM/yyyy") + UltimaCompra.ToString("dd/MM/yyyy") + DataCadastro.ToString("dd/MM/yyyy") + Situacao;
         }
         public Fornecedor Editar()
         {
@@ -150,7 +165,7 @@ namespace CadastrosBasicos
                 Console.WriteLine("Situacao: ");
                 bool flagSituacao = char.TryParse(Console.ReadLine(), out char situacao);
 
-                fornecedor.RSocial = nome == "" ? fornecedor.RSocial : nome;
+                fornecedor.RazaoSocial = nome == "" ? fornecedor.RazaoSocial : nome;
 
                 fornecedor.Situacao = flagSituacao == false ? fornecedor.Situacao : situacao;
 
@@ -160,7 +175,7 @@ namespace CadastrosBasicos
         }
         public override string ToString()
         {
-            return $"CNPJ: {CNPJ}\nRSocial: {RSocial.Trim()}\nData de Abertura da empresa: {DAbertura.ToString("dd/MM/yyyy")}\nUltima Compra: {UCompra.ToString("dd/MM/yyyy")}\nData de Cadastro: {DCadastro.ToString("dd/MM/yyyy")}\nSituacao: {Situacao}";
+            return $"CNPJ: {CNPJ}\nRSocial: {RazaoSocial.Trim()}\nData de Abertura da empresa: {DataAbertura.ToString("dd/MM/yyyy")}\nUltima Compra: {UltimaCompra.ToString("dd/MM/yyyy")}\nData de Cadastro: {DataCadastro.ToString("dd/MM/yyyy")}\nSituacao: {Situacao}";
         }
     }
 }

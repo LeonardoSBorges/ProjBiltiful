@@ -29,66 +29,53 @@ namespace ProducaoCosmeticos
 
         public Producao()
         {
-
             Contador = 1;
 
         }
 
         #endregion
 
-        public void Menu()
+        public void SubMenu()
         {
 
-            int escolha;
+            string escolha;
 
             do
             {
 
-                Console.WriteLine("********** Menu *********");
-                Console.WriteLine("\n    Escolha uma opção\n");
-                Console.WriteLine("(1) Cadastrar uma produção");
-                Console.WriteLine("(2) Localizar um registro");
-                Console.WriteLine("(3) Imprimir por registro");
-                Console.WriteLine("(4) Sair");
-                Console.WriteLine("\n*************************");
+                Console.Clear();
+                Console.WriteLine("\n=============== PRODUÇÃO ===============");
+                Console.WriteLine("1. Cadastrar uma produção");
+                Console.WriteLine("2. Localizar um registro");
+                Console.WriteLine("3. Imprimir por registro");
+                Console.WriteLine("---------------------------------------");
+                Console.WriteLine("0. Voltar ao menu anterior");
+                Console.Write("\nEscolha: ");
 
-                Console.Write("Opção: "); escolha = int.Parse(Console.ReadLine());
-
-                switch (escolha)
+                switch (escolha = Console.ReadLine())
                 {
-
-                    case 1:
-
+                    case "0":
+                        break;
+                    case "1":
                         Console.Clear();
                         Cadastrar();
-
                         break;
-
-                    case 2:
-
+                    case "2":
                         Console.Clear();
                         Localizar();
-
                         break;
-
-                    case 3:
-
+                    case "3":
                         ImprimirPorRegistro();
                         Console.Clear();
-
                         break;
-
                     default:
-
+                        Console.WriteLine("\n Opção inválida.");
+                        Console.WriteLine("\n Pressione ENTER para voltar ao menu.");
+                        Console.ReadKey();
                         break;
-
                 }
 
-            } while (escolha > 0 && escolha < 4);
-
-
-            Console.ReadKey();
-
+            } while (escolha != "0");
         }
 
 
@@ -96,10 +83,14 @@ namespace ProducaoCosmeticos
 
         List<Producao> listaProducao = new List<Producao>();
 
+        ItemProducao itemProducao = new ItemProducao();
+
+        List<ItemProducao> itens = new List<ItemProducao>();
+
         public void Cadastrar()
         {
 
-            if(Contador == 1)
+            if (Contador == 1)
             {
 
                 LerArquivo();
@@ -107,10 +98,12 @@ namespace ProducaoCosmeticos
             }
 
             string dataProducao = DateTime.Now.ToString("dd/MM/yyyy");
-            string produto = null, auxiliarProduto, id;
-            float quantidade = 0, auxiliarQuantidade;
-            int escolha;
+            string produto = null, auxiliarProduto, id, codigoMateriaPrima;
+            float quantidade = 0, auxiliarQuantidade, quantidadeMateriaPrima;
+            int escolha, opcao = 0;
             bool control = false;
+
+
             id = Contador.ToString().PadLeft(5, '0');
 
             if (Contador <= 99999)
@@ -118,32 +111,29 @@ namespace ProducaoCosmeticos
 
                 Console.Write("ID: " + id);
 
-                Console.Write("\nData de produção: " + dataProducao);
-
-                Console.Write("\nProduto: \n");
+                Console.Write("\nData de produção: " + dataProducao + "\n");
 
 
                 do
                 {
 
-                    Console.Write("Digite o códigos do produto: ");
+                    Console.Write("Digite o código do produto: ");
                     auxiliarProduto = Console.ReadLine();
 
-                    if (BuscarCodigo(auxiliarProduto) == null)
+                    Produto pproduto;
+
+                    if ((pproduto = new Produto().RetornaProduto(auxiliarProduto)) == null)
                     {
 
                         Console.WriteLine("Código de produto inválido!");
                         Console.WriteLine("\n\n\t Pressione ENTER para continuar...");
                         Console.ReadKey();
                         Console.Clear();
-
                     }
                     else
                     {
-
-                        produto = auxiliarProduto;
+                        produto = pproduto.CodigoBarras;
                         control = true;
-
                     }
 
                 } while (control != true);
@@ -153,7 +143,7 @@ namespace ProducaoCosmeticos
                 do
                 {
 
-                    Console.Write("\nQuantidade: ");
+                    Console.Write("Quantidade: ");
                     auxiliarQuantidade = float.Parse(Console.ReadLine());
 
 
@@ -175,22 +165,78 @@ namespace ProducaoCosmeticos
                 }
                 while (control != true);
 
+                do
+                {
+                    control = false;
+
+                    MPrima materiaPrima;
+
+                    do
+                    {
+                        materiaPrima = new MPrima();
+
+                        Console.Write("Digite o código da matéria prima: ");
+                        codigoMateriaPrima = Console.ReadLine();
+
+                        materiaPrima = materiaPrima.RetornaMateriaPrima(codigoMateriaPrima);
+
+                        if (materiaPrima == null)
+                        {
+
+                            Console.WriteLine("Código de matéria prima inválida!");
+                            Console.WriteLine("\n\n\t Pressione ENTER para continuar...");
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
+                        else
+                        {
+                            codigoMateriaPrima = materiaPrima.Id;
+                            control = true;
+                        }
+
+                    } while (control != true);
+
+                    Console.Write("Digite a quantidade de matéria prima que será utilizada: ");
+                    quantidadeMateriaPrima = float.Parse(Console.ReadLine());
+
+                    if (quantidadeMateriaPrima < 0 || quantidadeMateriaPrima >= 1000)
+                    {
+
+                        Console.WriteLine("Não é possivel adicionar essa quantidade de matéria prima");
+                        continue;
+
+                    }
+
+                    itens.Add(new ItemProducao(id, dataProducao, codigoMateriaPrima, quantidadeMateriaPrima));
+
+
+                    Console.WriteLine("Gostaria de adicionar mais uma materia prima?\n(1) Sim\n(2) Não");
+
+                    Console.Write("Resposta: "); opcao = int.Parse(Console.ReadLine());
+
+
+
+                } while (opcao == 1);
 
                 Console.WriteLine("Gostaria de finalizar o registro ou deseja excluí-lo agora mesmo?");
-                Console.WriteLine("(1) Finalizar\n(2) Cancelar registro");
+                Console.WriteLine("1. Finalizar\n2. Cancelar registro");
 
-                escolha = int.Parse(Console.ReadLine());
+                Console.Write("Resposta: "); escolha = int.Parse(Console.ReadLine());
 
                 if (escolha == 1)
                 {
 
                     Producao producao = new(id, dataProducao, produto, quantidade);
                     listaProducao.Add(producao);
+
                     Contador++;
+
                     string formatado = "" + id + dataProducao.Replace("/", "") + produto + quantidade.ToString("00000");
                     SalvarArquivo(formatado);
 
-                    Console.WriteLine("Registro feito com sucesso!");
+                    itemProducao.GravarItemProducao(itens);
+
+                    Console.WriteLine("\n\tRegistro efetuado com sucesso!");
                     Console.ReadKey();
                     Console.WriteLine("\n\n\t Pressione ENTER para continuar...");
                     Console.Clear();
@@ -223,7 +269,13 @@ namespace ProducaoCosmeticos
         public Producao Localizar()
         {
 
-            LerArquivo();
+            if (Contador == 1)
+            {
+
+                LerArquivo();
+
+            }
+
 
             Producao encontrado;
             string buscaId;
@@ -232,6 +284,7 @@ namespace ProducaoCosmeticos
             {
 
                 Console.WriteLine("Não existe nenhum registro de produção ainda!");
+                Console.ReadKey();
                 return null;
 
             }
@@ -258,6 +311,9 @@ namespace ProducaoCosmeticos
                 {
                     Console.Clear();
                     Console.WriteLine(encontrado.ToString());
+                    BuscarItemProducao(encontrado.Id);
+
+
                     Console.WriteLine("\n\n\t Pressione ENTER para continuar...");
                     Console.ReadKey();
                     Console.Clear();
@@ -271,14 +327,18 @@ namespace ProducaoCosmeticos
         public void ImprimirPorRegistro()
         {
 
-            LerArquivo();
+            if (Contador == 1)
+            {
 
+                LerArquivo();
+
+            }
 
             int escolha, i = 0;
 
             if (listaProducao.Count == 0)
             {
-
+                Console.Clear();
                 Console.WriteLine("Não existe nenhum registro de produção ainda!");
                 Console.ReadKey();
                 Console.WriteLine("\n\n\t Pressione ENTER para continuar...");
@@ -288,17 +348,18 @@ namespace ProducaoCosmeticos
             {
                 Console.Clear();
                 Console.WriteLine(listaProducao[i].ToString());
+                BuscarItemProducao(listaProducao[i].Id);
 
                 do
                 {
-                   
+
 
                     Console.WriteLine("\nO que você gostaria de fazer?\n");
-                    Console.WriteLine("(1) Ir para o próximo");
-                    Console.WriteLine("(2) Ir para o anterior");
-                    Console.WriteLine("(3) Ir para o primeiro");
-                    Console.WriteLine("(4) Ir para o ultimo");
-                    Console.WriteLine("(5) Sair\n");
+                    Console.WriteLine("1. Ir para o próximo");
+                    Console.WriteLine("2. Ir para o anterior");
+                    Console.WriteLine("3. Ir para o primeiro");
+                    Console.WriteLine("4. Ir para o ultimo");
+                    Console.WriteLine("0. Sair\n");
 
                     Console.Write("Opção: "); escolha = int.Parse(Console.ReadLine());
 
@@ -312,8 +373,9 @@ namespace ProducaoCosmeticos
 
                             if (i + 1 < listaProducao.Count && listaProducao[i + 1] != null)
                             {
-                                
+
                                 Console.WriteLine(listaProducao[i + 1].ToString());
+                                BuscarItemProducao(listaProducao[i + 1].Id);
                                 i++;
 
                             }
@@ -327,6 +389,8 @@ namespace ProducaoCosmeticos
                             {
 
                                 Console.WriteLine(listaProducao[i - 1].ToString());
+                                BuscarItemProducao(listaProducao[i - 1].Id);
+
                                 i--;
 
                             }
@@ -337,11 +401,13 @@ namespace ProducaoCosmeticos
                         case 3:
 
                             Console.WriteLine(listaProducao[0].ToString());
+                            BuscarItemProducao(listaProducao[0].Id);
 
                             break;
                         case 4:
 
                             Console.WriteLine(listaProducao[listaProducao.Count - 1].ToString());
+                            BuscarItemProducao(listaProducao[listaProducao.Count - 1].Id);
 
                             break;
                         case 5:
@@ -349,22 +415,17 @@ namespace ProducaoCosmeticos
                             break;
                     }
                 }
-                while (escolha != 5);
+                while (escolha != 0);
             }
         }
 
         public void SalvarArquivo(string producao)
         {
 
-            string caminhoInicial = Directory.GetCurrentDirectory();
-
-            string caminhoFinal = Path.Combine(caminhoInicial + "\\ProjBiltiful\\");
+            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
             Directory.CreateDirectory(caminhoFinal);
 
-            string pastaProducao = Path.Combine(caminhoFinal, "Producao\\");
-            Directory.CreateDirectory(pastaProducao);
-
-            string arquivoFinal = Path.Combine(pastaProducao + "Producao.dat");
+            string arquivoFinal = Path.Combine(caminhoFinal, "Producao.dat");
 
             if (!File.Exists(arquivoFinal))
             {
@@ -395,7 +456,7 @@ namespace ProducaoCosmeticos
                 try
                 {
 
-                    using (StreamWriter sw = new StreamWriter(arquivoFinal,append:true))
+                    using (StreamWriter sw = new StreamWriter(arquivoFinal, append: true))
                     {
 
                         sw.WriteLine(producao);
@@ -413,27 +474,18 @@ namespace ProducaoCosmeticos
 
             }
 
-            
+
 
         }
 
         public string BuscarCodigo(string codigo)
         {
 
-            string caminhoInicial = Directory.GetCurrentDirectory();
 
-            string caminhoFinal = Path.Combine(caminhoInicial + "\\ProjBiltiful\\");
+            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
             Directory.CreateDirectory(caminhoFinal);
 
-            string pastaProducao = Path.Combine(caminhoFinal, "Producao\\");
-            Directory.CreateDirectory(pastaProducao);
-
-            string arquivoFinal = Path.Combine(pastaProducao + "Producao.dat");
-
-            string pastaProduto = Path.Combine(caminhoFinal, "Produto\\");
-            Directory.CreateDirectory(pastaProduto);
-
-            string arquivoProduto = Path.Combine(pastaProduto + "Cosmetico.dat");
+            string arquivoFinal = Path.Combine(caminhoFinal, "Producao.dat");
 
             string cbarras = null;
 
@@ -442,7 +494,7 @@ namespace ProducaoCosmeticos
 
                 string linha = null;
 
-                using (StreamReader sr = new StreamReader(arquivoProduto))
+                using (StreamReader sr = new StreamReader(arquivoFinal))
                 {
 
                     linha = sr.ReadLine();
@@ -481,16 +533,12 @@ namespace ProducaoCosmeticos
         public void LerArquivo()
         {
 
-
             string caminhoInicial = Directory.GetCurrentDirectory();
 
-            string caminhoFinal = Path.Combine(caminhoInicial + "\\ProjBiltiful\\");
+            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
             Directory.CreateDirectory(caminhoFinal);
 
-            string pastaProducao = Path.Combine(caminhoFinal, "Producao\\");
-            Directory.CreateDirectory(pastaProducao);
-
-            string arquivoFinal = Path.Combine(pastaProducao + "Producao.dat");
+            string arquivoFinal = Path.Combine(caminhoFinal, "Producao.dat");
 
             try
             {
@@ -532,15 +580,77 @@ namespace ProducaoCosmeticos
             }
         }
 
+        public void BuscarItemProducao(string codigoproducao)
+        {
+            string caminhoInicial = Directory.GetCurrentDirectory();
+
+            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
+            Directory.CreateDirectory(caminhoFinal);
+
+            string arquivoItemProducao = Path.Combine(caminhoFinal, "ItemProducao.dat");
+
+            List<string> listaItemProducao = new();
+
+            try
+            {
+
+                string linha = null;
+
+                using (StreamReader sr = new StreamReader(arquivoItemProducao))
+                {
+
+                    linha = sr.ReadLine();
+
+
+                    do
+                    {
+
+                        if (codigoproducao == linha.Substring(0, 5))
+                        {
+
+                            listaItemProducao.Add(linha.Substring(13, 11));
+
+                        }
+
+
+
+                        linha = sr.ReadLine();
+
+                    }
+                    while (linha != null);
+
+
+                    Console.WriteLine("\nLista de matérias primas utilizadas: \n");
+
+                    listaItemProducao.ForEach(item =>
+                    {
+                        float qntdMatPrima = float.Parse(item.Substring(6, 5));
+
+                        Console.WriteLine("Código da matéria prima: " + item.Substring(0, 6));
+                        Console.WriteLine("Quantidade utilizada da matéria prima: " + qntdMatPrima.ToString("000.#0") + "\n");
+
+                    });
+
+                    Console.WriteLine("\n\n *********************************************");
+
+                }
+            }
+            catch
+            {
+
+            }
+
+        }
+
         public override string ToString()
         {
-            return 
-                "\n******** Registro de Produção ********\n\n"
-                +"ID: " + Id.ToString().PadLeft(5, '0')
+            return
+                "\n************ Registro de Produção ************\n\n"
+                + "ID: " + Id.ToString().PadLeft(5, '0')
                 + "\nData de produção: " + DataProducao
                 + "\nProduto: " + Produto
-                + "\nQuantidade: " + Quantidade.ToString("000.#0")
-                + "\n\n**************************************";
+                + "\nQuantidade: " + Quantidade.ToString("000.#0");
+
         }
 
         #endregion

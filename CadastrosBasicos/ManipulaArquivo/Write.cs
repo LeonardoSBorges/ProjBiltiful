@@ -81,21 +81,25 @@ namespace CadastrosBasicos.ManipulaArquivos
             int posicao = 0;
             try
             {
+
                 while (clientes[posicao] != null)
                 {
                     if (clienteAtualizado.CPF == clientes[posicao].CPF)
                     {
                         clientes[posicao] = clienteAtualizado;
+                        break;
                     }
                     posicao++;
                 }
-                using (StreamWriter sw = new StreamWriter(ClienteInadimplente))
+                File.Delete(CaminhoCadastro);
+                using (StreamWriter sw = new StreamWriter(CaminhoCadastro))
                 {
                     posicao = 0;
-                    while (clientes[posicao] != null)
+                    do
                     {
                         sw.WriteLine(clientes[posicao].RetornaArquivo());
-                    }
+                        posicao++;
+                    } while (posicao < clientes.Count);
                     Console.WriteLine("Registro atualizado");
                 }
             }
@@ -117,6 +121,7 @@ namespace CadastrosBasicos.ManipulaArquivos
                     if (fornecedorAtualizado.CNPJ == fornecedores[posicao].CNPJ)
                     {
                         fornecedores[posicao] = fornecedorAtualizado;
+                        break;
                     }
                     posicao++;
                 }
