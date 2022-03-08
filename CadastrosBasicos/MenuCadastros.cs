@@ -1,4 +1,4 @@
-﻿using CadastrosBasicos.ManipulaArquivos;
+using CadastrosBasicos.ManipulaArquivos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +12,16 @@ namespace CadastrosBasicos
     {
         public static Write write = new Write();
         public static Read read = new Read();
+        
         public static void SubMenu()
         {
             Console.Clear();
             //MenuCadastros menuCadastros;
             Cliente cliente;
             Fornecedor fornecedor;
-           
-            //Risco risco = new Risco();
 
+            //Risco risco = new Risco();
+            bool flag = false;
 
             //Este menu sera utilizado para testes
             int value = -1;
@@ -37,20 +38,19 @@ namespace CadastrosBasicos
 ::  ");
                 Console.Write(@"1. Cadastrar cliente
 2. Editar registro de cliente
-3. Cliente Inadimplente 
-4. Cadastrar fornecedor
-5. Editar registro de fornecedor
-6. Bloquear fornecedor
-7. Cadastrar materia prima
-8. Cadastrar produtos
-9. Cadastro de Inadimplentes
-10. Cadastro de Fornecedores Bloqueados
+3. Cliente Inadimplente
+4. Clientes
+5. Cadastrar fornecedor
+6. Editar registro de fornecedor
+7. Bloquear fornecedor
+8. Fornecedores
 0. Voltar ao menu anterior
 Insira uma opcao valida: 
 ");
-                value = int.Parse(Console.ReadLine());
-
-                bool flag = false;
+                do
+                {
+                    flag = int.TryParse(Console.ReadLine(), out value);
+                } while (flag != true);
 
                 switch (value)
                 {
@@ -80,7 +80,10 @@ Insira uma opcao valida:
                         cliente.BloqueiaCadastro();
                         break;
                     case 4:
-                        new Produto().Menu();
+                        cliente = new Cliente();
+                        cliente.Navegar();
+                        break;
+                    case 5:
                         DateTime dCriacao;
                         Console.Write("Data de criacao da empresa:");
                         do
@@ -93,21 +96,18 @@ Insira uma opcao valida:
                             write.GravarNovoFornecedor(fornecedor);
                         }
                         break;
-                    case 5:
+                    case 6:
                         fornecedor = new Fornecedor();
                         fornecedor.Editar();
                         break;
-                    case 6:
+                    case 7:
                         fornecedor = new Fornecedor();
                         fornecedor.BloqueiaFornecedor();
                         break;
-                    case 7:
-                        break;
                     case 8:
+                        fornecedor = new Fornecedor();
+                        fornecedor.Navegar();
                         break;
-                    case 10:
-                        break;
-
                 }
 
                 Console.ReadKey();

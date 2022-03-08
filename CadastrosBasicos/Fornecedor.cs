@@ -1,5 +1,6 @@
 ﻿using CadastrosBasicos.ManipulaArquivos;
 using System;
+using System.Collections.Generic;
 
 namespace CadastrosBasicos
 {
@@ -36,15 +37,78 @@ namespace CadastrosBasicos
             DCadastro = DateTime.Now;
             Situacao = situacao;
         }
+        public void Navegar()
+        {
+            Console.WriteLine("============== Fornecedores ==============");
+            List<Fornecedor> lista = read.ListaArquivoFornecedor();
+            int opcao = 0, posicao = 0;
+            bool flag = false;
+            do
+            {
+                Console.WriteLine("============== Fornecedores ==============");
+
+                if (opcao == 0)
+                {
+                    Console.WriteLine(lista[posicao].ToString());
+                }
+                else if (opcao == 1)
+                {
+                    posicao++;
+                    Console.WriteLine(lista[posicao].ToString());
+                }
+                else if (opcao == 2)
+                {
+                    posicao--;
+                    Console.WriteLine(lista[posicao].ToString());
+                }
+                else if (opcao == 3)
+                {
+                    posicao = 0;
+                    Console.WriteLine(lista[posicao].ToString());
+                }
+                else if (opcao == 4)
+                {
+                    posicao = lista.Count;
+                    Console.WriteLine(lista[posicao].ToString());
+                }
+
+
+                Console.WriteLine(@"1. Proximo 
+2. Anterior
+3. Primeiro
+4. Ultimo
+
+");
+                do
+                {
+                    flag = int.TryParse(Console.ReadLine(), out opcao);
+                } while (flag != true);
+
+            } while (opcao != 0);
+        }
         public void BloqueiaFornecedor()
         {
             Fornecedor fornecedor;
             Console.WriteLine("Insira o CNPJ para bloqueio: ");
             string cnpj = Console.ReadLine();
             cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
+
             if (read.ProcurarCNPJBloqueado(cnpj))
             {
+                bool flag = false;
+                int opcao;
                 Console.WriteLine("Ja esta bloqueado");
+                Console.WriteLine("Deseja desbloqueado ? [1 - Sim/ 2 - Nao]");
+
+                do
+                {
+                    flag = int.TryParse(Console.ReadLine(), out opcao);
+                } while (flag != true);
+
+                if(opcao == 1)
+                {
+
+                }
             }
             else
             {

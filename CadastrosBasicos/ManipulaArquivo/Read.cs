@@ -149,11 +149,8 @@ namespace CadastrosBasicos.ManipulaArquivos
             DateTime dNascimento, uCompra, dCadastro;
             Cliente buscaCliente;
 
-            
             try
             {
-
-
                 using (StreamReader sr = new StreamReader(CaminhoCadastro))
                 {
                     procuraCliente = sr.ReadLine();
@@ -172,7 +169,6 @@ namespace CadastrosBasicos.ManipulaArquivos
                     }
                 }
                 return clientes;
-
             }
             catch (Exception ex)
             {
