@@ -55,7 +55,7 @@ namespace CadastrosBasicos
                 Console.WriteLine("2. Localizar Produto");
                 Console.WriteLine("3. Imprimir Produtos");
                 Console.WriteLine("4. Alterar Situacao do Produto");
-                Console.WriteLine("-----------------------------------------");
+                Console.WriteLine("---------------------------------------");
                 Console.WriteLine("0. Voltar ao menu anterior");
                 Console.Write("\nEscolha: ");
 

@@ -45,12 +45,12 @@ namespace CadastrosBasicos
             do
             {
                 Console.Clear();
-                Console.WriteLine("\n=============== PRODUTO ===============");
+                Console.WriteLine("\n=============== MATÉRIA-PRIMA ===============");
                 Console.WriteLine("1. Cadastrar Matéria-Prima");
                 Console.WriteLine("2. Localizar Matéria-Prima");
                 Console.WriteLine("3. Imprimir Matérias-Primas");
                 Console.WriteLine("4. Alterar Situação da Matéria-Prima");
-                Console.WriteLine("-----------------------------------------");
+                Console.WriteLine("---------------------------------------------");
                 Console.WriteLine("0. Voltar ao menu anterior");
                 Console.Write("\nEscolha: ");
 
