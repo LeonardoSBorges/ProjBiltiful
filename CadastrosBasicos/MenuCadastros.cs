@@ -182,6 +182,7 @@ namespace CadastrosBasicos
             else
             {
                 Console.WriteLine("Empresa com menos de 6 meses nao deve ser cadastrada");
+                Console.WriteLine("Pressione enter para continuar");
                 Console.ReadKey();
             }
         }

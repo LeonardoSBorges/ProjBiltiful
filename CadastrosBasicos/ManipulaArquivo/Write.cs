@@ -185,12 +185,12 @@ namespace CadastrosBasicos.ManipulaArquivos
                 using (StreamWriter sw = new StreamWriter(CaminhoFornecedor))
                 {
                     posicao = 0;
-                    while (fornecedores[posicao] != null)
+                    do
                     {
                         sw.WriteLine(fornecedores[posicao].RetornaArquivo());
-
-                    }
-                    Console.WriteLine("Registro atualizado");
+                        posicao++;
+                    } while (posicao < fornecedores.Count);
+                        Console.WriteLine("Registro atualizado");
                 }
             }
             catch (Exception ex)
