@@ -20,7 +20,7 @@ namespace ComprasMateriasPrimas
             CaminhoItemCompra = SetCaminhoArquivo("ItemCompra.dat");
         }
 
-        public int PegarUltimoId() => ProcuraUltimo().Id;
+        public int PegarUltimoId() => ProcuraUltimo();
 
         public void Salvar(Compra compra)
         {
@@ -57,8 +57,8 @@ namespace ComprasMateriasPrimas
             Compra procura = null;
             string linha;
             try
-            {   
-                using (StreamReader sr = new (CaminhoCompra))
+            {
+                using (StreamReader sr = new(CaminhoCompra))
                 {
                     if (File.ReadAllLines(CaminhoCompra).Length != 0)
                     {
@@ -84,23 +84,18 @@ namespace ComprasMateriasPrimas
             return procura;
         }
 
-        public Compra ProcuraUltimo()
+        public int ProcuraUltimo()
         {
-            Compra procura = null;
             try
             {
-                using (StreamReader sr = new(CaminhoCompra))
-                {
-                    if (File.ReadAllLines(CaminhoCompra).Length != 0) procura = 
-                            Compra.ExtrairCompra(File.ReadAllLines(CaminhoCompra).ToList().Last());
-                    else Console.WriteLine("Arquivo vazio");
-                }
+                return File.ReadAllLines(CaminhoCompra).Length + 1;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Não foi possivel ler o arquivo Compra.dat: " + ex.Message);
             }
-            return procura;
+
+            return 1;
         }
 
         public List<Compra> PegarTodasAsCompras()
@@ -122,7 +117,7 @@ namespace ComprasMateriasPrimas
         string SetCaminhoArquivo(string arquivo)
         {
             string arquivoDat = Path.Combine(Diretorio, arquivo);
-            if (!File.Exists(arquivoDat)) 
+            if (!File.Exists(arquivoDat))
                 File.Create(arquivoDat).Close();
             return arquivoDat;
         }

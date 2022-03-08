@@ -162,6 +162,8 @@ namespace ComprasMateriasPrimas
 
         public static void SubMenu()
         {
+            new ManipulaArquivosCompraMP();
+
             int option = -1;
             while (option != 0)
             {
