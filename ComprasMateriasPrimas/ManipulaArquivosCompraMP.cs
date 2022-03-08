@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using CadastrosBasicos;
+using System.Linq;
 
 namespace ComprasMateriasPrimas
 {
@@ -19,10 +21,36 @@ namespace ComprasMateriasPrimas
 
         public void Salvar(Compra compra)
         {
+            try
+            {
+                using (StreamWriter sw = new(CaminhoCompra, append: true))
+                {
+                    sw.WriteLine(compra);
+                }
+            }
 
+            catch (Exception ex)
+            {
+                Console.WriteLine("Não foi possível escrever no arquivo de Compras: " + ex.Message);
+            }
         }
 
-        public void Procura(int procuraId)
+        public void Salvar(List<ItemCompra> itensCompra)
+        {
+            try
+            {
+                using (StreamWriter sw = File.AppendText(CaminhoItemCompra))
+                {
+                    itensCompra.ForEach(item => sw.WriteLine(item));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Não foi possível escrever no arquivo ItemCompra.dat: " + ex.Message);
+            }
+        }
+
+        public Compra Procura(int idProcura)
         {
             Compra procura;
             try
@@ -30,25 +58,30 @@ namespace ComprasMateriasPrimas
                 using (StreamReader sr = new (CaminhoCompra))
                 {
                     string linha;
-                    int id;
-                    while ((linha = sr.ReadLine()) != null || (id = Compra.ExtrairId(linha)) == procuraId);
-
-                    DateTime dCompra = Compra.ExtrairDCompra(linha);
-                    string fornecedor = Read.ProcurarFornecedor(cnpj);
-
-                    procura = new Compra(id, dCompra, );
+                    if (sr.ReadToEnd() != string.Empty) while ((linha = sr.ReadLine()) != null || Compra.ExtrairId(linha) == idProcura);
+                    else linha = string.Empty;
+                    procura = linha != string.Empty && !Read.EhBloqueado(Compra.ExtrairCNPJ(linha)) ? Compra.ExtrairCompra(linha) : null;
                 }
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine("Não foi possivel ler o arquivo Compra.dat: " + ex.Message);
+                procura = null;
             }
             return procura;
         }
 
+        public List<Compra> PegarTodasAsCompras()
+        {
+            var arquivoCompleto = new List<Compra>();
+            var dadosArquivo = File.ReadAllLines(CaminhoCompra).ToList();
+            if (dadosArquivo.Count != 0) dadosArquivo.ForEach(linha => arquivoCompleto.Add(Compra.ExtrairCompra(linha)));
+            return arquivoCompleto;
+        }
+
         static string SetCaminhoDiretorio()
         {
-            string caminho = Path.Combine(Directory.GetCurrentDirectory(), "ProjBiltiful", "Compra");
+            string caminho = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
             if (!Directory.Exists(caminho)) Directory.CreateDirectory(caminho);
             return caminho;
         }
