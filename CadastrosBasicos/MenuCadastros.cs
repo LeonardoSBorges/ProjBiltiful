@@ -168,7 +168,7 @@ namespace CadastrosBasicos
             bool flag;
 
             DateTime dCriacao;
-            
+
             do
             {
                 Console.Write("Data de criacao da empresa:");
@@ -178,6 +178,11 @@ namespace CadastrosBasicos
             {
                 Fornecedor fornecedor = RegistrarFornecedor(dCriacao);
                 write.GravarNovoFornecedor(fornecedor);
+            }
+            else
+            {
+                Console.WriteLine("Empresa com menos de 6 meses nao deve ser cadastrada");
+                Console.ReadKey();
             }
         }
 
@@ -204,6 +209,8 @@ namespace CadastrosBasicos
             else
             {
                 Console.WriteLine("Fornecedor ja cadastrado");
+                Console.WriteLine("Pressione enter para continuar");
+                Console.ReadKey();
                 return f;
             }
             return new Fornecedor(cnpj, rSocial, dFundacao, situacao);

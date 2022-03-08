@@ -213,7 +213,7 @@ namespace CadastrosBasicos.ManipulaArquivos
                         string cnpj = procuraFornecedor.Substring(0, 14);
                         if (procuraCnpj == cnpj)
                         {
-                            rSocial = procuraFornecedor.Substring(14, 20).Trim();
+                            rSocial = procuraFornecedor.Substring(14, 50).Trim();
                             dAbertura = DateTime.Parse(procuraFornecedor.Substring(64, 10));
                             uCompra = DateTime.Parse(procuraFornecedor.Substring(74, 10));
                             dCadastro = DateTime.Parse(procuraFornecedor.Substring(84, 10));
