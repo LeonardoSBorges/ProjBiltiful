@@ -9,10 +9,10 @@ namespace CadastrosBasicos
         public Write write = new Write();
         public Read read = new Read();
         public string CNPJ { get; set; }
-        public string RSocial { get; set; }
-        public DateTime DAbertura { get; set; }
-        public DateTime UCompra { get; set; }
-        public DateTime DCadastro { get; set; }
+        public string RazaoSocial { get; set; }
+        public DateTime DataAbertura { get; set; }
+        public DateTime UltimaCompra { get; set; }
+        public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
         public Fornecedor()
@@ -22,19 +22,19 @@ namespace CadastrosBasicos
         public Fornecedor(string cnpj, string rSocial, DateTime dAbertura,char situacao)
         {
             CNPJ = cnpj;
-            RSocial = rSocial;
-            DAbertura = dAbertura;
-            UCompra = DateTime.Now;
-            DCadastro = DateTime.Now;
+            RazaoSocial = rSocial;
+            DataAbertura = dAbertura;
+            UltimaCompra = DateTime.Now;
+            DataCadastro = DateTime.Now;
             Situacao = situacao;
         }
         public Fornecedor(string cnpj, string rSocial, DateTime dAbertura, DateTime uCompra, DateTime dCadastro, char situacao)
         {
             CNPJ = cnpj;
-            RSocial = rSocial;
-            DAbertura = dAbertura;
-            UCompra = DateTime.Now;
-            DCadastro = DateTime.Now;
+            RazaoSocial = rSocial;
+            DataAbertura = dAbertura;
+            UltimaCompra = DateTime.Now;
+            DataCadastro = DateTime.Now;
             Situacao = situacao;
         }
         public void Navegar()
@@ -133,7 +133,7 @@ namespace CadastrosBasicos
         }
         public string RetornaArquivo()
         {
-            return CNPJ + RSocial + DAbertura.ToString("dd/MM/yyyy") + UCompra.ToString("dd/MM/yyyy") + DCadastro.ToString("dd/MM/yyyy") + Situacao;
+            return CNPJ + RazaoSocial + DataAbertura.ToString("dd/MM/yyyy") + UltimaCompra.ToString("dd/MM/yyyy") + DataCadastro.ToString("dd/MM/yyyy") + Situacao;
         }
         public Fornecedor Editar()
         {
@@ -150,7 +150,7 @@ namespace CadastrosBasicos
                 Console.WriteLine("Situacao: ");
                 bool flagSituacao = char.TryParse(Console.ReadLine(), out char situacao);
 
-                fornecedor.RSocial = nome == "" ? fornecedor.RSocial : nome;
+                fornecedor.RazaoSocial = nome == "" ? fornecedor.RazaoSocial : nome;
 
                 fornecedor.Situacao = flagSituacao == false ? fornecedor.Situacao : situacao;
 
@@ -160,7 +160,7 @@ namespace CadastrosBasicos
         }
         public override string ToString()
         {
-            return $"CNPJ: {CNPJ}\nRSocial: {RSocial.Trim()}\nData de Abertura da empresa: {DAbertura.ToString("dd/MM/yyyy")}\nUltima Compra: {UCompra.ToString("dd/MM/yyyy")}\nData de Cadastro: {DCadastro.ToString("dd/MM/yyyy")}\nSituacao: {Situacao}";
+            return $"CNPJ: {CNPJ}\nRSocial: {RazaoSocial.Trim()}\nData de Abertura da empresa: {DataAbertura.ToString("dd/MM/yyyy")}\nUltima Compra: {UltimaCompra.ToString("dd/MM/yyyy")}\nData de Cadastro: {DataCadastro.ToString("dd/MM/yyyy")}\nSituacao: {Situacao}";
         }
     }
 }
