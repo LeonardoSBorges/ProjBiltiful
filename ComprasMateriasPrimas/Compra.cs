@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CadastrosBasicos;
+using CadastrosBasicos.ManipulaArquivos;
 
 namespace ComprasMateriasPrimas
 {
@@ -113,12 +114,14 @@ namespace ComprasMateriasPrimas
             while (option != 0)
             {
                 Console.Clear();
-                Console.WriteLine("Compra de Materias-Primas\n");
-                Console.WriteLine("=============== COMPRA MATERIA PRIMA ===============");
-                Console.WriteLine("1. Nova compra");
+
+                Console.WriteLine("=============== COMPRAS ===============");
+                Console.WriteLine("1. Nova Compra");
                 Console.WriteLine("2. Consultar Compra");
                 Console.WriteLine("3. Imprimir Registros de Compra");
+                Console.WriteLine("--------------------------------------");
                 Console.WriteLine("0. Voltar");
+                Console.Write("\nEscolha: ");
 
                 option = int.Parse(Console.ReadLine());
                 switch (option)

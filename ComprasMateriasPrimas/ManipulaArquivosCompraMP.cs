@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using CadastrosBasicos;
+using CadastrosBasicos.ManipulaArquivos;
 using System.Linq;
 
 namespace ComprasMateriasPrimas
@@ -60,7 +61,7 @@ namespace ComprasMateriasPrimas
                     string linha;
                     if (sr.ReadToEnd() != string.Empty) while ((linha = sr.ReadLine()) != null || Compra.ExtrairId(linha) == idProcura);
                     else linha = string.Empty;
-                    procura = linha != string.Empty && !Read.EhBloqueado(Compra.ExtrairCNPJ(linha)) ? Compra.ExtrairCompra(linha) : null;
+                    procura = linha != string.Empty && !new Read().ProcurarCNPJBloqueado(Compra.ExtrairCNPJ(linha)) ? Compra.ExtrairCompra(linha) : null;
                 }
             }
             catch (Exception ex)
