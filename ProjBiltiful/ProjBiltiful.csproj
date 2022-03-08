@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Arquivos\ManipulaArquivos.csproj" />
     <ProjectReference Include="..\CadastrosBasicos\CadastrosBasicos.csproj" />
     <ProjectReference Include="..\ComprasMateriasPrimas\ComprasMateriasPrimas.csproj" />
     <ProjectReference Include="..\ProducaoCosmeticos\ProducaoCosmeticos.csproj" />

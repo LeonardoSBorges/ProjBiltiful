@@ -1,10 +1,10 @@
-﻿using System;
+using System;
+using System.IO;
 using VendasProdutos;
 using CadastrosBasicos;
+using CadastrosBasicos.ManipulaArquivos;
 using ProducaoCosmeticos;
 using System.Globalization;
-using CadastrosBasicos;
-using ComprasMateriasPrimas;
 
 namespace ProjBiltiful
 {
@@ -12,43 +12,55 @@ namespace ProjBiltiful
     {
         static void Main(string[] args)
         {
-            //Este menu sera utilizado para testes
-            int value = -1;
-            while (value != 0)
+
+            var cultureInformation = new CultureInfo("pt-BR");
+            cultureInformation.NumberFormat.CurrencySymbol = "R$";
+            CultureInfo.DefaultThreadCurrentCulture = cultureInformation;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInformation;
+
+            string escolha;
+
+            do
             {
-                Console.Write(@"============= BITIFUL =============
-1. Cadastros
-2. Vendas
-2. Compra de Materia-Prima
-3. Producao
-0 - Sair
-Insira uma opcao valida: 
-");
-                value = int.Parse(Console.ReadLine());
+                Console.Clear();
 
+                Console.WriteLine("=============== MENU ===============");
+                Console.WriteLine("1. Cadastros");
+                Console.WriteLine("2. Produção");
+                Console.WriteLine("3. Compras");
+                Console.WriteLine("4. Vendas");
+                Console.WriteLine("------------------------------------");
+                Console.WriteLine("0. Sair");
+                Console.Write("\nEscolha: ");
 
-
-                switch (value)
+                switch (escolha = Console.ReadLine())
                 {
-                    case 0:
-                        // sair
+                    case "0":
+                        Environment.Exit(0);
                         break;
-                    case 1:
-                        //Cadastrar
+
+                    case "1":
                         MenuCadastros.SubMenu();
                         break;
-                    case 2:
-                        break;
-                    case 3:
-                        //Comprar Materia Prima
-                        Compra.SubMenu();
+
+                    case "2":
                         break;
 
+                    case "3":
+                        break;
+                    
+                    case "4":
+                        MenuVendas.SubMenu();
+                        break;
+
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Opção inválida");
+                        Console.WriteLine("\nPressione ENTER para voltar ao menu");
+                        break;
                 }
 
-                Console.ReadKey();
-                Console.Clear();
-            }
+            } while (escolha != "0");
         }
     }
 }
