@@ -5,6 +5,7 @@ using CadastrosBasicos;
 using CadastrosBasicos.ManipulaArquivos;
 using ProducaoCosmeticos;
 using System.Globalization;
+using ComprasMateriasPrimas;
 
 namespace ProjBiltiful
 {
@@ -44,9 +45,11 @@ namespace ProjBiltiful
                         break;
 
                     case "2":
+                        new Producao().Menu();
                         break;
 
                     case "3":
+                        Compra.SubMenu();
                         break;
                     
                     case "4":

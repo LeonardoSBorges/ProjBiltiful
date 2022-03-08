@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using CadastrosBasicos;
+using CadastrosBasicos.ManipulaArquivos;
 using System.Linq;
 
 namespace ComprasMateriasPrimas
@@ -19,6 +20,8 @@ namespace ComprasMateriasPrimas
             CaminhoItemCompra = SetCaminhoArquivo("ItemCompra.dat");
         }
 
+        public int PegarUltimoId() => ProcuraUltimo().Id;
+
         public void Salvar(Compra compra)
         {
             try
@@ -28,7 +31,6 @@ namespace ComprasMateriasPrimas
                     sw.WriteLine(compra);
                 }
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine("Não foi possível escrever no arquivo de Compras: " + ex.Message);
@@ -52,21 +54,51 @@ namespace ComprasMateriasPrimas
 
         public Compra Procura(int idProcura)
         {
-            Compra procura;
+            Compra procura = null;
+            string linha;
             try
             {   
                 using (StreamReader sr = new (CaminhoCompra))
                 {
-                    string linha;
-                    if (sr.ReadToEnd() != string.Empty) while ((linha = sr.ReadLine()) != null || Compra.ExtrairId(linha) == idProcura);
-                    else linha = string.Empty;
-                    procura = linha != string.Empty && !Read.EhBloqueado(Compra.ExtrairCNPJ(linha)) ? Compra.ExtrairCompra(linha) : null;
+                    if (File.ReadAllLines(CaminhoCompra).Length != 0)
+                    {
+                        while ((linha = sr.ReadLine()) != null)
+                        {
+                            if (Compra.ExtrairId(linha) == idProcura && !new Read().ProcurarCNPJBloqueado(Compra.ExtrairCNPJ(linha)))
+                            {
+                                procura = Compra.ExtrairCompra(linha);
+                                return procura;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Arquivo vazio");
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Não foi possivel ler o arquivo Compra.dat: " + ex.Message);
-                procura = null;
+            }
+            return procura;
+        }
+
+        public Compra ProcuraUltimo()
+        {
+            Compra procura = null;
+            try
+            {
+                using (StreamReader sr = new(CaminhoCompra))
+                {
+                    if (File.ReadAllLines(CaminhoCompra).Length != 0) procura = 
+                            Compra.ExtrairCompra(File.ReadAllLines(CaminhoCompra).ToList().Last());
+                    else Console.WriteLine("Arquivo vazio");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Não foi possivel ler o arquivo Compra.dat: " + ex.Message);
             }
             return procura;
         }
@@ -75,7 +107,8 @@ namespace ComprasMateriasPrimas
         {
             var arquivoCompleto = new List<Compra>();
             var dadosArquivo = File.ReadAllLines(CaminhoCompra).ToList();
-            if (dadosArquivo.Count != 0) dadosArquivo.ForEach(linha => arquivoCompleto.Add(Compra.ExtrairCompra(linha)));
+            if (dadosArquivo.Count != 0 || dadosArquivo != null) dadosArquivo.ForEach(linha => arquivoCompleto.Add(Compra.ExtrairCompra(linha)));
+            else Console.WriteLine("Arquivo nao encontrado ou vazio!");
             return arquivoCompleto;
         }
 
