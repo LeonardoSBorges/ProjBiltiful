@@ -19,11 +19,7 @@ namespace ProducaoCosmeticos
         #region Construtor
 
         public ItemProducao()
-        {
-            BuscarMateriaPrima(MateriaPrima);
-            CadastrarItemProducao();
-            GravarItemProducao();
-        }
+        { }
 
         public ItemProducao(string id, string dataProducao, string materiaPrima, decimal quantidadeMateriaPrima)
         {
@@ -37,77 +33,69 @@ namespace ProducaoCosmeticos
 
         #region Métodos 
 
-        public void CadastrarItemProducao()
+        //public string BuscarMateriaPrima(string codigoMateriaPrima)
+        //{
+        //    string codigoMateriaPrimaEncontrado = null;
+        //    string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
+        //    Directory.CreateDirectory(caminhoFinal);
+
+        //    string arquivoMateriaPrima = Path.Combine(caminhoFinal, "Materia.dat");
+        //    string arquivoProducao = Path.Combine(caminhoFinal, "Producao.dat");
+        //    List<string> ListaMateriasPrimas = new List<string>();
+        //    if (File.Exists(arquivoMateriaPrima))
+        //    {
+        //        try
+        //        {
+        //            using (StreamReader sr = new StreamReader(arquivoMateriaPrima))
+        //            {
+        //                string line = sr.ReadLine();
+        //                do
+        //                {
+        //                    if (line.Substring(42, 1) != "I")
+        //                    {
+        //                        ListaMateriasPrimas.Add(line.Substring(0, 6));
+        //                        if (line.Substring(0, 6) == codigoMateriaPrima)
+        //                        {
+        //                            codigoMateriaPrimaEncontrado = line.Substring(0, 6);
+        //                        }
+        //                    }
+        //                    line = sr.ReadLine();
+        //                } while (line != null);
+        //                sr.Close();
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine("Ex -> " + ex.Message);
+        //        }
+        //    }
+        //    return codigoMateriaPrimaEncontrado;
+        //}
+
+
+        public string BuscarProducao(string codigoProducao)
         {
-            int quantidadeMateriasPrimasUtilizadas = 0;
-            string opcao = "";
-            string codigoMateriaPrima;
-            decimal quantidadeMateriaPrimaAux;
-            do
-            {
-                do
-                {
-                    Console.WriteLine("Digite o Código da Matéria-Prima");
-                    codigoMateriaPrima = Console.ReadLine();
-                    if (BuscarMateriaPrima(codigoMateriaPrima) == null)
-                    {
-                        Console.WriteLine("Código Inválido");
-                    }
-                    else
-                    {
-                        MateriaPrima = codigoMateriaPrima;
-                    }
+            string codigoProducaoEncontrado = null;
+            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
+            Directory.CreateDirectory(caminhoFinal);
 
-                } while (BuscarMateriaPrima(codigoMateriaPrima) == null);
-                do
-                {
-                    Console.WriteLine("Digite a Quantidade de Matéria-Prima");
-                    quantidadeMateriaPrimaAux = decimal.Parse(Console.ReadLine());
-                    if (quantidadeMateriaPrimaAux > 0 && quantidadeMateriaPrimaAux < 1000)
-                    {
-                        QuantidadeMateriaPrima = quantidadeMateriaPrimaAux;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Não é possível adicionar essa quantidade de matéria-prima");
-                    }
-                } while (quantidadeMateriaPrimaAux > 1000);
-
-                quantidadeMateriasPrimasUtilizadas++;
-                if (quantidadeMateriasPrimasUtilizadas < 3)
-                {
-                    Console.WriteLine("Deseja adicionar uma nova matéria-prima\n1 - Sim\n2 - Não");
-                    opcao = Console.ReadLine();
-                }
-            } while ((opcao != "2") && (quantidadeMateriasPrimasUtilizadas < 3));
-        }
-
-        public string BuscarMateriaPrima(string codigoMateriaPrima)
-        {
-            string codigoMateriaPrimaEncontrado = null;
-            string caminhoInicial = Directory.GetCurrentDirectory();
-            string caminhoFinal = Path.Combine(caminhoInicial, "ProjBiltiful\\");
-            //Directory.CreateDirectory(caminhoFinal);
-
-            string PastaMateriaPrima = Path.Combine(caminhoFinal, "MateriaPrima\\");
-            string arquivoMateriaPrima = Path.Combine(PastaMateriaPrima, "Materia.dat");
-
-            List<string> ListaMateriasPrimas = new List<string>();
-            if (File.Exists(arquivoMateriaPrima))
+            string arquivoProducao = Path.Combine(caminhoFinal, "Producao.dat");
+            List<string> ListaProducao = new List<string>();
+            if (File.Exists(arquivoProducao))
             {
                 try
                 {
-                    using (StreamReader sr = new StreamReader(arquivoMateriaPrima))
+                    using (StreamReader sr = new StreamReader(arquivoProducao))
                     {
                         string line = sr.ReadLine();
                         do
                         {
-                            if (line.Substring(42, 1) != "I")
+                            if (line.Substring(0, 5) == codigoProducao)
                             {
-                                ListaMateriasPrimas.Add(line.Substring(0, 6));
-                                if (line.Substring(0, 6) == codigoMateriaPrima)
+                                ListaProducao.Add(line.Substring(0, 5));
+                                if (line.Substring(0, 6) == codigoProducao)
                                 {
-                                    codigoMateriaPrimaEncontrado = line.Substring(0, 6);
+                                    codigoProducaoEncontrado = line.Substring(0, 5);
                                 }
                             }
                             line = sr.ReadLine();
@@ -120,35 +108,39 @@ namespace ProducaoCosmeticos
                     Console.WriteLine("Ex -> " + ex.Message);
                 }
             }
-            return codigoMateriaPrimaEncontrado;
+            return codigoProducaoEncontrado;
         }
 
-
-        public void GravarItemProducao()
+        public void GravarItemProducao(List<ItemProducao> itens)
         {
-            //string itemProducao = Id + DataProducao.Replace("/", "") + MateriaPrima + QuantidadeMateriaPrima;
-            string caminhoInicial = Directory.GetCurrentDirectory();
-            string caminhoFinal = Path.Combine(caminhoInicial, "ProjBiltiful\\");
+            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
+            string arquivoItemProducao = Path.Combine(caminhoFinal, "ItemProducao.dat");
 
-            string PastaItemProducao = Path.Combine(caminhoFinal, "ProducaoCosmeticos\\");
-            string arquivoMateriaPrima = Path.Combine(PastaItemProducao, "ItemProducao.dat");
-            if (File.Exists(arquivoMateriaPrima))
+
+            if (!Directory.Exists(caminhoFinal))
             {
-                try
-                {
-                    using (StreamWriter sw = new StreamWriter(arquivoMateriaPrima, append: true))
-                    {
-                        //sw.WriteLine(itemProducao);
-                        //StreamWriter sw = new StreamWriter("ItemProducao.dat", append: true;
-                        sw.Close();
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Exception: " + e.ToString());
-                }
+                Directory.CreateDirectory(caminhoFinal);
+                File.Create(arquivoItemProducao).Close();
             }
+
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(arquivoItemProducao, append: true))
+                {
+                    itens.ForEach(item =>
+                    {
+                        sw.WriteLine(item.ToString());
+                    });
+
+                    sw.Close();
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.ToString());
+            }
+
         }
 
         #endregion
