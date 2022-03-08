@@ -528,13 +528,13 @@ namespace CadastrosBasicos
                         Produtos.ForEach(prod => sw.WriteLine(prod));
                         sw.WriteLine(novoProduto);
                     }
-
+                  
                     if (situacaoAtualizada != null)
                     {
                         Console.WriteLine("\n Produto alterado.");
                         Console.WriteLine("\n Pressione ENTER para voltar ao menu");
                         Console.ReadKey();
-                    }
+                     }
                 }
                 catch (Exception ex)
                 {

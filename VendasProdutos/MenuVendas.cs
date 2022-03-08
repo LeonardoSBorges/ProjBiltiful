@@ -22,7 +22,7 @@ namespace VendasProdutos
                 Console.Clear();
 
                 Console.WriteLine("=============== VENDAS ===============");
-                Console.WriteLine("1. Nova venda");
+                Console.WriteLine("1. Nova Venda");
                 Console.WriteLine("2. Consultar Venda");
                 Console.WriteLine("3. Imprimir Registros de Venda");
                 Console.WriteLine("--------------------------------------");
@@ -124,12 +124,6 @@ namespace VendasProdutos
                         continue;
                     }
 
-                //} while (produto == null);
-
-                
-
-                //do
-                //{
                     Console.WriteLine("\nInforme a quantidade:");
                     qtd = int.Parse(Console.ReadLine());
 
@@ -240,6 +234,8 @@ namespace VendasProdutos
                 venda.Cadastrar();
                 
                 cliente.UltimaVenda = venda.DataVenda;
+
+                new Write().EditarCliente(cliente);
 
                 Console.WriteLine("\n\nVenda cadastrada com sucesso!\nPressione ENTER para voltar ao Menu Vendas...");
 
