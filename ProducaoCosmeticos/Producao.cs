@@ -36,7 +36,6 @@ namespace ProducaoCosmeticos
 
         #endregion
 
-
         public void Menu()
         {
 
@@ -96,6 +95,7 @@ namespace ProducaoCosmeticos
         #region Métodos
 
         List<Producao> listaProducao = new List<Producao>();
+
         public void Cadastrar()
         {
 
@@ -219,6 +219,7 @@ namespace ProducaoCosmeticos
             }
 
         }
+
         public Producao Localizar()
         {
 
@@ -375,6 +376,7 @@ namespace ProducaoCosmeticos
                     {
 
                         sw.WriteLine(producao);
+                        sw.Close();
 
                     }
 
@@ -397,6 +399,7 @@ namespace ProducaoCosmeticos
                     {
 
                         sw.WriteLine(producao);
+                        sw.Close();
 
                     }
 
@@ -459,6 +462,8 @@ namespace ProducaoCosmeticos
                     }
                     while (linha != null);
 
+                    sr.Close();
+
                 }
 
             }
@@ -517,6 +522,8 @@ namespace ProducaoCosmeticos
                     }
                     while (linha != null);
 
+                    sr.Close();
+
                 }
             }
             catch
@@ -525,8 +532,6 @@ namespace ProducaoCosmeticos
             }
         }
 
-
-        #endregion
         public override string ToString()
         {
             return 
@@ -537,5 +542,7 @@ namespace ProducaoCosmeticos
                 + "\nQuantidade: " + Quantidade.ToString("000.#0")
                 + "\n\n**************************************";
         }
+
+        #endregion
     }
 }
