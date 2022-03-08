@@ -17,7 +17,7 @@ namespace ComprasMateriasPrimas
 
         public Compra()
         {
-            Id = new ManipulaArquivosCompraMP().PegarUltimoId() + 1;
+            Id = new ManipulaArquivosCompraMP().PegarUltimoId();
             DataCompra = DateTime.Now;
         }
 
