@@ -117,6 +117,7 @@ namespace VendasProdutos
                 Console.ReadLine();
                 return;
             }
+
             string[] dados = File.ReadAllLines(caminho.ArquivoVenda);
 
             var i = 0;
