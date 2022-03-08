@@ -569,13 +569,13 @@ namespace CadastrosBasicos
 
         public MPrima RetornaMateriaPrima(string cod)
         {
-            string caminhoInicial = Directory.GetCurrentDirectory();
-            string caminhoFinal = Path.Combine(caminhoInicial + "\\ProjBiltiful\\");
+            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
             Directory.CreateDirectory(caminhoFinal);
-            string pastaMPrima = Path.Combine(caminhoFinal, "MateriaPrima\\");
-            Directory.CreateDirectory(pastaMPrima);
-            string arquivoFinal = Path.Combine(pastaMPrima + "Materia.dat");
+
+            string arquivoFinal = Path.Combine(caminhoFinal, "Materia.dat");
+
             MPrima MPrima = null;
+
             if (File.Exists(arquivoFinal))
             {
                 try
@@ -585,7 +585,7 @@ namespace CadastrosBasicos
                         string line = sr.ReadLine();
                         do
                         {
-                            if (line.Substring(0, 13) == cod)
+                            if (line.Substring(0, 6) == cod)
                                 MPrima =
                                     new MPrima(
                                         line.Substring(0, 6),
