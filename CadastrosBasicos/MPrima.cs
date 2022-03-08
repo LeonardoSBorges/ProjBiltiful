@@ -17,7 +17,7 @@ namespace CadastrosBasicos
 
         public MPrima()
         {
-            
+
         }
 
         public MPrima(string id, string nome, DateTime uCompra, DateTime dCadastro, char situacao)
@@ -92,7 +92,7 @@ namespace CadastrosBasicos
             do
             {
                 Console.Clear();
-                Console.WriteLine("\n Cadastro de Materia-prima\n");                
+                Console.WriteLine("\n Cadastro de Materia-prima\n");
                 Console.Write(" Nome: ");
                 nomeTemp = Console.ReadLine();
                 Console.Write(" Situacao (A / I): ");
@@ -566,5 +566,46 @@ namespace CadastrosBasicos
                 Console.ReadKey();
             }
         }
+
+        public MPrima RetornaMateriaPrima(string cod)
+        {
+            string caminhoInicial = Directory.GetCurrentDirectory();
+            string caminhoFinal = Path.Combine(caminhoInicial + "\\ProjBiltiful\\");
+            Directory.CreateDirectory(caminhoFinal);
+            string pastaMPrima = Path.Combine(caminhoFinal, "MateriaPrima\\");
+            Directory.CreateDirectory(pastaMPrima);
+            string arquivoFinal = Path.Combine(pastaMPrima + "Materia.dat");
+            MPrima MPrima = null;
+            if (File.Exists(arquivoFinal))
+            {
+                try
+                {
+                    using (StreamReader sr = new StreamReader(arquivoFinal))
+                    {
+                        string line = sr.ReadLine();
+                        do
+                        {
+                            if (line.Substring(0, 13) == cod)
+                                MPrima =
+                                    new MPrima(
+                                        line.Substring(0, 6),
+                                        line.Substring(6, 20),
+                                        Convert.ToDateTime(line.Substring(26, 8).Insert(2, "/").Insert(5, "/")).Date,
+                                        Convert.ToDateTime(line.Substring(34, 8).Insert(2, "/").Insert(5, "/")).Date,
+                                        Convert.ToChar(line.Substring(42, 1))
+                                        );
+                            line = sr.ReadLine();
+                        } while (line != null);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Ex ->" + ex.Message);
+                }
+            }
+            return MPrima;
+        }
+    
     }
 }
+
