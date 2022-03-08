@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CadastrosBasicos;
+using CadastrosBasicos.ManipulaArquivos;
 
 namespace VendasProdutos
 {
@@ -24,7 +25,9 @@ namespace VendasProdutos
                 Console.WriteLine("1. Nova venda");
                 Console.WriteLine("2. Consultar Venda");
                 Console.WriteLine("3. Imprimir Registros de Venda");
+                Console.WriteLine("--------------------------------------");
                 Console.WriteLine("0. Voltar");
+                Console.Write("\nEscolha: ");
 
                 switch (opcao = Console.ReadLine())
                 {
@@ -44,6 +47,7 @@ namespace VendasProdutos
                     default:
                         Console.Clear();
                         Console.WriteLine("Opção inválida");
+                        Console.WriteLine("\nPressione ENTER para voltar ao menu");
                         break;
                 }
             } while (opcao != "0");
@@ -54,21 +58,39 @@ namespace VendasProdutos
         {
             Console.Clear();
 
+            Cliente cliente;
+
             Console.WriteLine("informe o CPF do cliente:");
-            string cliente = Console.ReadLine();
+            string cpf = Console.ReadLine();
 
-            // buscar cpf na lista de inadimplentes
-            // se existir manda procurar o gerente
-            // senão busco os dados do cliente
+            if (new Read().ProcurarCPFBloqueado(cpf) == true)
+            {
+                Console.Clear();
+                Console.WriteLine("\n Falha ao iniciar a venda. Procure pelo gerente do local.");
+                Console.WriteLine("\n Pressione ENTER para voltar ao menu");
+                Console.ReadKey();
+                return;
+            }
+            else
+            {
+                cliente = new Read().ProcuraCliente(cpf);
 
-            
+                if (cliente == null)
+                {
+                    Console.Clear();
+                    Console.WriteLine("\nCliente não encontrado");
+                    Console.WriteLine("\n Pressione ENTER para voltar ao menu");
+                    Console.ReadKey();
+                    return;
+                }
 
+            }
 
             Console.Clear();
 
             Venda venda = new Venda();
 
-            venda.Cliente = cliente;
+            venda.Cliente = cliente.CPF;
             venda.DataVenda = DateTime.Now.Date;
 
             Console.Write($"Venda Nº {venda.Id.ToString().PadLeft(5, '0')}\tData: {venda.DataVenda.ToString("dd/MM/yyyy")}");
@@ -79,10 +101,11 @@ namespace VendasProdutos
             int itens = 1;
             string escolha;
 
-
             do
             {
                 Produto produto;
+                int qtd = 0;
+                decimal totalItens = 0;
 
                 do
                 {
@@ -98,33 +121,37 @@ namespace VendasProdutos
                         Console.WriteLine("\nProduto não encontrado ou código inválido.");
                         Console.ReadKey();
                         Console.Clear();
+                        continue;
                     }
 
-                } while (produto == null);
+                //} while (produto == null);
 
-                int qtd = 0;
-                decimal totalItens;
+                
 
-                do
-                {
+                //do
+                //{
                     Console.WriteLine("\nInforme a quantidade:");
                     qtd = int.Parse(Console.ReadLine());
+
 
                     if (qtd <= 0 || qtd > 999)
                     {
                         Console.WriteLine("Informe uma quantidade entre 1 e 999");
                         Console.ReadKey();
                         Console.Clear();
+                        continue;
                     }
 
                     totalItens = qtd * produto.ValorVenda;
-                    if (totalItens > (decimal) 9999.99)
+
+                    if (totalItens > (decimal)9999.99)
                     {
                         Console.WriteLine("Valor total dos item passou o limite permitido de $ 9.999,99");
                         Console.ReadKey();
                         Console.Clear();
+                        continue;
                     }
-                } while ((qtd <= 0 || qtd > 999) || totalItens > (decimal) 9999.99);
+                } while ((qtd <= 0 || qtd > 999) || totalItens > (decimal)9999.99 || produto == null);
 
                 Console.Clear();
 
@@ -176,14 +203,20 @@ namespace VendasProdutos
             do
             {
                 Console.Clear();
-
-                Console.Write($"\nVenda Nº {venda.Id.ToString().PadLeft(5, '0')}\tData: {venda.DataVenda.ToString("dd/MM/yyyy")}");
-                Console.WriteLine("\n\n");
-
-                Console.WriteLine("Id\tProduto\t\tQtd\tV.Unitário\tT.Item");
-                Console.WriteLine("------------------------------------------------------");
+                Console.WriteLine("----------------------------------------------------------");
+                Console.WriteLine("                           CLIENTE                        ");
+                Console.WriteLine("----------------------------------------------------------");
+                Console.WriteLine($"Nome:\t\t{cliente.Nome.TrimStart(' ')}");
+                Console.WriteLine($"CPF:\t\t{cliente.CPF.Insert(3, ".").Insert(7, ".").Insert(11, "-")}");
+                Console.WriteLine($"Data Nasc.:\t{cliente.DataNascimento.ToString("dd/MM/yyyy")}");
+                Console.WriteLine($"Ultima Compra:\t{cliente.UltimaVenda.ToString("dd/MM/yyyy")}");
+                Console.WriteLine("\n\n----------------------------------------------------------");
+                Console.WriteLine($"Venda Nº {venda.Id.ToString().PadLeft(5, '0')}\t\t\tData: {venda.DataVenda.ToString("dd/MM/yyyy")}");
+                Console.WriteLine("----------------------------------------------------------");
+                Console.WriteLine("\n\nId\tProduto\t\tQtd\tV.Unitário\tT.Item");
+                Console.WriteLine("----------------------------------------------------------");
                 itensVenda.ForEach(item => Console.WriteLine(item.ToString()));
-                Console.WriteLine("------------------------------------------------------");
+                Console.WriteLine("----------------------------------------------------------");
                 Console.WriteLine($"\t\t\t\t\t\t{venda.ValorTotal.ToString("#.00")}");
 
                 Console.WriteLine("\n\n");
@@ -205,8 +238,12 @@ namespace VendasProdutos
                 itemVenda.Cadastrar(itensVenda);
 
                 venda.Cadastrar();
+                
+                cliente.UltimaVenda = venda.DataVenda;
 
                 Console.WriteLine("\n\nVenda cadastrada com sucesso!\nPressione ENTER para voltar ao Menu Vendas...");
+
+                Console.ReadKey();
             }
         }
 
