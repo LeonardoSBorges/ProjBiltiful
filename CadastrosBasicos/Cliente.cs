@@ -114,12 +114,18 @@ namespace CadastrosBasicos
                 }
                 else if (opcao == 1)
                 {
-                    posicao++;
+                    if (posicao == lista.Count)
+                        posicao = 0;
+                    else
+                        posicao++;
                     Console.WriteLine(lista[posicao].ToString());
                 }
                 else if (opcao == 2)
                 {
-                    posicao--;
+                    if(posicao == 0)
+                        posicao = lista.Count;
+                    else
+                        posicao--;
                     Console.WriteLine(lista[posicao].ToString());
                 }
                 else if (opcao == 3)
