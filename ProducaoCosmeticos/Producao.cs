@@ -107,10 +107,13 @@ namespace ProducaoCosmeticos
             }
 
             string dataProducao = DateTime.Now.ToString("dd/MM/yyyy");
-            string produto = null, auxiliarProduto, id;
-            float quantidade = 0, auxiliarQuantidade;
-            int escolha;
+            string produto = null, auxiliarProduto, id, codigoMateriaPrima;
+            float quantidade = 0, auxiliarQuantidade, quantidadeMateriaPrima;
+            int escolha, opcao = 0;
             bool control = false;
+
+            List<ItemProducao> itens = new List<ItemProducao>();
+
             id = Contador.ToString().PadLeft(5, '0');
 
             if (Contador <= 99999)
@@ -176,6 +179,48 @@ namespace ProducaoCosmeticos
                 while (control != true);
 
 
+                
+
+                do
+                {
+
+                    MPrima materiaPrima = new MPrima();
+
+                    Console.WriteLine("Digite o código da matéria prima");
+                    codigoMateriaPrima = Console.ReadLine();
+
+                    if ((materiaPrima = materiaPrima.RetornaMateriaPrima(codigoMateriaPrima)) == null)
+                    {
+
+                        Console.WriteLine("Código de matéria prima não encontrado");
+                        continue;
+
+                    }
+
+
+                    Console.WriteLine("Digite a quantidade de matéria prima que sera utilizada");
+                    quantidadeMateriaPrima = float.Parse(Console.ReadLine());
+
+                    if (quantidadeMateriaPrima < 0 || quantidadeMateriaPrima >= 1000)
+                    {
+
+                        Console.WriteLine("Não é possivel adicionar essa quantidade de matéria prima");
+                        continue;
+
+                    }
+
+                    itens.Add(new ItemProducao(id, dataProducao, codigoMateriaPrima, quantidadeMateriaPrima));
+
+                    
+                    Console.WriteLine("Gostaria de adicionar mais uma materia prima?\n(1) Sim\n(2) Não");
+                    opcao = int.Parse(Console.ReadLine());
+
+                } while (opcao == 1);
+
+
+
+
+
                 Console.WriteLine("Gostaria de finalizar o registro ou deseja excluí-lo agora mesmo?");
                 Console.WriteLine("(1) Finalizar\n(2) Cancelar registro");
 
@@ -189,6 +234,8 @@ namespace ProducaoCosmeticos
                     Contador++;
                     string formatado = "" + id + dataProducao.Replace("/", "") + produto + quantidade.ToString("00000");
                     SalvarArquivo(formatado);
+
+                    ItemProducao.Salvar(itens);
 
                     Console.WriteLine("Registro feito com sucesso!");
                     Console.ReadKey();
