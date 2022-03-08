@@ -43,11 +43,11 @@ namespace CadastrosBasicos.ManipulaArquivos
         }
         public void BloquearFornecedor(string cnpj)
         {
-
             try
             {
                 using (StreamWriter sw = new StreamWriter(CaminhoBloqueado, append: true))
                 {
+
                     sw.WriteLine(cnpj);
                     Console.WriteLine("Fornecedor Bloqueado");
                 }

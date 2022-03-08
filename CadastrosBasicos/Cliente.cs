@@ -1,5 +1,6 @@
 ﻿using CadastrosBasicos.ManipulaArquivos;
 using System;
+using System.Collections.Generic;
 
 namespace CadastrosBasicos
 {
@@ -99,8 +100,52 @@ namespace CadastrosBasicos
         }
         public void Navegar()
         {
-            read.ListaArquivoCliente();
+            Console.WriteLine("============== Clientes ==============");
+            List<Cliente> lista = read.ListaArquivoCliente();
+            int opcao = 0,posicao = 0;
+            bool flag = false;
+            do
+            {
 
+
+                if (opcao == 0)
+                {
+                    Console.WriteLine(lista[posicao].ToString());
+                }
+                else if (opcao == 1)
+                {
+                    posicao++;
+                    Console.WriteLine(lista[posicao].ToString());
+                }
+                else if (opcao == 2)
+                {
+                    posicao--;
+                    Console.WriteLine(lista[posicao].ToString());
+                }
+                else if (opcao == 3)
+                {
+                    posicao = 0;
+                    Console.WriteLine(lista[posicao].ToString());
+                }
+                else if (opcao == 4)
+                {
+                    posicao = lista.Count;
+                    Console.WriteLine(lista[posicao].ToString());
+                }
+
+
+                Console.WriteLine(@"1. Proximo 
+2. Anterior
+3. Primeiro
+4. Ultimo
+
+");
+                do
+                {
+                    flag = int.TryParse(Console.ReadLine(), out opcao);
+                } while (flag != true);
+
+            } while (opcao != 0);
         }
         public override string ToString()
         {
