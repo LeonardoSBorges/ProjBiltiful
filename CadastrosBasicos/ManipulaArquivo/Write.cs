@@ -131,8 +131,9 @@ namespace CadastrosBasicos.ManipulaArquivos
                     while (fornecedores[posicao] != null)
                     {
                         sw.WriteLine(fornecedores[posicao].RetornaArquivo());
-                    }
-                    Console.WriteLine("Registro atualizado");
+                        posicao++;
+                    } while (posicao < fornecedores.Count);+
+                        Console.WriteLine("Registro atualizado");
                 }
             }
             catch (Exception ex)
