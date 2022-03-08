@@ -623,7 +623,7 @@ namespace CadastrosBasicos
                         string line = sr.ReadLine();
                         do
                         {
-                            if (line.Substring(0, 13) == cod)
+                            if (line.Substring(0, 6) == cod)
                                 MPrima =
                                     new MPrima(
                                         line.Substring(0, 6),
