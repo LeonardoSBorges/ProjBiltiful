@@ -7,114 +7,166 @@ using System.Threading.Tasks;
 
 namespace CadastrosBasicos
 {
-    
+
     public class MenuCadastros
     {
         public static Write write = new Write();
         public static Read read = new Read();
-        
+
         public static void SubMenu()
         {
-            Console.Clear();
-            //MenuCadastros menuCadastros;
-            Cliente cliente;
-            Fornecedor fornecedor;
+            string escolha;
 
-            //Risco risco = new Risco();
-            bool flag = false;
-
-            //Este menu sera utilizado para testes
-            int value = -1;
-            while (value != 0)
+            do
             {
-                Console.Write(@"=============== CADASTROS ===============
-1. Cadastrar cliente
-2. Cadastrar fornecedor
-3. Cadastrar materia prima
-4. Cadastrar produtos
-5. Cadastro de Inadimplentes
-6. Cadastro de Fornecedores Bloqueados
-0. Voltar ao menu anterior
-::  ");
-                Console.Write(@"1. Cadastrar cliente
-2. Editar registro de cliente
-3. Cliente Inadimplente
-4. Clientes
-5. Cadastrar fornecedor
-6. Editar registro de fornecedor
-7. Bloquear fornecedor
-8. Fornecedores
-0. Voltar ao menu anterior
-Insira uma opcao valida: 
-");
-                do
-                {
-                    flag = int.TryParse(Console.ReadLine(), out value);
-                } while (flag != true);
+                Console.Clear();
 
-                switch (value)
+                Console.WriteLine("=============== CADASTROS ===============");
+                Console.WriteLine("1. Clientes / Fornecedores");
+                Console.WriteLine("2. Produtos");
+                Console.WriteLine("3. Matérias-Primas");
+                Console.WriteLine("-----------------------------------------");
+                Console.WriteLine("0. Voltar ao menu anterior");
+                Console.Write("\nEscolha: ");
+
+                switch(escolha = Console.ReadLine())
                 {
-                    case 0:
-                        // sair
+                    case "0":
                         break;
-                    case 1:
-                        //Cadastrar
-                        DateTime dNascimento;
-                        Console.Write("Data de nascimento: ");
-                        do
-                        {
-                            flag = DateTime.TryParse(Console.ReadLine(), out dNascimento);
-                        } while (flag != true);
-                        if (Validacoes.CalculaData(dNascimento))
-                        {
-                            cliente = RegistrarCliente(dNascimento);
-                        }
+
+                    case "1":
+                        SubMenuClientesFornecedores();
                         break;
-                    case 2:
-                        cliente = new Cliente();
-                        cliente.Editar();
+
+                    case "2":
+                        new Produto().Menu();
                         break;
-                    case 3:
+
+                    case "3":
                         new MPrima().Menu();
-                        cliente = new Cliente();
-                        cliente.BloqueiaCadastro();
                         break;
-                    case 4:
-                        cliente = new Cliente();
-                        cliente.Navegar();
-                        break;
-                    case 5:
-                        DateTime dCriacao;
-                        Console.Write("Data de criacao da empresa:");
-                        do
-                        {
-                            flag = DateTime.TryParse(Console.ReadLine(), out dCriacao);
-                        } while (flag != true);
-                        if (Validacoes.CalculaCriacao(dCriacao))
-                        {
-                            fornecedor = RegistrarFornecedor(dCriacao);
-                            write.GravarNovoFornecedor(fornecedor);
-                        }
-                        break;
-                    case 6:
-                        fornecedor = new Fornecedor();
-                        fornecedor.Editar();
-                        break;
-                    case 7:
-                        fornecedor = new Fornecedor();
-                        fornecedor.BloqueiaFornecedor();
-                        break;
-                    case 8:
-                        fornecedor = new Fornecedor();
-                        fornecedor.Navegar();
+
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Opção inválida");
+                        Console.WriteLine("\nPressione ENTER para voltar ao menu");
                         break;
                 }
 
-                Console.ReadKey();
-                Console.Clear();
-            }
+            }while(escolha != "0");
 
         }
+
+
+        public static void SubMenuClientesFornecedores()
+        {
+            string escolha;
+
+            do
+            {
+                Console.Clear();
+
+                Console.WriteLine("=============== CLIENTES / FORNECEDORES ===============");
+                Console.WriteLine("1. Cadastar cliente");
+                Console.WriteLine("2. Imprimir clientes");
+                Console.WriteLine("3. Editar registro de cliente");
+                Console.WriteLine("4. Bloquear cliente (Inadimplente)");
+                Console.WriteLine("-------------------------------------------------------");
+                Console.WriteLine("5. Cadastar fornecedor");
+                Console.WriteLine("6. Imprimir fornecedores");
+                Console.WriteLine("7. Editar registro de fornecedor");
+                Console.WriteLine("8. Bloquear fornecedor");
+                Console.WriteLine("-------------------------------------------------------");
+                Console.WriteLine("0. Voltar ao menu anterior");
+                Console.Write("\nEscolha: ");
+
+                switch (escolha = Console.ReadLine())
+                {
+                    case "0":
+                        break;
+
+                    case "1":
+                        NovoCliente();
+                        break;
+
+                    case "2":
+                        new Cliente().Navegar();
+                        break;
+
+                    case "3":
+                        new Cliente().Editar();
+                        break;
+
+                    case "4":
+                        new Cliente().BloqueiaCadastro();
+                        break;
+
+                    case "5":
+                        NovoFornecedor();
+                        break;
+
+                    case "6":
+                        new Fornecedor().Navegar();
+                        break;
+
+                    case "7":
+                        new Fornecedor().Editar();
+
+                        break;
+
+                    case "8":
+                        new Fornecedor().BloqueiaFornecedor();
+                        break;
+
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Opção inválida");
+                        Console.WriteLine("\n Pressione ENTER para voltar ao menu");
+                        break;
+                }
+
+            } while (escolha != "0");
+        }
+
+        public static void NovoCliente()
+        {
+            Console.Clear();
+
+            bool flag;
+
+            DateTime dNascimento;
+
+            do
+            {
+                Console.Write("Data de nascimento: ");
+                flag = DateTime.TryParse(Console.ReadLine(), out dNascimento);
+            } while (flag != true);
+            if (Validacoes.CalculaData(dNascimento))
+            {
+                RegistrarCliente(dNascimento);
+            }
+        }
+
+        public static void NovoFornecedor()
+        {
+            Console.Clear();
+
+            bool flag;
+
+            DateTime dCriacao;
+            
+            do
+            {
+                Console.Write("Data de criacao da empresa:");
+                flag = DateTime.TryParse(Console.ReadLine(), out dCriacao);
+            } while (flag != true);
+            if (Validacoes.CalculaCriacao(dCriacao))
+            {
+                Fornecedor fornecedor = RegistrarFornecedor(dCriacao);
+                write.GravarNovoFornecedor(fornecedor);
+            }
+        }
+
         public static Fornecedor RegistrarFornecedor(DateTime dFundacao)
         {
             string rSocial = "", cnpj = "";

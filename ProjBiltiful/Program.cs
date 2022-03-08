@@ -18,46 +18,49 @@ namespace ProjBiltiful
             CultureInfo.DefaultThreadCurrentCulture = cultureInformation;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInformation;
 
-            int value;
+            string escolha;
 
             do
             {
                 Console.Clear();
-                Console.Write(@"=============== BITIFUL ===============
-1. Cadastros
-2. Vendas
-3. Compra de Materia-Prima
-4. Producao
-0. Sair
-:: ");
 
-                switch (value = int.Parse(Console.ReadLine()))
+                Console.WriteLine("=============== MENU ===============");
+                Console.WriteLine("1. Cadastros");
+                Console.WriteLine("2. Produção");
+                Console.WriteLine("3. Compras");
+                Console.WriteLine("4. Vendas");
+                Console.WriteLine("------------------------------------");
+                Console.WriteLine("0. Sair");
+                Console.Write("\nEscolha: ");
+
+                switch (escolha = Console.ReadLine())
                 {
-                    case 0:
+                    case "0":
                         Environment.Exit(0);
                         break;
 
-                    case 1:
+                    case "1":
                         MenuCadastros.SubMenu();
                         break;
 
-                    case 2:
+                    case "2":
+                        break;
+
+                    case "3":
+                        break;
+                    
+                    case "4":
                         MenuVendas.SubMenu();
-                        break;
-
-                    case 3:
-                        break;
-
-                    case 4:
                         break;
 
                     default:
                         Console.Clear();
                         Console.WriteLine("Opção inválida");
-                        Console.ReadKey();
+                        Console.WriteLine("\nPressione ENTER para voltar ao menu");
                         break;
                 }
-            } while (value != 0);
+
+            } while (escolha != "0");
         }
     }
 }
