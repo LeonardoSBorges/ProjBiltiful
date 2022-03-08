@@ -109,7 +109,7 @@ namespace CadastrosBasicos
         }
         public void Localizar()
         {
-            Console.WriteLine("Insira o cpf para localizar: ");
+            Console.WriteLine("Insira o CNPJ para localizar: ");
             string cnpj = Console.ReadLine();
 
             Fornecedor fornecedor = read.ProcurarFornecedor(cnpj);
@@ -179,7 +179,7 @@ namespace CadastrosBasicos
                 Console.WriteLine("Razao social: ");
                 string nome = Console.ReadLine().Trim().PadLeft(50, ' ');
                 Console.WriteLine("Situacao [A - Ativo/ I - inativo]: ");
-                bool flagSituacao = char.TryParse(Console.ReadLine(), out char situacao);
+                bool flagSituacao = char.TryParse(Console.ReadLine().ToString().ToUpper(), out char situacao);
 
                 fornecedor.RazaoSocial = nome == "" ? fornecedor.RazaoSocial : nome;
 

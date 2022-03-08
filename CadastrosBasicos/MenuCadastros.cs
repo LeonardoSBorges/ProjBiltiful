@@ -202,8 +202,10 @@ namespace CadastrosBasicos
                 situacao = char.Parse(Console.ReadLine());
             }
             else
+            {
+                Console.WriteLine("Fornecedor ja cadastrado");
                 return f;
-
+            }
             return new Fornecedor(cnpj, rSocial, dFundacao, situacao);
 
         }
