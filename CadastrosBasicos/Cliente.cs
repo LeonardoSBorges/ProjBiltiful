@@ -100,58 +100,72 @@ namespace CadastrosBasicos
         }
         public void Navegar()
         {
-            Console.WriteLine("============== Clientes ==============");
-            List<Cliente> lista = read.ListaArquivoCliente();
-            int opcao = 0,posicao = 0;
-            bool flag = false;
-            do
+            Console.WriteLine("============== Cliente ==============");
+            bool verificaArquivo = read.VerificaListaCliente();
+            if (verificaArquivo == true)
             {
-
-
-                if (opcao == 0)
+                List<Cliente> lista = read.ListaArquivoCliente();
+                int opcao = 0, posicao = 0;
+                bool flag = false;
+                do
                 {
-                    Console.WriteLine(lista[posicao].ToString());
-                }
-                else if (opcao == 1)
-                {
-                    if (posicao == lista.Count)
+                    Console.Clear();
+                    Console.WriteLine("============== Cliente ==============");
+
+                    if (opcao == 0)
+                    {
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
+                    else if (opcao == 1)
+                    {
+                        if (posicao == lista.Count - 1)
+                            posicao = lista.Count - 1;
+                        else
+                            posicao++;
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
+                    else if (opcao == 2)
+                    {
+                        if (posicao == 0)
+                            posicao = 0;
+                        else
+                            posicao--;
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
+                    else if (opcao == 3)
+                    {
                         posicao = 0;
-                    else
-                        posicao++;
-                    Console.WriteLine(lista[posicao].ToString());
-                }
-                else if (opcao == 2)
-                {
-                    if(posicao == 0)
-                        posicao = lista.Count;
-                    else
-                        posicao--;
-                    Console.WriteLine(lista[posicao].ToString());
-                }
-                else if (opcao == 3)
-                {
-                    posicao = 0;
-                    Console.WriteLine(lista[posicao].ToString());
-                }
-                else if (opcao == 4)
-                {
-                    posicao = lista.Count;
-                    Console.WriteLine(lista[posicao].ToString());
-                }
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
+                    else if (opcao == 4)
+                    {
+                        posicao = lista.Count - 1;
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
 
 
-                Console.WriteLine(@"1. Proximo 
+                    Console.WriteLine(@"
+1. Proximo 
 2. Anterior
 3. Primeiro
 4. Ultimo
-
+0. Voltar para menu anterior.
 ");
-                do
-                {
-                    flag = int.TryParse(Console.ReadLine(), out opcao);
-                } while (flag != true);
+                    do
+                    {
+                        flag = int.TryParse(Console.ReadLine(), out opcao);
+                    } while (flag != true);
 
-            } while (opcao != 0);
+                } while (opcao != 0);
+
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Ainda nao tem nenhum cliente cadastrado");
+                Console.WriteLine("Pressione enter para continuar");
+                Console.ReadKey();
+            }
         }
         public override string ToString()
         {

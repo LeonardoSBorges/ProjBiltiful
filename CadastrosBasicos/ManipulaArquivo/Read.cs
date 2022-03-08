@@ -105,14 +105,27 @@ namespace CadastrosBasicos.ManipulaArquivos
             return false;
 
         }
+        public bool VerificaListaFornecedor()
+        {
+            if (File.ReadAllLines(CaminhoFornecedor).Length == 0)
+                return false;
+            else
+                return true;
+        }
+        public bool VerificaListaCliente()
+        {
+            if (File.ReadAllLines(CaminhoCadastro).Length == 0)
+                return false;
+            else
+                return true;
+        }
         public List<Fornecedor> ListaArquivoFornecedor()
         {
             List<Fornecedor> fornecedores = new List<Fornecedor>();
             string procuraFornecedor = "", rSocial = "", cnpj = "";
             DateTime dAbertura, uCompra, dCadastro;
             char situacao;
-            Fornecedor buscaFornecedor;
-
+            
             try
             {
                 using (StreamReader sr = new StreamReader(CaminhoFornecedor))
@@ -121,14 +134,12 @@ namespace CadastrosBasicos.ManipulaArquivos
                     while (procuraFornecedor != null)
                     {
                         cnpj = procuraFornecedor.Substring(0, 14); ;
-                        rSocial = procuraFornecedor.Substring(14, 20);
+                        rSocial = procuraFornecedor.Substring(14, 50).Trim();
                         dAbertura = DateTime.Parse(procuraFornecedor.Substring(64, 10));
                         uCompra = DateTime.Parse(procuraFornecedor.Substring(74, 10));
                         dCadastro = DateTime.Parse(procuraFornecedor.Substring(84, 10));
                         situacao = char.Parse(procuraFornecedor.Substring(94, 1));
-                        buscaFornecedor = new Fornecedor(cnpj, rSocial, dAbertura, uCompra, dCadastro, situacao);
-                        
-                        fornecedores.Add(buscaFornecedor);
+                        fornecedores.Add(new Fornecedor(cnpj, rSocial, dAbertura, uCompra, dCadastro, situacao));
 
                         procuraFornecedor = sr.ReadLine();
                     }
@@ -139,7 +150,7 @@ namespace CadastrosBasicos.ManipulaArquivos
             {
                 Console.WriteLine("Ocorreu um erro: " + ex.Message);
             }
-            return null;
+            return fornecedores;
         }
         //Retorna lista de clientes
         public List<Cliente> ListaArquivoCliente()

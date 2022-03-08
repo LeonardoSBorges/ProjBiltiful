@@ -1,6 +1,7 @@
 ﻿using CadastrosBasicos.ManipulaArquivos;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace CadastrosBasicos
 {
@@ -19,7 +20,7 @@ namespace CadastrosBasicos
         {
 
         }
-        public Fornecedor(string cnpj, string rSocial, DateTime dAbertura,char situacao)
+        public Fornecedor(string cnpj, string rSocial, DateTime dAbertura, char situacao)
         {
             CNPJ = cnpj;
             RazaoSocial = rSocial;
@@ -40,57 +41,71 @@ namespace CadastrosBasicos
         public void Navegar()
         {
             Console.WriteLine("============== Fornecedores ==============");
-            List<Fornecedor> lista = read.ListaArquivoFornecedor();
-            int opcao = 0, posicao = 0;
-            bool flag = false;
-            do
+            bool verificaArquivo = read.VerificaListaFornecedor();
+            if (verificaArquivo == true)
             {
-                Console.WriteLine("============== Fornecedores ==============");
+                List<Fornecedor> lista = read.ListaArquivoFornecedor();
+                int opcao = 0, posicao = 0;
+                bool flag = false;
+                do
+                {
+                    Console.Clear();
+                    Console.WriteLine("============== Fornecedores ==============");
 
-                if (opcao == 0)
-                {
-                    Console.WriteLine(lista[posicao].ToString());
-                }
-                else if (opcao == 1)
-                {
-                    if (posicao == lista.Count)
+                    if (opcao == 0)
+                    {
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
+                    else if (opcao == 1)
+                    {
+                        if (posicao == lista.Count - 1)
+                            posicao = lista.Count - 1;
+                        else
+                            posicao++;
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
+                    else if (opcao == 2)
+                    {
+                        if (posicao == 0)
+                            posicao = 0;
+                        else
+                            posicao--;
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
+                    else if (opcao == 3)
+                    {
                         posicao = 0;
-                    else
-                     posicao++;
-                    Console.WriteLine(lista[posicao].ToString());
-                }
-                else if (opcao == 2)
-                {
-                    if (posicao == 0)
-                        posicao = lista.Count;
-                    else
-                        posicao--;
-                    Console.WriteLine(lista[posicao].ToString());
-                }
-                else if (opcao == 3)
-                {
-                    posicao = 0;
-                    Console.WriteLine(lista[posicao].ToString());
-                }
-                else if (opcao == 4)
-                {
-                    posicao = lista.Count;
-                    Console.WriteLine(lista[posicao].ToString());
-                }
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
+                    else if (opcao == 4)
+                    {
+                        posicao = lista.Count - 1;
+                        Console.WriteLine(lista[posicao].ToString());
+                    }
 
 
-                Console.WriteLine(@"1. Proximo 
+                    Console.WriteLine(@"
+1. Proximo 
 2. Anterior
 3. Primeiro
 4. Ultimo
-
+0. Voltar para menu anterior.
 ");
-                do
-                {
-                    flag = int.TryParse(Console.ReadLine(), out opcao);
-                } while (flag != true);
+                    do
+                    {
+                        flag = int.TryParse(Console.ReadLine(), out opcao);
+                    } while (flag != true);
 
-            } while (opcao != 0);
+                } while (opcao != 0);
+
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Ainda nao tem nenhum fornecedor cadastrado");
+                Console.WriteLine("Pressione enter para continuar");
+                Console.ReadKey();
+            }
         }
         public void BloqueiaFornecedor()
         {
@@ -111,7 +126,7 @@ namespace CadastrosBasicos
                     flag = int.TryParse(Console.ReadLine(), out opcao);
                 } while (flag != true);
 
-                if(opcao == 1)
+                if (opcao == 1)
                 {
 
                 }
