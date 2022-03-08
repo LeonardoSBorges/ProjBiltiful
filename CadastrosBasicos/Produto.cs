@@ -560,9 +560,13 @@ namespace CadastrosBasicos
                             sw.WriteLine(novoProduto);
                         }
 
-                        Console.WriteLine("\n Produto alterado.");
-                        Console.WriteLine("\n Pressione ENTER para voltar ao menu");
-                        Console.ReadKey();
+                        if (situacaoAtualizada != null)
+                        {
+                            Console.WriteLine("\n Produto alterado.");
+                            Console.WriteLine("\n Pressione ENTER para voltar ao menu");
+                            Console.ReadKey();
+                        }
+
                     }
                     catch (Exception ex)
                     {
