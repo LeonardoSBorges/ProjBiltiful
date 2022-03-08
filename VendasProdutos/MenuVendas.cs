@@ -234,6 +234,7 @@ namespace VendasProdutos
                 venda.Cadastrar();
                 
                 cliente.UltimaVenda = venda.DataVenda;
+                new Write().EditarCliente(cliente);
 
                 Console.WriteLine("\n\nVenda cadastrada com sucesso!\nPressione ENTER para voltar ao Menu Vendas...");
 
