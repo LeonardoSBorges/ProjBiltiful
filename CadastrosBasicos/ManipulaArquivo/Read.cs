@@ -57,6 +57,7 @@ namespace CadastrosBasicos.ManipulaArquivos
                     {
                         if (cnpjBloqueado == cnpj)
                         {
+
                             return true;
                         }
                         cnpjBloqueado = sr.ReadLine();
@@ -144,6 +145,7 @@ namespace CadastrosBasicos.ManipulaArquivos
                         procuraFornecedor = sr.ReadLine();
                     }
                 }
+                return fornecedores;
             }
             
             catch (Exception ex)
@@ -193,7 +195,7 @@ namespace CadastrosBasicos.ManipulaArquivos
         public Fornecedor ProcurarFornecedor(string procuraCnpj)
         {
             string procuraFornecedor = "", rSocial = "";
-            procuraCnpj = procuraCnpj.Replace(".", "").Replace("-", "");
+            procuraCnpj = procuraCnpj.Replace(".", "").Replace("-", "").Replace("/", "");
             DateTime dAbertura, uCompra, dCadastro;
             char situacao;
             Fornecedor fornecedor;
@@ -211,7 +213,7 @@ namespace CadastrosBasicos.ManipulaArquivos
                         string cnpj = procuraFornecedor.Substring(0, 14);
                         if (procuraCnpj == cnpj)
                         {
-                            rSocial = procuraFornecedor.Substring(14, 20);
+                            rSocial = procuraFornecedor.Substring(14, 50).Trim();
                             dAbertura = DateTime.Parse(procuraFornecedor.Substring(64, 10));
                             uCompra = DateTime.Parse(procuraFornecedor.Substring(74, 10));
                             dCadastro = DateTime.Parse(procuraFornecedor.Substring(84, 10));

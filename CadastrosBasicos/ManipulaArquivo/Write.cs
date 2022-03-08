@@ -57,6 +57,62 @@ namespace CadastrosBasicos.ManipulaArquivos
                 Console.WriteLine("Ocorreu um erro: " + ex.Message);
             }
         }
+        public void DesbloqueiaFornecedor(string cnpj)
+        {
+            List<string> cnpjs = new List<string>();
+            try
+            {
+                using (StreamReader sw = new StreamReader(CaminhoBloqueado))
+                {
+                    string values = sw.ReadLine();
+                    while (values != null)
+                    {
+                        cnpjs.Add(values);
+                        values = sw.ReadLine();
+                    }
+                }
+                using (StreamWriter sw = new StreamWriter(CaminhoBloqueado))
+                {
+                    cnpjs.ForEach(s =>
+                    {
+                        if (s != cnpj)
+                            sw.WriteLine(s);
+                    });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
+        }
+        public void DesbloqueiaCliente(string cpf)
+        {
+            List<string> cpfs = new List<string>();
+            try
+            {
+                using (StreamReader sw = new StreamReader(ClienteInadimplente))
+                {
+                    string values = sw.ReadLine();
+                    while (values != null)
+                    {
+                        if (cpf != values)
+                            cpfs.Add(values);
+                        values = sw.ReadLine();
+                    }
+                }
+                File.Delete(ClienteInadimplente);
+                using (StreamWriter sw = new StreamWriter(ClienteInadimplente))
+                {
+                    cpfs.ForEach(s => sw.WriteLine(s));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
+        }
         public void BloqueiaCliente(string cpf)
         {
 
@@ -125,14 +181,16 @@ namespace CadastrosBasicos.ManipulaArquivos
                     }
                     posicao++;
                 }
+                File.Delete(CaminhoFornecedor);
                 using (StreamWriter sw = new StreamWriter(CaminhoFornecedor))
                 {
                     posicao = 0;
-                    while (fornecedores[posicao] != null)
+                    do
                     {
                         sw.WriteLine(fornecedores[posicao].RetornaArquivo());
-                    }
-                    Console.WriteLine("Registro atualizado");
+                        posicao++;
+                    } while (posicao < fornecedores.Count);
+                        Console.WriteLine("Registro atualizado");
                 }
             }
             catch (Exception ex)
@@ -165,11 +223,9 @@ namespace CadastrosBasicos.ManipulaArquivos
         {
             try
             {
-                string total = fornecedor.RetornaArquivo();
-
                 using (StreamWriter sw = new StreamWriter(CaminhoFornecedor, append: true))
                 {
-                    sw.WriteLine(total);
+                    sw.WriteLine(fornecedor.RetornaArquivo());
                     Console.WriteLine("Fornecedor inserido com sucesso");
                 }
 
