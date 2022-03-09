@@ -54,7 +54,7 @@ namespace ComprasMateriasPrimas
                 {
                     Console.Clear();
                     Console.WriteLine("1. Ver Compra");
-                    Console.WriteLine("2. Ver Itens da Compra");
+                    //Console.WriteLine("2. Ver Itens da Compra");
                     Console.WriteLine("0. Voltar para o menu");
                     opt = Console.ReadLine();
                     switch (opt)
@@ -73,27 +73,17 @@ namespace ComprasMateriasPrimas
                                 }
                                 else if (escolha.Equals("<") && atual > 0)
                                 {
-                                    if (atual == 0)
-                                    {
-                                        compras.ElementAt(atual).ImprimirCompra();
-                                    }
-                                    else
-                                    {
-                                        --atual;
-                                        compras.ElementAt(atual).ImprimirCompra();
-                                    }
+                                    if (atual != 0)
+                                        atual--;
+
+                                    compras.ElementAt(atual).ImprimirCompra();
                                 }
                                 else if (escolha.Equals(">") && atual < compras.Count - 1)
                                 {
-                                    if (atual == compras.Count - 1)
-                                    {
-                                        compras.ElementAt(atual).ImprimirCompra();
-                                    }
-                                    else
-                                    {
+                                    if (atual != compras.Count - 1)
                                         ++atual;
-                                        compras.ElementAt(atual).ImprimirCompra();
-                                    }
+
+                                    compras.ElementAt(atual).ImprimirCompra();
                                 }
                                 else if (escolha.Equals(">>"))
                                 {
@@ -107,60 +97,60 @@ namespace ComprasMateriasPrimas
                             } while (escolha != "x");
                             break;
 
-                        case "2":
-                            Console.Clear();
-                            bool sair = false;
-                            int indice = 0;
-                            string[] dados = File.ReadAllLines(new ManipulaArquivosCompraMP().CaminhoItemCompra);
-                            if (dados.Length == 0)
-                            {
-                                Console.WriteLine("Nada pra mostrar: arquivo vazio!!");
-                                Console.ReadKey();
-                            }
-                            while (!sair)
-                            {
-                                Console.Clear();
-                                Console.WriteLine("1 - Inicio\n2 - Fim\n3 - Anterior\n4 - Proximo\n5 - Sair");
-                                Console.WriteLine("Escolha a opção que deseja: ");
-                                int opcao = int.Parse(Console.ReadLine());
-                                switch (opcao)
-                                {
-                                    case 1:
-                                        indice = 0;
-                                        Console.WriteLine(dados[indice]);
-                                        break;
-                                    case 2:
-                                        indice = dados.Length - 1;
-                                        Console.WriteLine(dados[indice]);
-                                        break;
-                                    case 3:
-                                        if (indice == 0)
-                                        {
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            indice--;
-                                            Console.WriteLine(dados[indice]);
-                                        }
-                                        break;
-                                    case 4:
-                                        if (indice == dados.Length - 1)
-                                        {
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            indice++;
-                                            Console.WriteLine(dados[indice]);
-                                        }
-                                        break;
-                                    case 5:
-                                        sair = true;
-                                        break;
-                                }
-                            }
-                            break;
+                        //case "2":
+                        //    Console.Clear();
+                        //    bool sair = false;
+                        //    int indice = 0;
+                        //    string[] dados = File.ReadAllLines(new ManipulaArquivosCompraMP().CaminhoItemCompra);
+                        //    if (dados.Length == 0)
+                        //    {
+                        //        Console.WriteLine("Nada pra mostrar: arquivo vazio!!");
+                        //        Console.ReadKey();
+                        //    }
+                        //    while (!sair)
+                        //    {
+                        //        Console.Clear();
+                        //        Console.WriteLine("1 - Inicio\n2 - Fim\n3 - Anterior\n4 - Proximo\n5 - Sair");
+                        //        Console.WriteLine("Escolha a opção que deseja: ");
+                        //        int opcao = int.Parse(Console.ReadLine());
+                        //        switch (opcao)
+                        //        {
+                        //            case 1:
+                        //                indice = 0;
+                        //                Console.WriteLine(dados[indice]);
+                        //                break;
+                        //            case 2:
+                        //                indice = dados.Length - 1;
+                        //                Console.WriteLine(dados[indice]);
+                        //                break;
+                        //            case 3:
+                        //                if (indice == 0)
+                        //                {
+                        //                    break;
+                        //                }
+                        //                else
+                        //                {
+                        //                    indice--;
+                        //                    Console.WriteLine(dados[indice]);
+                        //                }
+                        //                break;
+                        //            case 4:
+                        //                if (indice == dados.Length - 1)
+                        //                {
+                        //                    break;
+                        //                }
+                        //                else
+                        //                {
+                        //                    indice++;
+                        //                    Console.WriteLine(dados[indice]);
+                        //                }
+                        //                break;
+                        //            case 5:
+                        //                sair = true;
+                        //                break;
+                        //        }
+                        //    }
+                        //    break;
 
                         case "0":
                             break;
@@ -202,6 +192,9 @@ namespace ComprasMateriasPrimas
                         {
                             Console.Write("CNPJ do Fornecedor: ");
                             cnpjFornecedor = Console.ReadLine();
+
+                            cnpjFornecedor = cnpjFornecedor.Replace(".", "").Replace("/", "").Replace("-", "");
+
                             ok = cnpjFornecedor != string.Empty &&
                                  Validacoes.ValidarCnpj(cnpjFornecedor) &&
                                  new Read().ProcurarFornecedor(cnpjFornecedor) != null ? 0 : 1;
@@ -237,14 +230,14 @@ namespace ComprasMateriasPrimas
                                 Console.Write("- Quantidade do item que deseja comprar: ");
                                 quantidade = float.Parse(Console.ReadLine());
                                 if ((valorUnitario * quantidade) > 99999.99f) Console.WriteLine("O valor total do Item ultrapassou o limite de 99.999,99");
-                            } while ( (valorUnitario * quantidade) > 99999.99f);
-                            
+                            } while ((valorUnitario * quantidade) > 99999.99f);
+
                             ItemCompra item = new(compra.Id,
                                                     compra.DataCompra,
                                                     idMP,
                                                     quantidade,
                                                     valorUnitario);
-                            itens.Add(item);    
+                            itens.Add(item);
                             count++;
                         } while (count <= qtdd);
                         compra.Fornecedor = cnpjFornecedor;
@@ -284,7 +277,7 @@ namespace ComprasMateriasPrimas
             Console.WriteLine("Id: " + Compra.FormatarId(Id));
             Console.WriteLine("Data: " + DataCompra);
             Console.WriteLine("CNPJ Fornecedor: " + Fornecedor);
-            Console.WriteLine("Valor total: " + ValorTotal.ToString("0000000").Insert(5, ","));
+            Console.WriteLine("Valor total: " + ValorTotal.ToString("0000000").Insert(5, ",").TrimStart('0'));
             Console.WriteLine("---------------------------------");
         }
 
@@ -308,7 +301,7 @@ namespace ComprasMateriasPrimas
 
         public static Compra ExtrairCompra(string linhaDoArquivo) => new Compra(
                                                                         ExtrairId(linhaDoArquivo),
-                                                                        ExtrairDataCompra(linhaDoArquivo), 
+                                                                        ExtrairDataCompra(linhaDoArquivo),
                                                                         ExtrairCNPJ(linhaDoArquivo),
                                                                         ExtrairValorTotal(linhaDoArquivo));
 
@@ -317,9 +310,9 @@ namespace ComprasMateriasPrimas
         public static DateTime ExtrairDataCompra(string linhaDoArquivo)
         {
             string data = linhaDoArquivo.Substring(5, 8);
-	  	    int dia = int.Parse(data.Substring(0, 2));
-	        int mes = int.Parse(data.Substring(2, 2));
-		    int ano = int.Parse(data.Substring(4, 4));
+            int dia = int.Parse(data.Substring(0, 2));
+            int mes = int.Parse(data.Substring(2, 2));
+            int ano = int.Parse(data.Substring(4, 4));
 
             return new DateTime(ano, mes, dia);
         }
@@ -329,7 +322,7 @@ namespace ComprasMateriasPrimas
                                                                     .Insert(6, ".")
                                                                     .Insert(10, "/")
                                                                     .Insert(15, "-");
-        
-        public static float ExtrairValorTotal(string linhaDoArquivo)=> float.Parse(linhaDoArquivo.Substring(26, 7));
+
+        public static float ExtrairValorTotal(string linhaDoArquivo) => float.Parse(linhaDoArquivo.Substring(26, 7));
     }
 }
