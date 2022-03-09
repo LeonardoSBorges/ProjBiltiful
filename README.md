@@ -1,19 +1,19 @@
 # PROJETO BILTIFUL
 
-Para iniciar o executavel a primeira coisa que deve ser feita eh definir o projeto como inicializacao. Apos esta definicao executar com F5 ou ctrl F5.
+Para iniciar o executável a primeira coisa que deve ser feita é definir o projeto como inicialização. Após está definição executar com F5 ou Ctrl + F5.
 
-Ao iniciar a execucao do mesmo ira se deparar com um menu inicial com as seguintes opcoes:
+Ao iniciar a execução o mesmo irá se deparar com um menu inicial com as seguintes opcoes:
 
-* OBS: Para que o programa funcione corretamente voce tera que seguir a seguinte ordem voce deve cadastrar um cliente, um fornecedor, um produto e uma materia prima ai conseguira efetuar producao, vendas e compras.
+* OBS: Para que o programa funcione corretamente você terá que seguir a seguinte ordem, você deve cadastrar um cliente, um fornecedor, um produto e uma materia prima, após isso conseguirá efetuar producao, vendas e compras.
 
 ### MENU
 | __Opcoes__ | __Menu Principal__ | __Descricao__ |
 |-----|---------------------------|---------------|
-| 1.  |    Cadastro    | Tera as funcoes de cadastro e navegacoes de Clientes, Fornecedores, Produtos e Materias-Primas.|
-| 2.  |    Producao    | Tera as funcoes de Producao para Cadastrar uma producao, Localizar um registro e Imprimir um registro.|
-| 3.  |    Compras    | Tera as funcoes de compras para fazer Nova Compra, Consultar Compra e Imprimir registro de compra.|
-| 4.  |    Vendas    | Tera as Funcoes de vebdas para Nova venda, Consultar venda e Imprimir registros de venda.|
-| 0.  |    Sair    | O numero zero foi escolhido para ser retorno de menu e tambem finalizacao do programa caso esteja no menu principal|
+| 1.  |    Cadastro    | Terá as funções de cadastro e navegações de Clientes, Fornecedores, Produtos e Materias-Primas.|
+| 2.  |    Producao    | Terá as funções de Produção para Cadastrar uma produção, Localizar um registro e Imprimir um registro.|
+| 3.  |    Compras    | Terá as funções de compras para fazer Nova Compra, Consultar Compra e Imprimir registro de compra.|
+| 4.  |    Vendas    | Terá as funções de vendas para Nova venda, Consultar venda e Imprimir registros de venda.|
+| 0.  |    Sair    | O número zero foi escolhido para ser retorno de menu e tambem finalização do programa caso esteja no menu principal|
 
 
 
@@ -45,10 +45,10 @@ Ao iniciar a execucao do mesmo ira se deparar com um menu inicial com as seguint
 
 | __Opcoes__ | __Menu Principal__ | __Descricao__ |
 |-----|---------------------------|---------------|
-| 1.  |    Cadastrar Produto    | Para cadastrar um produto devera ser inserido um codigo de barras, nome para o mesmo, valor por qual o mesmo sera comercializado e a situacao se o produto esta ativo ou inativo.|
-| 2.  |    Localizar Produto | Localiza um produto pelo codigo de barras.|
-| 3.  |    Imprimir Produtos    | Imprime todos os produtos ja inserido na lista.|
-| 4.  |    Alterar situacao de produto   | A unica informacao que podera ser alterada do produto sera a situacao.|
+| 1.  |    Cadastrar Produto    | Para cadastrar um produto deverá ser inserido um código de barras, nome para o mesmo, valor por qual o mesmo será comercializado e a situação se o produto está ativo ou inativo.|
+| 2.  |    Localizar Produto | Localiza um produto pelo código de barras.|
+| 3.  |    Imprimir Produtos    | Imprime todos os produtos já inserido na lista.|
+| 4.  |    Alterar situacao de produto   | A única informação que poderá ser alterada do produto será a situação.|
 | 0.  |    Retornar ao menu anterior    | Retorna menu.|
 
 
@@ -56,10 +56,10 @@ Ao iniciar a execucao do mesmo ira se deparar com um menu inicial com as seguint
 
 | __Opcoes__ | __Menu Principal__ | __Descricao__ |
 |-----|---------------------------|---------------|
-| 1.  |    Cadastrar Materia-Prima  | Para cadastrar uma materia prima devera ser inserido o nome e a situacao.|
-| 2.  |    Localizar Materia-Prima | Para localizar a mataria prima devera ser inserido o codigo que foi gerado para a mesma.|
-| 3.  |    Imprimir Materia-Prima    | Imprime todas as materias primas ja inserido na lista.|
-| 4.  |    Alterar situacao de Materia-Prima   | A unica informacao que podera ser alterada da materia prima sera a situacao.|
+| 1.  |    Cadastrar Materia-Prima  | Para cadastrar uma materia prima deverá ser inserido o nome e a situação.|
+| 2.  |    Localizar Materia-Prima | Para localizar a mataria prima deverá ser inserido o código que foi gerado para a mesma.|
+| 3.  |    Imprimir Materia-Prima    | Imprime todas as materias primas já inseridas na lista.|
+| 4.  |    Alterar situação de Materia-Prima   | A única informação que poderá ser alterada da materia prima será a situação.|
 | 0.  |    Retornar ao menu anterior    | Retorna menu.|
 
 
@@ -72,7 +72,7 @@ Ao iniciar a execucao do mesmo ira se deparar com um menu inicial com as seguint
 
 | __Opcoes__ | __Menu Principal__ | __Descricao__ |
 |-----|---------------------------|---------------|
-| 1.  |    Nova Compra  | Para efetuar uma nova compra de materia prima devera informar o cnpj do fornecedor para consultar no sistema se e existente, caso nao seja o tera que se registrar antes de nos fornecer a materia prima.|
+| 1.  |    Nova Compra  | Para efetuar uma nova compra de materia prima deverá informar o cnpj do fornecedor para consultar no sistema se é existente, caso não seja o mesmo terá que se registrar antes de nos fornecer a materia prima.|
 | 2.  |    Consultar Compra | Consulta a compra pelo id da mesma  .|
 | 3.  |    Imprimir registros de compra    | Imprime todas a materias primas que foram compradas.|
 | 0.  |    Retornar ao menu anterior    | Retorna menu.|
@@ -81,12 +81,12 @@ Ao iniciar a execucao do mesmo ira se deparar com um menu inicial com as seguint
 # Vendas
 -----------------------
 
-# Materia-Prima
+# Produto
 
 | __Opcoes__ | __Menu Principal__ | __Descricao__ |
 |-----|---------------------------|---------------|
-| 1.  |    Nova Compra  | Para efetuar uma nova compra de materia prima devera informar o cnpj do fornecedor para consultar no sistema se e existente, caso nao seja o tera que se registrar antes de nos fornecer a materia prima.|
-| 2.  |    Consultar Compra | Consulta a compra pelo id da mesma  .|
-| 3.  |    Imprimir registros de compra    | Imprime todas a materias primas que foram compradas.|
+| 1.  |    Nova Venda  | Para efetuar uma nova venda de produto deve ser informado o cpf do cliente para consultar no sistema se é existente, caso não seja o mesmo terá que se registrar antes de realizar uma venda para o mesmo.|
+| 2.  |    Consultar Venda | Consulta a venda pelo id da mesma.|
+| 3.  |    Imprimir registros de venda    | Imprime todas as vendas e os itens que foram vendidos. |
 | 0.  |    Retornar ao menu anterior    | Retorna menu.|
  
