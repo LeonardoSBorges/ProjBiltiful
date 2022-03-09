@@ -58,18 +58,16 @@ namespace CadastrosBasicos
                     }
                     else if (opcao == 1)
                     {
-                        if (posicao == lista.Count - 1)
-                            posicao = lista.Count - 1;
-                        else
+                        if (posicao != lista.Count - 1)
                             posicao++;
+
                         Console.WriteLine(lista[posicao].ToString());
                     }
                     else if (opcao == 2)
                     {
-                        if (posicao == 0)
-                            posicao = 0;
-                        else
+                        if (posicao != 0)
                             posicao--;
+
                         Console.WriteLine(lista[posicao].ToString());
                     }
                     else if (opcao == 3)
@@ -82,7 +80,6 @@ namespace CadastrosBasicos
                         posicao = lista.Count - 1;
                         Console.WriteLine(lista[posicao].ToString());
                     }
-
 
                     Console.WriteLine(@"
 1. Proximo 

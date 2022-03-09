@@ -135,7 +135,7 @@ namespace CadastrosBasicos.ManipulaArquivos
                     while (procuraFornecedor != null)
                     {
                         cnpj = procuraFornecedor.Substring(0, 14); ;
-                        rSocial = procuraFornecedor.Substring(14, 50).Trim();
+                        rSocial = procuraFornecedor.Substring(14, 50);
                         dAbertura = DateTime.Parse(procuraFornecedor.Substring(64, 10));
                         uCompra = DateTime.Parse(procuraFornecedor.Substring(74, 10));
                         dCadastro = DateTime.Parse(procuraFornecedor.Substring(84, 10));
