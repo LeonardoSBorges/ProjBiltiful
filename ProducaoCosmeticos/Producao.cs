@@ -627,7 +627,7 @@ namespace ProducaoCosmeticos
                         float qntdMatPrima = float.Parse(item.Substring(6, 5));
 
                         Console.WriteLine("Código da matéria prima: " + item.Substring(0, 6));
-                        Console.WriteLine("Quantidade utilizada da matéria prima: " + qntdMatPrima.ToString("000.#0") + "\n");
+                        Console.WriteLine("Quantidade utilizada da matéria prima: " + qntdMatPrima.ToString("000.#0").TrimStart('0') + "\n");
 
                     });
 
@@ -649,7 +649,7 @@ namespace ProducaoCosmeticos
                 + "ID: " + Id.ToString().PadLeft(5, '0')
                 + "\nData de produção: " + DataProducao
                 + "\nProduto: " + Produto
-                + "\nQuantidade: " + Quantidade.ToString("000.#0");
+                + "\nQuantidade: " + Quantidade.ToString("000.#0").TrimStart('0');
 
         }
 
