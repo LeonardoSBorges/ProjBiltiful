@@ -103,17 +103,16 @@ namespace ComprasMateriasPrimas
                         bool sair = false;
                         int indice = 0;
                         string[] dados = File.ReadAllLines(new ManipulaArquivosCompraMP().CaminhoItemCompra);
-                        while (!sair)
+                        if (dados.Length == 0)
                         {
-                            Console.WriteLine("1 - Inicio\n2 - Fim\n3 - Anterior\n4 - Proximo");
+                            Console.WriteLine("Nada pra mostrar: arquivo vazio!!");
+                            Console.ReadKey();
+                        }
+                        while (!sair)
+                        {                            
+                            Console.WriteLine("1 - Inicio\n2 - Fim\n3 - Anterior\n4 - Proximo\n5 - Sair");
                             Console.WriteLine("Escolha a opção que deseja: ");
                             int opcao = int.Parse(Console.ReadLine());
-
-                            if (dados.Length <= 0)
-                            {
-                                Console.WriteLine("Nenhum Arquivo encontrado!");
-                            }
-
                             switch (opcao)
                             {
                                 case 1:
@@ -127,7 +126,7 @@ namespace ComprasMateriasPrimas
                                 case 3:
                                     if (indice == 0)
                                     {
-                                        Console.WriteLine("Não há opções anteriores.");
+                                        break;
                                     }
                                     else
                                     {
@@ -138,13 +137,16 @@ namespace ComprasMateriasPrimas
                                 case 4:
                                     if (indice == dados.Length - 1)
                                     {
-                                        Console.WriteLine("Não há opções posteriores.");
+                                        break;
                                     }
                                     else
                                     {
                                         indice++;
                                         Console.WriteLine(dados[indice]);
                                     }
+                                    break;
+                                case 5:
+                                    sair = true;
                                     break;
                             }
                         }
