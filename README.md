@@ -102,4 +102,4 @@ Ao iniciar a execução o mesmo irá se deparar com um menu inicial com as segui
  
   -  Tentamos utilizar o trello para melhor gerenciamento de equipe e projeto 
 
-https://trello.com/b/RPbBkUk6/projeto-bitiful
+![image](https://user-images.githubusercontent.com/66486368/157447143-1cad7934-b107-486d-bc5e-b15b75df611f.png)
