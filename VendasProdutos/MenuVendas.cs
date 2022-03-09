@@ -258,15 +258,23 @@ namespace VendasProdutos
 
             if (venda != null)
             {
+                Cliente cliente = new Read().ProcuraCliente(venda.Cliente);
                 List<ItemVenda> itens = itemVenda.Localizar(venda.Id);
 
-                Console.Write($"\nVenda Nº {venda.Id.ToString().PadLeft(5, '0')}\tData: {venda.DataVenda.ToString("dd/MM/yyyy")}");
-                Console.WriteLine("\n\n");
-
+                Console.WriteLine("----------------------------------------------------------");
+                Console.WriteLine("                           CLIENTE                        ");
+                Console.WriteLine("----------------------------------------------------------");
+                Console.WriteLine($"Nome:\t\t{cliente.Nome.TrimStart(' ')}");
+                Console.WriteLine($"CPF:\t\t{cliente.CPF.Insert(3, ".").Insert(7, ".").Insert(11, "-")}");
+                Console.WriteLine($"Data Nasc.:\t{cliente.DataNascimento.ToString("dd/MM/yyyy")}");
+                Console.WriteLine($"Ultima Compra:\t{cliente.UltimaVenda.ToString("dd/MM/yyyy")}");
+                Console.WriteLine("\n\n----------------------------------------------------------");
+                Console.WriteLine($"Venda Nº {venda.Id.ToString().PadLeft(5, '0')}\t\t\tData: {venda.DataVenda.ToString("dd/MM/yyyy")}");
+                Console.WriteLine("----------------------------------------------------------");
                 Console.WriteLine("Id\tProduto\t\tQtd\tV.Unitário\tT.Item");
-                Console.WriteLine("------------------------------------------------------");
+                Console.WriteLine("----------------------------------------------------------");
                 itens.ForEach(item => Console.WriteLine(item.ToString()));
-                Console.WriteLine("------------------------------------------------------");
+                Console.WriteLine("----------------------------------------------------------");
                 Console.WriteLine($"\t\t\t\t\t\t{venda.ValorTotal.ToString("#.00")}");
 
                 Console.WriteLine("\nPressione ENTER para voltar ao menu...\n");
