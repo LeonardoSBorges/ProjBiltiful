@@ -42,124 +42,135 @@ namespace ComprasMateriasPrimas
         public static void ImpressaoPorRegistro(List<Compra> compras)
         {
             string opt;
-            do
+            if (compras.Count == 0)
             {
                 Console.Clear();
-                Console.WriteLine("1. Ver Compra");
-                Console.WriteLine("2. Ver Itens da Compra");
-                Console.WriteLine("0. Voltar para o menu");
-                opt = Console.ReadLine();
-                switch (opt)
+                Console.WriteLine("Nada para mostrar: arquivo vazio!!");
+                return;
+            }
+            else
+            {
+                do
                 {
-                    case "1":
-                        string escolha = "<<";
-                        int atual = 0;
-                        do
-                        {
+                    Console.Clear();
+                    Console.WriteLine("1. Ver Compra");
+                    Console.WriteLine("2. Ver Itens da Compra");
+                    Console.WriteLine("0. Voltar para o menu");
+                    opt = Console.ReadLine();
+                    switch (opt)
+                    {
+                        case "1":
+                            string escolha = "<<";
+                            int atual = 0;
+                            do
+                            {
+                                Console.Clear();
+                                Console.WriteLine("|         VISUALIZAÇAO DAS COMPRAS       |");
+                                if (escolha.Equals("<<"))
+                                {
+                                    atual = 0;
+                                    compras.ElementAt(atual).ImprimirCompra();
+                                }
+                                else if (escolha.Equals("<") && atual > 0)
+                                {
+                                    if (atual == 0)
+                                    {
+                                        compras.ElementAt(atual).ImprimirCompra();
+                                    }
+                                    else
+                                    {
+                                        --atual;
+                                        compras.ElementAt(atual).ImprimirCompra();
+                                    }
+                                }
+                                else if (escolha.Equals(">") && atual < compras.Count - 1)
+                                {
+                                    if (atual == compras.Count - 1)
+                                    {
+                                        compras.ElementAt(atual).ImprimirCompra();
+                                    }
+                                    else
+                                    {
+                                        ++atual;
+                                        compras.ElementAt(atual).ImprimirCompra();
+                                    }
+                                }
+                                else if (escolha.Equals(">>"))
+                                {
+                                    atual = compras.Count - 1;
+                                    compras.ElementAt(atual).ImprimirCompra();
+                                }
+                                Console.Write(" (<<) Primeiro (<) Anterior (>) Proximo (>>) Ultimo ");
+                                Console.WriteLine(@" ""x"" => Sair                           ");
+                                Console.Write("Navegar: ");
+                                escolha = Console.ReadLine();
+                            } while (escolha != "x");
+                            break;
+
+                        case "2":
                             Console.Clear();
-                            Console.WriteLine("|         VISUALIZAÇAO DAS COMPRAS       |");
-                            if (escolha.Equals("<<"))
+                            bool sair = false;
+                            int indice = 0;
+                            string[] dados = File.ReadAllLines(new ManipulaArquivosCompraMP().CaminhoItemCompra);
+                            if (dados.Length == 0)
                             {
-                                atual = 0;
-                                compras.ElementAt(atual).ImprimirCompra();
+                                Console.WriteLine("Nada pra mostrar: arquivo vazio!!");
+                                Console.ReadKey();
                             }
-                            else if (escolha.Equals("<") && atual > 0)
+                            while (!sair)
                             {
-                                if (atual == 0)
+                                Console.Clear();
+                                Console.WriteLine("1 - Inicio\n2 - Fim\n3 - Anterior\n4 - Proximo\n5 - Sair");
+                                Console.WriteLine("Escolha a opção que deseja: ");
+                                int opcao = int.Parse(Console.ReadLine());
+                                switch (opcao)
                                 {
-                                    compras.ElementAt(atual).ImprimirCompra();
-                                }
-                                else
-                                {
-                                    --atual;
-                                    compras.ElementAt(atual).ImprimirCompra();
-                                }
-                            }
-                            else if (escolha.Equals(">") && atual < compras.Count - 1)
-                            {
-                                if (atual == compras.Count - 1)
-                                {
-                                    compras.ElementAt(atual).ImprimirCompra();
-                                }
-                                else
-                                {
-                                    ++atual;
-                                    compras.ElementAt(atual).ImprimirCompra();
-                                }
-                            }
-                            else if (escolha.Equals(">>"))
-                            {
-                                atual = compras.Count - 1;
-                                compras.ElementAt(atual).ImprimirCompra();
-                            }
-                            Console.Write(" (<<) Primeiro (<) Anterior (>) Proximo (>>) Ultimo ");
-                            Console.WriteLine(@" ""x"" => Sair                           ");
-                            Console.Write("Navegar: ");
-                            escolha = Console.ReadLine();
-                        } while (escolha != "x");
-                        break;
-
-                    case "2":
-                        bool sair = false;
-                        int indice = 0;
-                        string[] dados = File.ReadAllLines(new ManipulaArquivosCompraMP().CaminhoItemCompra);
-                        if (dados.Length == 0)
-                        {
-                            Console.WriteLine("Nada pra mostrar: arquivo vazio!!");
-                            Console.ReadKey();
-                        }
-                        while (!sair)
-                        {                            
-                            Console.WriteLine("1 - Inicio\n2 - Fim\n3 - Anterior\n4 - Proximo\n5 - Sair");
-                            Console.WriteLine("Escolha a opção que deseja: ");
-                            int opcao = int.Parse(Console.ReadLine());
-                            switch (opcao)
-                            {
-                                case 1:
-                                    indice = 0;
-                                    Console.WriteLine(dados[indice]);
-                                    break;
-                                case 2:
-                                    indice = dados.Length - 1;
-                                    Console.WriteLine(dados[indice]);
-                                    break;
-                                case 3:
-                                    if (indice == 0)
-                                    {
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        indice--;
+                                    case 1:
+                                        indice = 0;
                                         Console.WriteLine(dados[indice]);
-                                    }
-                                    break;
-                                case 4:
-                                    if (indice == dados.Length - 1)
-                                    {
                                         break;
-                                    }
-                                    else
-                                    {
-                                        indice++;
+                                    case 2:
+                                        indice = dados.Length - 1;
                                         Console.WriteLine(dados[indice]);
-                                    }
-                                    break;
-                                case 5:
-                                    sair = true;
-                                    break;
+                                        break;
+                                    case 3:
+                                        if (indice == 0)
+                                        {
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            indice--;
+                                            Console.WriteLine(dados[indice]);
+                                        }
+                                        break;
+                                    case 4:
+                                        if (indice == dados.Length - 1)
+                                        {
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            indice++;
+                                            Console.WriteLine(dados[indice]);
+                                        }
+                                        break;
+                                    case 5:
+                                        sair = true;
+                                        break;
+                                }
                             }
-                        }
-                        break;
+                            break;
 
-                    case "0":
-                        break;
+                        case "0":
+                            break;
 
-                    default:
-                        Console.WriteLine("Digite 1 para Ver as compras e 2 para ver os Itens da Compra");
-                        break;
-                }
-            } while (opt != "0");
+                        default:
+                            Console.WriteLine("Digite 1 para Ver as compras e 2 para ver os Itens da Compra");
+                            break;
+                    }
+                } while (opt != "0");
+            }
         }
 
         public static void SubMenu()
