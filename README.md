@@ -18,7 +18,7 @@ Ao iniciar a execução o mesmo irá se deparar com um menu inicial com as segui
 
 
 
-# Cadastro Cliente/Fornecedor
+# Cadastro 
 ---------------------------------------------
 ### Cliente
 | __Opcoes__ | __Menu Principal__ | __Descricao__ |
