@@ -90,3 +90,16 @@ Ao iniciar a execução o mesmo irá se deparar com um menu inicial com as segui
 | 3.  |    Imprimir registros de venda    | Imprime todas as vendas e os itens que foram vendidos. |
 | 0.  |    Retornar ao menu anterior    | Retorna menu.|
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ -----------------------
+ # Organizacao
+ 
+  -  Tentamos utilizar o trello para melhor gerenciamento de equipe e projeto 
+
+https://trello.com/b/RPbBkUk6/projeto-bitiful
