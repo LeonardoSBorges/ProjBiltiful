@@ -23,20 +23,20 @@ Ao iniciar a execução o mesmo irá se deparar com um menu inicial com as segui
 ### Cliente
 | __Opcoes__ | __Menu Principal__ | __Descricao__ |
 |-----|---------------------------|---------------|
-| 1.  |    Cadastrar Cliente    | Devera inserir as seguintes informacoes: CPF, Nome do cliente a ser cadastrado, Data de nascimento(Tera que ser maior de 18 anos, caso contrario o cadastro nao sera efetuado), Genero,Situacao [A - ativo / I - Inativo].|
-| 2.  |    Listar Clientes    | Um menu de navegacao entre os clientes ja cadastrados.|
-| 3.  |    Editar Registro de Cliente    | Somente e possivel editar as seguintes informacoes de um cliente: Nome, Data de nascimento e Situacao.|
-| 4.  |    Bloquear/Desbloquear Cliente   | Para bloquear um cliente devera informar o cpf do mesmo, caso o mesmo ja esteja bloqueado uma mensagem sera exibida e tera que selecionar dentre as opcoes de desbloquear ou manter bloqueado.|
+| 1.  |    Cadastrar Cliente    | Deverá inserir as seguintes informações: CPF, Nome do cliente a ser cadastrado, Data de nascimento(Terá que ser maior de 18 anos, caso contrário o cadastro nao será efetuado), sexo,Situação [A - Ativo / I - Inativo].|
+| 2.  |    Listar Clientes    | Um menu de navegação entre os clientes já cadastrados.|
+| 3.  |    Editar Registro de Cliente    | Somente e possível editar as seguintes informações de um cliente: Nome, Data de nascimento e Situação.|
+| 4.  |    Bloquear/Desbloquear Cliente   | Para bloquear um cliente devera informar o cpf do mesmo, caso o mesmo esteja bloqueado uma mensagem será exibida e terá que selecionar dentre as opções de desbloquear ou manter bloqueado.|
 | 5.  |    Localizar Cliente    | Para localizar um cliente especifico pelo seu cpf.|
 | 6.  |    Localizar cliente Bloquado    | Para localizar um cliente que esteja bloqueado pelo seu cpf.|
 
 ### Fornecedor
 | __Opcoes__ | __Menu Principal__ | __Descricao__ |
 |-----|---------------------------|---------------|
-| 7.  |    Cadastrar Fornecedor    | Devera inserir as seguintes informacoes: CNPJ, Razao social, Data de criacao da empresa (Tera que ser maior que 6 meses, caso ao contrario nao sera efetuado o cadastro),Situacao [A - ativo / I - Inativo].|
-| 8.  |    Listar Fornecedor    | Um menu de navegacao entre os fornecedores ja cadastrados.|
-| 9.  |    Editar Registro de Fornecedor    | Somente e possivel editar as seguintes informacoes de um fornecedor: Razao social e Situacao.|
-| 10.  |    Bloquear/Desbloquear Fornecedor   | Para bloquear um fornecedor devera informar o cnpj do mesmo, caso o mesmo ja esteja bloqueado uma mensagem sera exibida e tera que selecionar dentre as opcoes de desbloquear ou manter bloqueado.|
+| 7.  |    Cadastrar Fornecedor    | Deverá inserir as seguintes informações: CNPJ, Razão social, Data de criação da empresa (Tera que ser maior que 6 meses, caso ao contrario nao sera efetuado o cadastro),Situação [A - ativo / I - Inativo].|
+| 8.  |    Listar Fornecedor    | Um menu de navegação entre os fornecedores ja cadastrados.|
+| 9.  |    Editar Registro de Fornecedor    | Somente e possivél editar as seguintes informações de um fornecedor: Razão social e Situação.|
+| 10.  |    Bloquear/Desbloquear Fornecedor   | Para bloquear um fornecedor devera informar o cnpj do mesmo, caso o mesmo já esteja bloqueado uma mensagem sera exibida e tera que selecionar dentre as opcoes de desbloquear ou manter bloqueado.|
 | 11.  |    Localizar Fornecedor    | Para localizar um fornecedor especifico pelo seu cnpj.|
 | 12.  |    Localizar Fornecedor Bloquado    | Para localizar um fornecedor que esteja bloqueado pelo seu cnpj.|
 | 0.  |    Retornar ao menu anterior    | Retorna menu.|
