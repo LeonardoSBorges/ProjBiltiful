@@ -32,7 +32,10 @@ namespace VendasProdutos
                 switch (opcao = Console.ReadLine())
                 {
                     case "1":
-                        NovaVenda();
+                        if (new Read().VerificaListaCliente())
+                            NovaVenda();
+                        else
+                            Console.WriteLine("Para realizar uma venda sera necessario cadastrar um cliente!");
                         break;
 
                     case "2":

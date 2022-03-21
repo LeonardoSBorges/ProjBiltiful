@@ -57,8 +57,17 @@ namespace ProducaoCosmeticos
                     case "0":
                         break;
                     case "1":
-                        Console.Clear();
-                        Cadastrar();
+                        string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
+                        if (File.Exists(caminhoFinal + "\\Cosmetico.dat") && File.Exists(caminhoFinal + "\\Materia.dat"))
+                        {
+                            Console.Clear();
+                            Cadastrar();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Não ha produtos ou materias primas cadastradas. Favor verificar!");
+                            Console.ReadKey();
+                        }
                         break;
                     case "2":
                         Console.Clear();
@@ -120,15 +129,21 @@ namespace ProducaoCosmeticos
                     Console.Write("Digite o código do produto: ");
                     auxiliarProduto = Console.ReadLine();
 
-                    Produto pproduto;
+                    Produto pproduto = new Produto().RetornaProduto(auxiliarProduto);
 
-                    if ((pproduto = new Produto().RetornaProduto(auxiliarProduto)) == null)
+                    if (pproduto == null)
                     {
 
                         Console.WriteLine("Código de produto inválido!");
                         Console.WriteLine("\n\n\t Pressione ENTER para continuar...");
                         Console.ReadKey();
                         Console.Clear();
+                    }
+                    else if (pproduto.Situacao.Equals('I'))
+                    {
+                        Console.WriteLine("Este produto esta inativo");
+                        Console.ReadKey();
+                        return;
                     }
                     else
                     {
@@ -187,6 +202,11 @@ namespace ProducaoCosmeticos
                             Console.WriteLine("\n\n\t Pressione ENTER para continuar...");
                             Console.ReadKey();
                             Console.Clear();
+                        }
+                        else if (materiaPrima.Situacao.Equals('I'))
+                        {
+                            Console.WriteLine("O item escolhido esta inativo.");
+                            Console.ReadKey();
                         }
                         else
                         {

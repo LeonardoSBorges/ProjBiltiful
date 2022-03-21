@@ -45,15 +45,17 @@ namespace ProjBiltiful
                         break;
 
                     case "2":
-                        new Producao().SubMenu();
+                            new Producao().SubMenu();
                         break;
 
                     case "3":
-                        Compra.SubMenu();
+                            Compra.SubMenu();
                         break;
-                    
+
                     case "4":
-                        MenuVendas.SubMenu();
+                       
+                            MenuVendas.SubMenu();
+                       
                         break;
 
                     default:

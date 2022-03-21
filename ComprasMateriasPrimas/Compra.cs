@@ -185,66 +185,14 @@ namespace ComprasMateriasPrimas
                 {
                     // ---------- CADASTRAR COMPRA -----------
                     case 1:
-                        Compra compra = new();
-                        int ok;
-                        string cnpjFornecedor;
-                        do
+                        if (new Read().VerificaListaFornecedor())
+                            CadastraNovaCompra();
+                        else
                         {
-                            Console.Write("CNPJ do Fornecedor: ");
-                            cnpjFornecedor = Console.ReadLine();
-
-                            cnpjFornecedor = cnpjFornecedor.Replace(".", "").Replace("/", "").Replace("-", "");
-
-                            ok = cnpjFornecedor != string.Empty &&
-                                 Validacoes.ValidarCnpj(cnpjFornecedor) &&
-                                 new Read().ProcurarFornecedor(cnpjFornecedor) != null ? 0 : 1;
-                            if (ok != 0) Console.WriteLine("CNPJ invalido ou não encontrado na base de dados, digite novamente!");
-                        } while (ok != 0);
-                        cnpjFornecedor = new Read().ProcurarFornecedor(cnpjFornecedor).CNPJ;
-
-                        int count = 1;
-                        List<ItemCompra> itens = new();
-                        Console.WriteLine("\nItens da Compra\n");
-                        Console.Write("Quantidade de itens a comprar (limite de 3 itens por compra): ");
-                        int qtdd;
-                        do
-                        {
-                            Console.WriteLine("Você só pode comprar 3 itens por compra!");
-                            qtdd = int.Parse(Console.ReadLine());
-                        } while (qtdd > 3 || qtdd < 0);
-                        do
-                        {
-                            string idMP;
-                            Console.WriteLine($"Item {count}");
-                            do
-                            {
-                                Console.Write("- Id da Matéria Prima: ");
-                                idMP = Console.ReadLine();
-                            } while (new MPrima().RetornaMateriaPrima(idMP) == null);
-                            float valorUnitario;
-                            float quantidade;
-                            do
-                            {
-                                Console.Write("- Valor unitário do item: ");
-                                valorUnitario = float.Parse(Console.ReadLine());
-                                Console.Write("- Quantidade do item que deseja comprar: ");
-                                quantidade = float.Parse(Console.ReadLine());
-                                if ((valorUnitario * quantidade) > 99999.99f) Console.WriteLine("O valor total do Item ultrapassou o limite de 99.999,99");
-                            } while ((valorUnitario * quantidade) > 99999.99f);
-
-                            ItemCompra item = new(compra.Id,
-                                                    compra.DataCompra,
-                                                    idMP,
-                                                    quantidade,
-                                                    valorUnitario);
-                            itens.Add(item);
-                            count++;
-                        } while (count <= qtdd);
-                        compra.Fornecedor = cnpjFornecedor;
-                        itens.ForEach(item => compra.ValorTotal += item.TotalItem);
-                        ItemCompra.Cadastrar(itens);
-                        compra.Cadastrar();
-                        break;
+                            Console.WriteLine("Para realizar uma compra de materias primas devera ter o registro de ao menos um fornecedor.");
+                            Console.ReadKey();
+                        }
+                            break;
 
                     // ---------- LOCALIZAR COMPRA -----------
                     case 2:
@@ -269,6 +217,69 @@ namespace ComprasMateriasPrimas
                 Console.ReadKey();
                 Console.Clear();
             }
+        }
+
+        private static void CadastraNovaCompra()
+        {
+            Compra compra = new();
+            int ok;
+            string cnpjFornecedor;
+            do
+            {
+                Console.Write("CNPJ do Fornecedor: ");
+                cnpjFornecedor = Console.ReadLine();
+
+                cnpjFornecedor = cnpjFornecedor.Replace(".", "").Replace("/", "").Replace("-", "");
+
+                ok = cnpjFornecedor != string.Empty &&
+                     Validacoes.ValidarCnpj(cnpjFornecedor) &&
+                     new Read().ProcurarFornecedor(cnpjFornecedor) != null ? 0 : 1;
+                if (ok != 0) Console.WriteLine("CNPJ invalido ou não encontrado na base de dados, digite novamente!");
+            } while (ok != 0);
+            cnpjFornecedor = new Read().ProcurarFornecedor(cnpjFornecedor).CNPJ;
+
+            int count = 1;
+            List<ItemCompra> itens = new();
+            Console.WriteLine("\nItens da Compra\n");
+            Console.Write("Quantidade de itens a comprar (limite de 3 itens por compra): ");
+            int qtdd;
+            do
+            {
+                Console.WriteLine("Você só pode comprar 3 itens por compra!");
+                qtdd = int.Parse(Console.ReadLine());
+            } while (qtdd > 3 || qtdd < 0);
+            do
+            {
+                string idMP;
+                Console.WriteLine($"Item {count}");
+                do
+                {
+                    Console.Write("- Id da Matéria Prima: ");
+                    idMP = Console.ReadLine();
+                } while (new MPrima().RetornaMateriaPrima(idMP) == null);
+                float valorUnitario;
+                float quantidade;
+                do
+                {
+                    Console.Write("- Valor unitário do item: ");
+                    valorUnitario = float.Parse(Console.ReadLine());
+                    Console.Write("- Quantidade do item que deseja comprar: ");
+                    quantidade = float.Parse(Console.ReadLine());
+                    if ((valorUnitario * quantidade) > 99999.99f) Console.WriteLine("O valor total do Item ultrapassou o limite de 99.999,99");
+                } while ((valorUnitario * quantidade) > 99999.99f);
+
+                ItemCompra item = new(compra.Id,
+                                        compra.DataCompra,
+                                        idMP,
+                                        quantidade,
+                                        valorUnitario);
+                itens.Add(item);
+                count++;
+            } while (count <= qtdd);
+            compra.Fornecedor = cnpjFornecedor;
+            itens.ForEach(item => compra.ValorTotal += item.TotalItem);
+            ItemCompra.Cadastrar(itens);
+            compra.Cadastrar();
         }
 
         public void ImprimirCompra()
