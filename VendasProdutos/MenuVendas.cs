@@ -123,6 +123,13 @@ namespace VendasProdutos
                         Console.Clear();
                         continue;
                     }
+                    else if (produto.Situacao.Equals('I'))
+                    {
+                        Console.WriteLine("\nProduto inativo ou código inválido.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
 
                     Console.WriteLine("\nInforme a quantidade:");
                     qtd = int.Parse(Console.ReadLine());
