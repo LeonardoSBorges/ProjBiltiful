@@ -18,7 +18,7 @@ Ao iniciar a execução o mesmo irá se deparar com um menu inicial com as segui
 
 
 
-# Cadastro Cliente/Fornecedor
+# Cadastro 
 ---------------------------------------------
 ### Cliente
 | __Opcoes__ | __Menu Principal__ | __Descricao__ |
@@ -90,3 +90,16 @@ Ao iniciar a execução o mesmo irá se deparar com um menu inicial com as segui
 | 3.  |    Imprimir registros de venda    | Imprime todas as vendas e os itens que foram vendidos. |
 | 0.  |    Retornar ao menu anterior    | Retorna menu.|
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ -----------------------
+ # Organizacao
+ 
+  -  Tentamos utilizar o trello para melhor gerenciamento de equipe e projeto 
+
+![image](https://user-images.githubusercontent.com/66486368/157447143-1cad7934-b107-486d-bc5e-b15b75df611f.png)
