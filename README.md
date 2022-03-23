@@ -1,3 +1,7 @@
+#INSERCAO DO SQL
+Foi feita a parte de cadastros.
+Iniciei vendas mas travei, ComprasMateriasPrima nao consegui iniciar, e ProducaoCosmeticos tambem nao foi iniciada
+
 # PROJETO BILTIFUL
 
 Para iniciar o executável a primeira coisa que deve ser feita é definir o projeto como inicialização. Após está definição executar com F5 ou Ctrl + F5.
