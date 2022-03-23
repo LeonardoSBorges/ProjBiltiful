@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConexaoDB;
 
 namespace CadastrosBasicos
 {
@@ -15,6 +16,8 @@ namespace CadastrosBasicos
         public DateTime UltimaCompra { get; set; }
         public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
+
+        Conexao conexao = new Conexao();
 
         public MPrima()
         {
@@ -151,6 +154,7 @@ namespace CadastrosBasicos
 
             } while (flag);
         }
+
         public void Localizar()
         {
             string cod, mPrima;
@@ -189,6 +193,8 @@ namespace CadastrosBasicos
 
         public string Buscar(string cod, bool remover = false)
         {
+
+            conexao.ProcurarMateriaPrima(cod);
             string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
             Directory.CreateDirectory(caminhoFinal);
 
@@ -542,7 +548,7 @@ namespace CadastrosBasicos
                                         );
 
                             line = sr.ReadLine();
-                     } while (line != null);
+                        } while (line != null);
                     }
                 }
                 catch (Exception ex)

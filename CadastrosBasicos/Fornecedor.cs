@@ -1,4 +1,5 @@
 ﻿using CadastrosBasicos.ManipulaArquivos;
+using ConexaoDB;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,7 @@ namespace CadastrosBasicos
         public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
+        Conexao conexao = new Conexao();
         public Fornecedor()
         {
 
@@ -173,13 +175,15 @@ namespace CadastrosBasicos
         {
             return CNPJ + RazaoSocial + DataAbertura.ToString("dd/MM/yyyy") + UltimaCompra.ToString("dd/MM/yyyy") + DataCadastro.ToString("dd/MM/yyyy") + Situacao;
         }
+
         public Fornecedor Editar()
         {
+
             Fornecedor fornecedor;
             Console.WriteLine("Somente algumas informacoes podem ser alterada como (Razao social/situacao), caso nao queira alterar alguma informacao pressione enter!");
             Console.Write("CNPJ: ");
             string cnpj = Console.ReadLine();
-
+            
             fornecedor = read.ProcurarFornecedor(cnpj);
             if (fornecedor != null)
             {
@@ -192,10 +196,12 @@ namespace CadastrosBasicos
 
                 fornecedor.Situacao = flagSituacao == false ? fornecedor.Situacao : situacao;
 
-                write.EditarFornecedor(fornecedor);
+                //write.EditarFornecedor(fornecedor);
+                conexao.EditarFornecedor(fornecedor);
             }
             return fornecedor;
         }
+
         public void FornecedorBloqueado()
         {
             Console.WriteLine("Insira o CNPJ para pesquisa: ");

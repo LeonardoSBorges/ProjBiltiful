@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConexaoDB;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace CadastrosBasicos.ManipulaArquivos
         public string ClienteInadimplente { get; set; }
         public string CaminhoFornecedor { get; set; }
         public string CaminhoBloqueado { get; set; }
+
+        Conexao conexao = new Conexao();
 
         public Read()
         {
@@ -241,6 +244,7 @@ namespace CadastrosBasicos.ManipulaArquivos
             string procuraCliente = "";
             Cliente cliente;
             cpf = cpf.Replace(".", "").Replace("-", "");
+
             try
             {
 

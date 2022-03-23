@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using CadastrosBasicos;
 using CadastrosBasicos.ManipulaArquivos;
+using ConexaoDB;
 
 namespace VendasProdutos
 {

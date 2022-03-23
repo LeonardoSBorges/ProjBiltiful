@@ -1,4 +1,5 @@
-﻿using CadastrosBasicos.ManipulaArquivos;
+using CadastrosBasicos.ManipulaArquivos;
+using ConexaoDB;
 using System;
 using System.Collections.Generic;
 
@@ -17,6 +18,7 @@ namespace CadastrosBasicos
         public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
+        Conexao conexao = new Conexao();
         public Cliente()
         {
 
@@ -197,6 +199,7 @@ namespace CadastrosBasicos
         {
             Console.WriteLine("Insira o cpf para localizar: ");
             string cpf = Console.ReadLine();
+            conexao.ProcurarCliente(cpf);
 
             var cliente = connection.SearchData($"SELECT * FROM Cliente WHERE CPF = '{cpf}'");
 
@@ -206,6 +209,7 @@ namespace CadastrosBasicos
             }
             else
                 Console.WriteLine("Nenhum cadastrado foi encontrado!");
+
             Console.WriteLine("Pressione enter para continuar...");
             Console.ReadKey();
         }
@@ -213,9 +217,11 @@ namespace CadastrosBasicos
         {
             Console.WriteLine("Insira o CPF para pesquisa: ");
             string cpf = Console.ReadLine();
+
             var clienteBloqueado = connection.SearchBlocked($"SELECT * FROM ClienteRisco WHERE CPF_Cliente = '{cpf}'");
 
             if (clienteBloqueado.Length != 0)
+
             {
                 var cliente = connection.SearchData($"SELECT * FROM Cliente WHERE CPF = '{cpf}'");
                 Console.WriteLine(cliente.ToString());
