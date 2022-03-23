@@ -169,37 +169,38 @@ namespace CadastrosBasicos.ManipulaArquivos
         }
         public void EditarFornecedor(Fornecedor fornecedorAtualizado)
         {
-            conexao.EditarFornecedor(fornecedorAtualizado);
-            //Read read = new Read();
-            //List<Fornecedor> fornecedores = read.ListaArquivoFornecedor();
-            //int posicao = 0;
-            //try
-            //{
-            //    while (fornecedores[posicao] != null)
-            //    {
-            //        if (fornecedorAtualizado.CNPJ == fornecedores[posicao].CNPJ)
-            //        {
-            //            fornecedores[posicao] = fornecedorAtualizado;
-            //            break;
-            //        }
-            //        posicao++;
-            //    }
-            //    File.Delete(CaminhoFornecedor);
-            //    using (StreamWriter sw = new StreamWriter(CaminhoFornecedor))
-            //    {
-            //        posicao = 0;
-            //        do
-            //        {
-            //            sw.WriteLine(fornecedores[posicao].RetornaArquivo());
-            //            posicao++;
-            //        } while (posicao < fornecedores.Count);
-            //        Console.WriteLine("Registro atualizado");
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("Ocorreu um erro: " + ex.Message);
-            //}
+
+
+            Read read = new Read();
+            List<Fornecedor> fornecedores = read.ListaArquivoFornecedor();
+            int posicao = 0;
+            try
+            {
+                while (fornecedores[posicao] != null)
+                {
+                    if (fornecedorAtualizado.CNPJ == fornecedores[posicao].CNPJ)
+                    {
+                        fornecedores[posicao] = fornecedorAtualizado;
+                        break;
+                    }
+                    posicao++;
+                }
+                File.Delete(CaminhoFornecedor);
+                using (StreamWriter sw = new StreamWriter(CaminhoFornecedor))
+                {
+                    posicao = 0;
+                    do
+                    {
+                        sw.WriteLine(fornecedores[posicao].RetornaArquivo());
+                        posicao++;
+                    } while (posicao < fornecedores.Count);
+                    Console.WriteLine("Registro atualizado");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
         }
 
         //Gravar novo cliente no arquivo

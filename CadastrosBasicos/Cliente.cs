@@ -1,4 +1,4 @@
-﻿using CadastrosBasicos.ManipulaArquivos;
+using CadastrosBasicos.ManipulaArquivos;
 using ConexaoDB;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ namespace CadastrosBasicos
     {
         public Write write = new Write();
         public Read read = new Read();
+        public BDCadastro connection = new BDCadastro();
         public string CPF { get; private set; }
         public string Nome { get; set; }
         public DateTime DataNascimento { get; set; }
@@ -47,11 +48,10 @@ namespace CadastrosBasicos
 
         public void BloqueiaCadastro()
         {
-            Cliente cliente;
             Console.WriteLine("Insira o CPF para bloqueio: ");
             string cpf = Console.ReadLine();
-            cpf = cpf.Replace(".", "").Replace("-", "");
-            if (read.ProcurarCPFBloqueado(cpf))
+            string ehBloqueado = connection.SearchBlocked($"SELECT * FROM ClienteRisco WHERE CPF_Cliente ='{cpf}'");
+            if (ehBloqueado.Length != 0)
             {
                 bool flag = false;
                 int opcao;
@@ -76,10 +76,10 @@ namespace CadastrosBasicos
             {
                 if (Validacoes.ValidarCpf(cpf))
                 {
-                    cliente = read.ProcuraCliente(cpf);
-                    if (cliente != null)
+                    
+                    if (ehBloqueado.Length != 0)
                     {
-                        write.BloqueiaCliente(cliente.CPF);
+                        write.BloqueiaCliente($"INSERT INTO ClienteRisco(CPF_Cliente) VALUES ('{cpf}')");
                         Console.WriteLine("CPF bloqueado!");
                     }
                 }
@@ -98,7 +98,7 @@ namespace CadastrosBasicos
             Console.Write("CPF: ");
             string cpf = Console.ReadLine();
 
-            cliente = read.ProcuraCliente(cpf);
+            cliente = null;
             if (cliente != null)
             {
                 Console.WriteLine("Nome: ");
@@ -112,7 +112,7 @@ namespace CadastrosBasicos
                 cliente.DataNascimento = flag == false ? cliente.DataCadastro : dNascimento;
                 cliente.Situacao = flagSituacao == false ? cliente.Situacao : situacao;
 
-                write.EditarCliente(cliente);
+                //write.EditarCliente(cliente);
 
                 Console.WriteLine("Cliente Cadastrado com sucesso");
                 Console.WriteLine("Pressione enter para continuar...");
@@ -128,10 +128,11 @@ namespace CadastrosBasicos
         public void Navegar()
         {
             Console.WriteLine("============== Cliente ==============");
+
+            List<Cliente> lista = connection.ListCliente();
             bool verificaArquivo = read.VerificaListaCliente();
             if (verificaArquivo == true)
             {
-                List<Cliente> lista = read.ListaArquivoCliente();
                 int opcao = 0, posicao = 0;
                 bool flag = false;
                 do
@@ -200,15 +201,15 @@ namespace CadastrosBasicos
             string cpf = Console.ReadLine();
             conexao.ProcurarCliente(cpf);
 
-            //Cliente cliente = read.ProcuraCliente(cpf);
+            var cliente = connection.SearchData($"SELECT * FROM Cliente WHERE CPF = '{cpf}'");
 
-            //if (cliente != null)
-            //{
-            //    Console.WriteLine(cliente.ToString());
+            if (cliente.Length != 0)
+            {
+                Console.WriteLine(cliente.ToString());
+            }
+            else
+                Console.WriteLine("Nenhum cadastrado foi encontrado!");
 
-            //}
-            //else
-            //Console.WriteLine("Nenhum cadastrado foi encontrado!");
             Console.WriteLine("Pressione enter para continuar...");
             Console.ReadKey();
         }
@@ -216,11 +217,13 @@ namespace CadastrosBasicos
         {
             Console.WriteLine("Insira o CPF para pesquisa: ");
             string cpf = Console.ReadLine();
-            bool flag = new Read().ProcurarCPFBloqueado(cpf);
 
-            if (flag)
+            var clienteBloqueado = connection.SearchBlocked($"SELECT * FROM ClienteRisco WHERE CPF_Cliente = '{cpf}'");
+
+            if (clienteBloqueado.Length != 0)
+
             {
-                Cliente cliente = new Read().ProcuraCliente(cpf);
+                var cliente = connection.SearchData($"SELECT * FROM Cliente WHERE CPF = '{cpf}'");
                 Console.WriteLine(cliente.ToString());
             }
             else

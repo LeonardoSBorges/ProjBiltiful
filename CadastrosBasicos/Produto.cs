@@ -11,6 +11,7 @@ namespace CadastrosBasicos
 {
     public class Produto
     {
+        public BDCadastro connection = new BDCadastro();
         public string CodigoBarras { get; set; }
         public string Nome { get; set; }
         public decimal ValorVenda { get; set; }
@@ -129,7 +130,7 @@ namespace CadastrosBasicos
                         continue;
                     }
 
-                    verificaProduto = Buscar(cod);
+                    verificaProduto = connection.SearchDataProduct($"SELECT * FROM Produto WHERE Codigo_Barras = '{cod}'");
 
                     if (!string.IsNullOrEmpty(verificaProduto))
                     {
@@ -195,7 +196,7 @@ namespace CadastrosBasicos
                 produto.DataCadastro = DateTime.Now.Date;
                 produto.Situacao = sit;
 
-                GravarProduto(produto);
+                connection.PushNewRegister($"INSERT INTO Produto(Codigo_Barras, Nome, Valor_Venda, Situacao) VALUES ('{produto.CodigoBarras}', '{produto.Nome}', '{produto.ValorVenda.ToString(new CultureInfo("en-US"))}', '{produto.Situacao}')");
 
                 Console.WriteLine("\n Cadastro do Produto concluido com sucesso!\n");
                 Console.WriteLine("\n Pressione ENTER para voltar ao menu");
@@ -204,48 +205,19 @@ namespace CadastrosBasicos
             } while (flag);
         }
 
-        public void GravarProduto(Produto produto)
-        {
-            conexao.GravarNovoProduto(produto);
-
-            //string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
-            //Directory.CreateDirectory(caminhoFinal);
-
-            //string arquivoFinal = Path.Combine(caminhoFinal, "Cosmetico.dat");
-
-            //try
-            //{
-            //    if (!File.Exists(arquivoFinal))
-            //    {
-            //        using (StreamWriter sw = new StreamWriter(arquivoFinal))
-            //        {
-            //            sw.WriteLine(produto.ToString());
-            //        }
-            //    }
-            //    else
-            //    {
-            //        using (StreamWriter sw = new StreamWriter(arquivoFinal, append: true))
-            //        {
-            //            sw.WriteLine(produto.ToString());
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("Ex -> " + ex.Message);
-            //}
-        }
+        
 
         public void Localizar()
         {
-            string cod, produto;
+            string cod;
+            Produto produto;
 
             Console.Clear();
             Console.WriteLine("\n Localizar Produto");
             Console.Write("\n Digite o codigo do produto: ");
             cod = Console.ReadLine();
 
-            produto = Buscar(cod);
+            produto = connection.GetDataProduct($"SELECT * FROM Produto WHERE Codigo_Barras = '{cod}'");
 
             if (produto == null)
             {
@@ -255,18 +227,18 @@ namespace CadastrosBasicos
             }
             else
             {
-                string situacao = produto.Substring(54, 1);
-                if (situacao == "A")
+                string situacao;
+                if (produto.Situacao == 'A')
                     situacao = "Ativo";
-                else if (situacao == "I")
+                else 
                     situacao = "Inativo";
 
                 Console.WriteLine("\n O produto foi encontrado.\n");
-                Console.WriteLine($" Codigo: {produto.Substring(0, 13)}");
-                Console.WriteLine($" Nome: {produto.Substring(13, 20)}");
-                Console.WriteLine($" Valor da venda: {produto.Substring(33, 5).Insert(3, ",")}");
-                Console.WriteLine($" Data ultima venda: {produto.Substring(38, 8).Insert(2, "/").Insert(5, "/")}");
-                Console.WriteLine($" Data do cadastro: {produto.Substring(46, 8).Insert(2, "/").Insert(5, "/")}");
+                Console.WriteLine($" Codigo: {produto.CodigoBarras}");
+                Console.WriteLine($" Nome: {produto.Nome}");
+                Console.WriteLine($" Valor da venda: {produto.ValorVenda}");
+                Console.WriteLine($" Data ultima venda: {produto.UltimaVenda.ToString("dd/MM/yyyy")}");
+                Console.WriteLine($" Data do cadastro: {produto.DataCadastro.ToString("dd/MM/yyyy")}");
                 Console.WriteLine($" Situacao: {situacao}");
                 Console.WriteLine("\n Pressione ENTER para voltar ao menu");
                 Console.ReadKey();
