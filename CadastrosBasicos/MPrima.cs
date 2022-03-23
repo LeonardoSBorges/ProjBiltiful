@@ -9,6 +9,7 @@ namespace CadastrosBasicos
 {
     public class MPrima
     {
+        public BDCadastro connection = new BDCadastro();
         public string Id { get; set; }
         public string Nome { get; set; }
         public DateTime UltimaCompra { get; set; }
@@ -88,7 +89,6 @@ namespace CadastrosBasicos
             char sit = 'A';
             string nomeTemp;
             bool flag = true;
-
             do
             {
                 Console.Clear();
@@ -126,9 +126,23 @@ namespace CadastrosBasicos
                         MPrima.UltimaCompra = DateTime.Now.Date;
                         MPrima.DataCadastro = DateTime.Now.Date;
                         MPrima.Situacao = sit;
-
-                        GravarMateriaPrima(MPrima);
-
+                        string id = connection.UltimoCodigoMateriaPrima();
+                        if (id.Length != 0)
+                        {
+                            id = id.Substring(2, 4);
+                            int nextId = int.Parse(id) + 1;
+                            if (nextId < 10)
+                                id = "MP000" + nextId;
+                            else if (nextId < 100)
+                                id = "MP00" + nextId;
+                            else if (nextId < 1000)
+                                id = "MP0" + nextId;
+                            else
+                                id = "MP" + nextId;
+                        }
+                        else
+                            id = "MP0000";
+                        connection.PushNewRegister(@$"INSERT INTO MateriaPrima(Codigo, Nome, Situacao) VALUES('{id}', '{MPrima.Nome}', '{MPrima.Situacao}')");
                         Console.WriteLine("\n Cadastro de Materia-prima concluido com sucesso!\n");
                         Console.WriteLine("\n Pressione ENTER para voltar ao menu");
                         Console.ReadKey();
@@ -137,74 +151,6 @@ namespace CadastrosBasicos
 
             } while (flag);
         }
-
-        public void GravarMateriaPrima(MPrima mprima)
-        {
-            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
-            Directory.CreateDirectory(caminhoFinal);
-
-            string arquivoFinal = Path.Combine(caminhoFinal, "Materia.dat");
-
-            string idMPrima = Path.Combine(caminhoFinal, "IdMPrima.dat");
-
-            int codAtual = 0;
-
-            try
-            {
-                if (!File.Exists(idMPrima))
-                {
-                    using (StreamWriter sw = new StreamWriter(idMPrima))
-                    {
-                        sw.WriteLine("MP0000");
-                    }
-                }
-                else
-                {
-                    string line;
-                    using (StreamReader sr = new StreamReader(idMPrima))
-                    {
-                        line = sr.ReadLine();
-                    }
-
-                    codAtual = int.Parse(line.Substring(2, 4));
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(" Ex -> " + ex.Message);
-            }
-
-            codAtual++;
-            mprima.Id = "MP" + codAtual.ToString("0000");
-
-            try
-            {
-                using (StreamWriter sw = new StreamWriter(idMPrima))
-                {
-                    sw.WriteLine(mprima.Id);
-                }
-
-                if (!File.Exists(arquivoFinal))
-                {
-                    using (StreamWriter sw = new StreamWriter(arquivoFinal))
-                    {
-                        sw.WriteLine(mprima.ToString());
-                    }
-                }
-                else
-                {
-                    using (StreamWriter sw = new StreamWriter(arquivoFinal, append: true))
-                    {
-                        sw.WriteLine(mprima.ToString());
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Ex -> " + ex.Message);
-            }
-        }
-
         public void Localizar()
         {
             string cod, mPrima;

@@ -9,6 +9,7 @@ namespace CadastrosBasicos
     {
         public Write write = new Write();
         public Read read = new Read();
+        public BDCadastro connection = new BDCadastro();
         public string CNPJ { get; set; }
         public string RazaoSocial { get; set; }
         public DateTime DataAbertura { get; set; }
@@ -19,6 +20,10 @@ namespace CadastrosBasicos
         public Fornecedor()
         {
 
+        }
+        public Fornecedor(string cnpj)
+        {
+            CNPJ = cnpj;
         }
         public Fornecedor(string cnpj, string rSocial, DateTime dAbertura, char situacao)
         {
@@ -41,10 +46,9 @@ namespace CadastrosBasicos
         public void Navegar()
         {
             Console.WriteLine("============== Fornecedores ==============");
-            bool verificaArquivo = read.VerificaListaFornecedor();
-            if (verificaArquivo == true)
+            List<Fornecedor> lista = connection.ListFornecedor();
+            if (lista != null)
             {
-                List<Fornecedor> lista = read.ListaArquivoFornecedor();
                 int opcao = 0, posicao = 0;
                 bool flag = false;
                 do
@@ -108,12 +112,12 @@ namespace CadastrosBasicos
         {
             Console.WriteLine("Insira o CNPJ para localizar: ");
             string cnpj = Console.ReadLine();
+            string fornecedor = connection.SearchDataFornecedor($"SELECT * FROM Fornecedor WHERE CNPJ = '{cnpj}'");
 
-            Fornecedor fornecedor = read.ProcurarFornecedor(cnpj);
 
-            if (fornecedor != null)
+            if (fornecedor.Length != 0)
             {
-                Console.WriteLine(fornecedor.ToString());
+                Console.WriteLine(fornecedor);
             }
             else
                 Console.WriteLine("Nenhum cadastrado foi encontrado!");
@@ -122,12 +126,11 @@ namespace CadastrosBasicos
         }
         public void BloqueiaFornecedor()
         {
-            Fornecedor fornecedor;
             Console.WriteLine("Insira o CNPJ para bloqueio: ");
             string cnpj = Console.ReadLine();
-            cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
-
-            if (read.ProcurarCNPJBloqueado(cnpj))
+            string getFornecedor = connection.SearchDataFornecedor($"SELECT * FROM Fornecedor WHERE CNPJ = '{cnpj}'");
+            string getFornecedorBloqueado = connection.SearchBlocked($"SELECT * FROM FornecedorBloqueado WHERE CNPJ_Fornecedor = '{cnpj}'");
+            if (getFornecedorBloqueado.Length != 0)
             {
                 bool flag = false;
                 int opcao;
@@ -141,24 +144,31 @@ namespace CadastrosBasicos
 
                 if (opcao == 1)
                 {
-                    new Write().DesbloqueiaFornecedor(cnpj);
+                    connection.PushNewRegister($"DELETE FROM FornecedorBloqueado WHERE CNPJ_Fornecedor= '{cnpj}'");
+                    Console.WriteLine("Fornecedor desbloqueado");
                 }
+                else
+                    Console.WriteLine("Insira uma opcao valida");
+                
             }
             else
             {
                 if (Validacoes.ValidarCnpj(cnpj))
                 {
-                    fornecedor = read.ProcurarFornecedor(cnpj);
-                    if (fornecedor != null)
+                    if (getFornecedor.Length != 0)
                     {
-                        write.BloquearFornecedor(fornecedor.CNPJ);
+                        connection.PushNewRegister($"INSERT INTO FornecedorBloqueado(CNPJ_Fornecedor) VALUES ('{cnpj}')");
                         Console.WriteLine("CNPJ bloqueado!");
                     }
                 }
                 else
+                {
                     Console.WriteLine("CNPJ incorreto!");
+                }
             }
-        } 
+            Console.WriteLine("Pressione enter para continuar...");
+            Console.ReadKey();
+        }
         public string RetornaArquivo()
         {
             return CNPJ + RazaoSocial + DataAbertura.ToString("dd/MM/yyyy") + UltimaCompra.ToString("dd/MM/yyyy") + DataCadastro.ToString("dd/MM/yyyy") + Situacao;
@@ -190,20 +200,19 @@ namespace CadastrosBasicos
         {
             Console.WriteLine("Insira o CNPJ para pesquisa: ");
             string cnpj = Console.ReadLine();
-            bool flag = new Read().ProcurarCNPJBloqueado(cnpj);
-
-            if (flag)
+            string cnpjBloqueado = connection.SearchBlocked($"SELECT * FROM FornecedorBloqueado WHERE CNPJ_Fornecedor = '{cnpj}'");
+            
+            if (cnpjBloqueado.Length != 0)
             {
-                Fornecedor fornecedor = new Read().ProcurarFornecedor(cnpj);
-                Console.WriteLine(fornecedor.ToString());
-                Console.ReadKey();
+                string procuraFornecedor = $"SELECT * FROM Fornecedor WHERE CNPJ = '{cnpj}'";
+                Console.WriteLine(connection.SearchDataFornecedor(procuraFornecedor));
             }
             else
             {
                 Console.WriteLine("Fornecedor bloqueado nao encontrado");
-                Console.ReadKey();
             }
-
+            Console.WriteLine("Pressione enter para continuar...");
+            Console.ReadKey();
         }
         public override string ToString()
         {

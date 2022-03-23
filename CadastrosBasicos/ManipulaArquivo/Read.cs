@@ -79,7 +79,7 @@ namespace CadastrosBasicos.ManipulaArquivos
 
             cpf = cpf.Replace(".", "").Replace("-", "");
             string cpfBloqueado = "";
-          
+
             try
             {
                 using (StreamReader sr = new StreamReader(ClienteInadimplente))
@@ -126,7 +126,7 @@ namespace CadastrosBasicos.ManipulaArquivos
             string procuraFornecedor = "", rSocial = "", cnpj = "";
             DateTime dAbertura, uCompra, dCadastro;
             char situacao;
-            
+
             try
             {
                 using (StreamReader sr = new StreamReader(CaminhoFornecedor))
@@ -147,7 +147,7 @@ namespace CadastrosBasicos.ManipulaArquivos
                 }
                 return fornecedores;
             }
-            
+
             catch (Exception ex)
             {
                 Console.WriteLine("Ocorreu um erro: " + ex.Message);

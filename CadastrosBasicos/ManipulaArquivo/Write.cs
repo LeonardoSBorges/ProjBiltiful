@@ -190,7 +190,7 @@ namespace CadastrosBasicos.ManipulaArquivos
                         sw.WriteLine(fornecedores[posicao].RetornaArquivo());
                         posicao++;
                     } while (posicao < fornecedores.Count);
-                        Console.WriteLine("Registro atualizado");
+                    Console.WriteLine("Registro atualizado");
                 }
             }
             catch (Exception ex)
