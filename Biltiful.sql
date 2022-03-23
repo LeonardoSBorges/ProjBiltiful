@@ -279,35 +279,3 @@ BEGIN
 
 END
 GO
-
-
-
-select * FROM Cliente        
-select * FROM Fornecedor
-select * FROM Materia_Prima
-select * FROM Produto
-select * FROM Venda
-select * FROM Item_Venda
-select * FROM Producao
-select * FROM Item_Producao
-select * FROM Compra
-select * FROM Item_Compra
-
-
-drop table Item_Compra, Compra, Item_Producao, Producao, Item_Venda, Venda, Produto, Materia_Prima, Fornecedor, Cliente
-
-
---DELETE FROM Item_Compra
---DELETE FROM Compra
---DELETE FROM Item_Producao
---DELETE FROM Producao
---DELETE FROM Item_Venda
---DELETE FROM Venda
---DELETE FROM Produto
---DELETE FROM Materia_Prima
---DELETE FROM Fornecedor
---DELETE FROM Cliente  
-
-
-
-drop table Item_Producao, Producao
