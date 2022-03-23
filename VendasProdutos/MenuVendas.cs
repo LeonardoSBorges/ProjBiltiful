@@ -236,10 +236,10 @@ namespace VendasProdutos
             {
                 ItemVenda itemVenda = new ItemVenda();
 
-                itensVenda.ForEach(item =>
+                itensVenda.ForEach((Action<ItemVenda>)(item =>
                 {
                     new Produto().Atualizar(item.Produto, venda.DataVenda.ToString("dd/MM/yyyy"));
-                });
+                }));
 
                 itemVenda.Cadastrar(itensVenda);
 

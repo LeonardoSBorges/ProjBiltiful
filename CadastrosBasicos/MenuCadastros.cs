@@ -26,7 +26,7 @@ namespace CadastrosBasicos
                 Console.WriteLine("=============== CADASTROS ===============");
                 Console.WriteLine("1. Clientes / Fornecedores");
                 Console.WriteLine("2. Produtos");
-                Console.WriteLine("3. MatÈrias-Primas");
+                Console.WriteLine("3. Mat√©rias-Primas");
                 Console.WriteLine("-----------------------------------------");
                 Console.WriteLine("0. Voltar ao menu anterior");
                 Console.Write("\nEscolha: ");
@@ -50,7 +50,7 @@ namespace CadastrosBasicos
 
                     default:
                         Console.Clear();
-                        Console.WriteLine("OpÁ„o inv·lida");
+                        Console.WriteLine("Op√ß√£o inv√°lida");
                         Console.WriteLine("\nPressione ENTER para voltar ao menu");
                         break;
                 }
@@ -136,7 +136,7 @@ namespace CadastrosBasicos
                         break;
                     default:
                         Console.Clear();
-                        Console.WriteLine("OpÁ„o inv·lida");
+                        Console.WriteLine("Op√ß√£o inv√°lida");
                         Console.WriteLine("\n Pressione ENTER para voltar ao menu");
                         break;
                 }

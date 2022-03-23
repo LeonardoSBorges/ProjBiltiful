@@ -7,6 +7,7 @@ using System.IO;
 using CadastrosBasicos;
 using System.Data;
 using System.Data.SqlClient;
+using ConexaoDB;
 
 namespace ProducaoCosmeticos
 {
@@ -19,6 +20,7 @@ namespace ProducaoCosmeticos
         public float Quantidade { get; set; }
         public int Contador { get; set; }
         #endregion
+
         #region Construtor
         public Producao(string id, string dataProducao, string produto, float quantidade)
         {

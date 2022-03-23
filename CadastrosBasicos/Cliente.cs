@@ -1,4 +1,4 @@
-﻿using CadastrosBasicos.ManipulaArquivos;
+using CadastrosBasicos.ManipulaArquivos;
 using System;
 using System.Collections.Generic;
 using System.Data;

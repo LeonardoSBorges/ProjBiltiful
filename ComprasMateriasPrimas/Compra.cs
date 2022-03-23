@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,6 +6,8 @@ using CadastrosBasicos;
 using CadastrosBasicos.ManipulaArquivos;
 using System.Data;
 using System.Data.SqlClient;
+using ConexaoDB;
+
 
 namespace ComprasMateriasPrimas
 {
@@ -16,6 +18,8 @@ namespace ComprasMateriasPrimas
         public string Fornecedor { get; set; } //12 00.000.000/0001-00
         public float ValorTotal { get; set; } // 7 00.000,00
         public List<ItemCompra> ListaDeItens { get; set; }
+
+        Conexao conexao = new Conexao();
 
         public Compra()
         {
@@ -283,6 +287,8 @@ namespace ComprasMateriasPrimas
             itens.ForEach(item => compra.ValorTotal += item.TotalItem);
             ItemCompra.Cadastrar(itens);
             compra.Cadastrar();
+
+            
         }
 
         public void ImprimirCompra()
