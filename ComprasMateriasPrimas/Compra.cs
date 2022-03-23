@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using CadastrosBasicos;
 using CadastrosBasicos.ManipulaArquivos;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace ComprasMateriasPrimas
 {
@@ -237,6 +239,7 @@ namespace ComprasMateriasPrimas
                 if (ok != 0) Console.WriteLine("CNPJ invalido ou não encontrado na base de dados, digite novamente!");
             } while (ok != 0);
             cnpjFornecedor = new Read().ProcurarFornecedor(cnpjFornecedor).CNPJ;
+            RegistraCompraBD(cnpjFornecedor);
 
             int count = 1;
             List<ItemCompra> itens = new();
@@ -335,5 +338,61 @@ namespace ComprasMateriasPrimas
                                                                     .Insert(15, "-");
 
         public static float ExtrairValorTotal(string linhaDoArquivo) => float.Parse(linhaDoArquivo.Substring(26, 7));
+
+
+
+        public static void RegistraCompraBD(string fornecedor)
+        {
+
+
+            try
+            {
+                var datasource = @"DESKTOP-M6PNRRR";//instancia do servidor
+                var database = "ProjetoBiltiful"; //Base de Dados
+                var username = "sa"; //usuario da conexão
+                var password = "123456"; //senha
+
+                //sua string de conexão 
+                string connString = @"Data Source=" + datasource + ";Initial Catalog="
+                            + database + ";Persist Security Info=True;User ID=" + username + ";Password=" + password;
+
+                //cria a instância de conexão com a base de dados
+                SqlConnection connection = new SqlConnection(connString);
+
+                using (connection)
+                {
+
+                    InsereCompra(connection, fornecedor);
+                    //Call_SP(connection, codigo_barras, nome, valor_venda);
+
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            Console.WriteLine("\nFIM\n\nPressone qualquer tecla para finalizar");
+            Console.ReadLine();
+
+
+        }
+
+        public static void InsereCompra(SqlConnection connection, string fornecedor)
+        {
+
+            connection.Open();
+
+            String sql = "INSERT INTO Compra(Fornecedor) " +
+                            "VALUES(@Fornecedor)";
+
+            using (SqlCommand sql_cmnd = new SqlCommand(sql, connection))
+            {
+
+                sql_cmnd.Parameters.AddWithValue("@Fornecedor", SqlDbType.NVarChar).Value = fornecedor;
+                sql_cmnd.ExecuteNonQuery();
+            }
+
+            connection.Close();
+        }
     }
 }

@@ -5,6 +5,8 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
 
 
 namespace CadastrosBasicos
@@ -86,13 +88,15 @@ namespace CadastrosBasicos
             } while (escolha != "0");
         }
 
+        CadastrosBD cbd = new CadastrosBD();
 
         public void Cadastrar()
         {
             Produto produto = new Produto();
 
             char sit = 'A';
-            string cod, nomeTemp, verificaProduto = null;
+            string cod, nomeTemp;
+            Produto verificaProduto = null;
             decimal valorVenda = 0;
             bool flag = true;
 
@@ -118,6 +122,8 @@ namespace CadastrosBasicos
                     }
 
                     cod = "789" + cod;
+                    verificaProduto = cbd.BuscaProduto(cod);
+
 
                     if (cod.Length != 13)
                     {
@@ -127,16 +133,20 @@ namespace CadastrosBasicos
                         continue;
                     }
 
-                    verificaProduto = Buscar(cod);
-
-                    if (!string.IsNullOrEmpty(verificaProduto))
+                    if(verificaProduto != null)
                     {
-                        Console.WriteLine("\n Ja existe um produto cadastrado com esse codigo.");
-                        Console.WriteLine("\n Pressione ENTER para voltar...");
-                        Console.ReadKey();
+
+                        if (!string.IsNullOrEmpty(verificaProduto.CodigoBarras))
+                        {
+                            Console.WriteLine("\n Ja existe um produto cadastrado com esse codigo.");
+                            Console.WriteLine("\n Pressione ENTER para voltar...");
+                            Console.ReadKey();
+                        }
+
                     }
 
-                } while (cod.Length != 13 || !string.IsNullOrEmpty(verificaProduto));
+
+                } while (cod.Length != 13 || verificaProduto != null);
 
 
                 do
@@ -158,14 +168,14 @@ namespace CadastrosBasicos
                     Console.Write(" Valor da Venda: ");
                     valorVenda = Convert.ToDecimal(Console.ReadLine());
 
-                    if ((valorVenda < 1) || (valorVenda > (decimal) 999.99))
+                    if ((valorVenda < 1) || (valorVenda > (decimal)999.99))
                     {
                         Console.WriteLine("\n Valor invalido. Apenas valores maior que 0 e menor que 999,99.");
                         Console.WriteLine("\n Pressione ENTER para voltar ao cadastro.");
                         Console.ReadKey();
                     }
 
-                } while ((valorVenda < 1) || (valorVenda > (decimal) 999.99));
+                } while ((valorVenda < 1) || (valorVenda > (decimal)999.99));
 
 
                 do
@@ -193,7 +203,8 @@ namespace CadastrosBasicos
                 produto.DataCadastro = DateTime.Now.Date;
                 produto.Situacao = sit;
 
-                GravarProduto(produto);
+                cbd.RegistraProdutoBD(cod, nomeTemp, valorVenda);
+                
 
                 Console.WriteLine("\n Cadastro do Produto concluido com sucesso!\n");
                 Console.WriteLine("\n Pressione ENTER para voltar ao menu");
@@ -202,46 +213,18 @@ namespace CadastrosBasicos
             } while (flag);
         }
 
-        public void GravarProduto(Produto produto)
-        {
-            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
-            Directory.CreateDirectory(caminhoFinal);
-
-            string arquivoFinal = Path.Combine(caminhoFinal, "Cosmetico.dat");
-
-            try
-            {
-                if (!File.Exists(arquivoFinal))
-                {
-                    using (StreamWriter sw = new StreamWriter(arquivoFinal))
-                    {
-                        sw.WriteLine(produto.ToString());
-                    }
-                }
-                else
-                {
-                    using (StreamWriter sw = new StreamWriter(arquivoFinal, append: true))
-                    {
-                        sw.WriteLine(produto.ToString());
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Ex -> " + ex.Message);
-            }
-        }
 
         public void Localizar()
         {
-            string cod, produto;
+            string cod;
+            Produto produto;
 
             Console.Clear();
             Console.WriteLine("\n Localizar Produto");
             Console.Write("\n Digite o codigo do produto: ");
             cod = Console.ReadLine();
 
-            produto = Buscar(cod);
+            produto = cbd.BuscaProduto(cod);
 
             if (produto == null)
             {
@@ -251,35 +234,27 @@ namespace CadastrosBasicos
             }
             else
             {
-                string situacao = produto.Substring(54, 1);
-                if (situacao == "A")
-                    situacao = "Ativo";
-                else if (situacao == "I")
-                    situacao = "Inativo";
 
-                Console.WriteLine("\n O produto foi encontrado.\n");
-                Console.WriteLine($" Codigo: {produto.Substring(0, 13)}");
-                Console.WriteLine($" Nome: {produto.Substring(13, 20)}");
-                Console.WriteLine($" Valor da venda: {produto.Substring(33, 5).Insert(3, ",")}");
-                Console.WriteLine($" Data ultima venda: {produto.Substring(38, 8).Insert(2, "/").Insert(5, "/")}");
-                Console.WriteLine($" Data do cadastro: {produto.Substring(46, 8).Insert(2, "/").Insert(5, "/")}");
-                Console.WriteLine($" Situacao: {situacao}");
+                Impressao(produto);
                 Console.WriteLine("\n Pressione ENTER para voltar ao menu");
                 Console.ReadKey();
+
             }
         }
 
         public void AlterarSituacao()
         {
-            string cod, produto, situacao;
+            string cod;
+            char situacao;
             bool flag = true;
+            Produto produto;
 
             Console.Clear();
             Console.WriteLine("\n Alterar Produto");
             Console.Write("\n Digite o codigo do produto: ");
             cod = Console.ReadLine();
 
-            produto = Buscar(cod);
+            produto = cbd.BuscaProduto(cod);
 
             if (produto == null)
             {
@@ -289,26 +264,28 @@ namespace CadastrosBasicos
             }
             else
             {
-                situacao = produto.Substring(54, 1);
-                if (situacao == "A")
-                    situacao = "Ativo";
-                else if (situacao == "I")
-                    situacao = "Inativo";
 
-                Console.WriteLine("\n O produto foi encontrado.\n");
-                Console.WriteLine($" Codigo: {produto.Substring(0, 13)}");
-                Console.WriteLine($" Nome: {produto.Substring(13, 20)}");
-                Console.WriteLine($" Valor da venda: {produto.Substring(33, 5).Insert(3, ",")}");
-                Console.WriteLine($" Data ultima venda: {produto.Substring(38, 8).Insert(2, "/").Insert(5, "/")}");
-                Console.WriteLine($" Data do cadastro: {produto.Substring(46, 8).Insert(2, "/").Insert(5, "/")}");
-                Console.WriteLine($" Situacao: {situacao}");
+                Impressao(produto);
+                //situacao = produto.Substring(54, 1);
+                //if (situacao == "A")
+                //    situacao = "Ativo";
+                //else if (situacao == "I")
+                //    situacao = "Inativo";
+
+                //Console.WriteLine("\n O produto foi encontrado.\n");
+                //Console.WriteLine($" Codigo: {produto.Substring(0, 13)}");
+                //Console.WriteLine($" Nome: {produto.Substring(13, 20)}");
+                //Console.WriteLine($" Valor da venda: {produto.Substring(33, 5).Insert(3, ",")}");
+                //Console.WriteLine($" Data ultima venda: {produto.Substring(38, 8).Insert(2, "/").Insert(5, "/")}");
+                //Console.WriteLine($" Data do cadastro: {produto.Substring(46, 8).Insert(2, "/").Insert(5, "/")}");
+                //Console.WriteLine($" Situacao: {situacao}");
 
                 do
                 {
                     Console.Write("\n Qual a nova situacao do produto (A / I): ");
-                    situacao = Console.ReadLine().ToUpper();
+                    situacao = char.Parse(Console.ReadLine().ToUpper());
 
-                    if ((situacao != "A") && (situacao != "I"))
+                    if ((situacao != 'A') && (situacao != 'I'))
                     {
                         Console.WriteLine("\n Situacao invalida.");
                         Console.WriteLine("\n Pressione ENTER para voltar ao cadastro.");
@@ -321,50 +298,19 @@ namespace CadastrosBasicos
 
                 } while (flag);
 
-                Atualizar(cod, null, situacao);
+                cbd.AtualizaSituacaoProduto(cod, situacao);
             }
         }
 
         public void ImprimirProdutos()
         {
-            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
-            Directory.CreateDirectory(caminhoFinal);
 
-            string arquivoFinal = Path.Combine(caminhoFinal, "Cosmetico.dat");
+            bool verifica_tabela = cbd.VerificaTabelaProduto();
 
-            List<Produto> Produtos = new List<Produto>();
-
-            if (File.Exists(arquivoFinal))
+            if (verifica_tabela == true)
             {
-                try
-                {
-                    using (StreamReader sr = new StreamReader(arquivoFinal))
-                    {
-                        string line = sr.ReadLine();
-                        do
-                        {
-                            if (line.Substring(54, 1) != "I")
-                            {
-                                Produtos.Add(
-                                    new Produto(
-                                        line.Substring(0, 13),
-                                        line.Substring(13, 20),
-                                        Convert.ToDecimal(line.Substring(33, 5).Insert(3, ",")),
-                                        Convert.ToDateTime(line.Substring(38, 8).Insert(2, "/").Insert(5, "/")).Date,
-                                        Convert.ToDateTime(line.Substring(46, 8).Insert(2, "/").Insert(5, "/")).Date,
-                                        Convert.ToChar(line.Substring(54, 1))
-                                        )
-                                    );
-                            }
-                            line = sr.ReadLine();
 
-                        } while (line != null);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Ex ->" + ex.Message);
-                }
+                List<Produto> Produtos = cbd.ListaProduto();
 
 
                 string escolha;
@@ -645,5 +591,6 @@ namespace CadastrosBasicos
             }
             return produto;
         }
+
     }
 }

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace CadastrosBasicos
 {
@@ -142,6 +144,7 @@ namespace CadastrosBasicos
             } while (escolha != "0");
         }
 
+
         public static void NovoCliente()
         {
             Console.Clear();
@@ -183,6 +186,7 @@ namespace CadastrosBasicos
             if (Validacoes.CalculaCriacao(dCriacao))
             {
                 Fornecedor fornecedor = RegistrarFornecedor(dCriacao);
+                
                 write.GravarNovoFornecedor(fornecedor);
             }
             else
@@ -195,9 +199,12 @@ namespace CadastrosBasicos
 
         public static Fornecedor RegistrarFornecedor(DateTime dFundacao)
         {
+
+            CadastrosBD cbd = new CadastrosBD();
             string rSocial = "", cnpj = "";
             Read read = new Read();
             char situacao;
+            bool bloqueado = false;
             do
             {
                 Console.Write("CNPJ: ");
@@ -212,6 +219,7 @@ namespace CadastrosBasicos
                 rSocial = Console.ReadLine().Trim().PadLeft(50, ' ');
                 Console.Write("Situacao (A - Ativo/ I - Inativo): ");
                 situacao = char.Parse(Console.ReadLine());
+                cbd.RegistraFornecedorBD(cnpj, rSocial, dFundacao);
             }
             else
             {
@@ -220,11 +228,13 @@ namespace CadastrosBasicos
                 Console.ReadKey();
                 return f;
             }
-            return new Fornecedor(cnpj, rSocial, dFundacao, situacao);
+
+            return new Fornecedor(cnpj, rSocial, dFundacao, situacao, bloqueado);
 
         }
-        public static Cliente RegistrarCliente(DateTime dNascimento)
+        public static void RegistrarCliente(DateTime dNascimento)
         {
+            CadastrosBD cbd = new CadastrosBD();
             string cpf = "", nome = "";
             Read read = new Read();
             char situacao, sexo;
@@ -246,22 +256,28 @@ namespace CadastrosBasicos
                 sexo = char.Parse(Console.ReadLine());
                 Console.Write("Situacao (A - Ativo/ I - Inativo): ");
                 situacao = char.Parse(Console.ReadLine());
-                write.GravarNovoCliente(new Cliente(cpf, nome, dNascimento, sexo, situacao));
+                cbd.RegistraClienteBD(cpf, nome, dNascimento, sexo);
+                bool risco = false;
+                //write.GravarNovoCliente(new Cliente(cpf, nome, dNascimento, sexo, situacao, risco));
             }
             else
             {
                 Console.WriteLine("Cliente ja cadastrado!!");
                 Console.ReadKey();
-                return c;
+                //return c;
             }
-            return null;
+            //return null;
         }
-        public void EscreverArquivo(Cliente cliente)
+        public static void EscreverArquivo(Cliente cliente)
         {
             Write write = new Write();
 
             write.GravarNovoCliente(cliente);
 
         }
+
+
+        
+
     }
 }

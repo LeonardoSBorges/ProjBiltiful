@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using CadastrosBasicos;
 using CadastrosBasicos.ManipulaArquivos;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace VendasProdutos
 {
@@ -242,10 +244,11 @@ namespace VendasProdutos
                 itemVenda.Cadastrar(itensVenda);
 
                 venda.Cadastrar();
+                RegistraVendaBD(cliente.CPF);
                 
                 cliente.UltimaVenda = venda.DataVenda;
 
-                new Write().EditarCliente(cliente);
+                new CadastrosBD().EditaCliente(cliente);
 
                 Console.WriteLine("\n\nVenda cadastrada com sucesso!\nPressione ENTER para voltar ao Menu Vendas...");
 
@@ -297,5 +300,59 @@ namespace VendasProdutos
             }
         }
 
+
+        public static void RegistraVendaBD(string cpf_cliente)
+        {
+
+
+            try
+            {
+                var datasource = @"DESKTOP-M6PNRRR";//instancia do servidor
+                var database = "ProjetoBiltiful"; //Base de Dados
+                var username = "sa"; //usuario da conexão
+                var password = "123456"; //senha
+
+                //sua string de conexão 
+                string connString = @"Data Source=" + datasource + ";Initial Catalog="
+                            + database + ";Persist Security Info=True;User ID=" + username + ";Password=" + password;
+
+                //cria a instância de conexão com a base de dados
+                SqlConnection connection = new SqlConnection(connString);
+
+                using (connection)
+                {
+
+                    InsereVenda(connection, cpf_cliente);
+                    //Call_SP(connection, codigo_barras, nome, valor_venda);
+
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            Console.WriteLine("\nFIM\n\nPressone qualquer tecla para finalizar");
+            Console.ReadLine();
+
+
+        }
+
+        public static void InsereVenda(SqlConnection connection, string cpf_cliente)
+        {
+
+            connection.Open();
+
+            String sql = "INSERT INTO Venda(CPF_Cliente) " +
+                            "VALUES(@CPF_Cliente)";
+
+            using (SqlCommand sql_cmnd = new SqlCommand(sql, connection))
+            {
+
+                sql_cmnd.Parameters.AddWithValue("@CPF_Cliente", SqlDbType.NVarChar).Value = cpf_cliente;
+                sql_cmnd.ExecuteNonQuery();
+            }
+
+            connection.Close();
+        }
     }
 }

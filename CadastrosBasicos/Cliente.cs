@@ -1,6 +1,8 @@
 ﻿using CadastrosBasicos.ManipulaArquivos;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace CadastrosBasicos
 {
@@ -16,12 +18,14 @@ namespace CadastrosBasicos
         public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
+        public bool Risco { get; set; }
+
         public Cliente()
         {
 
         }
 
-        public Cliente(string cpf, string name, DateTime dataNascimento, char sexo, char situacao)
+        public Cliente(string cpf, string name, DateTime dataNascimento, char sexo, char situacao, bool risco)
         {
             CPF = cpf;
             Nome = name;
@@ -30,8 +34,9 @@ namespace CadastrosBasicos
             UltimaVenda = DateTime.Now;
             DataCadastro = DateTime.Now;
             Situacao = situacao;
+            Risco = risco;
         }
-        public Cliente(string cpf, string name, DateTime dataNascimento, char sexo, DateTime UltimaCompra, DateTime dataCadastro, char situacao)
+        public Cliente(string cpf, string name, DateTime dataNascimento, char sexo, DateTime UltimaCompra, DateTime dataCadastro, char situacao, bool risco)
         {
             CPF = cpf;
             Nome = name;
@@ -40,8 +45,10 @@ namespace CadastrosBasicos
             UltimaVenda = UltimaCompra;
             DataCadastro = dataCadastro;
             Situacao = situacao;
+            Risco = risco;
         }
 
+        CadastrosBD cbd = new CadastrosBD();
 
         public void BloqueiaCadastro()
         {
@@ -49,7 +56,7 @@ namespace CadastrosBasicos
             Console.WriteLine("Insira o CPF para bloqueio: ");
             string cpf = Console.ReadLine();
             cpf = cpf.Replace(".", "").Replace("-", "");
-            if (read.ProcurarCPFBloqueado(cpf))
+            if (cbd.VerificaCpfBloqueado(cpf))
             {
                 bool flag = false;
                 int opcao;
@@ -63,7 +70,7 @@ namespace CadastrosBasicos
 
                 if (opcao == 1)
                 {
-                    write.DesbloqueiaCliente(cpf);
+                    cbd.DesbloqueiaCliente(cpf);
                     Console.WriteLine("Cliente desbloqueado");
                     Console.WriteLine("Pressione enter para continuar...");
                     Console.ReadKey();
@@ -74,10 +81,10 @@ namespace CadastrosBasicos
             {
                 if (Validacoes.ValidarCpf(cpf))
                 {
-                    cliente = read.ProcuraCliente(cpf);
+                    cliente = cbd.BuscaCliente(cpf);
                     if (cliente != null)
                     {
-                        write.BloqueiaCliente(cliente.CPF);
+                        cbd.BloqueiaCliente(cliente.CPF);
                         Console.WriteLine("CPF bloqueado!");
                     }
                 }
@@ -96,7 +103,7 @@ namespace CadastrosBasicos
             Console.Write("CPF: ");
             string cpf = Console.ReadLine();
 
-            cliente = read.ProcuraCliente(cpf);
+            cliente = cbd.BuscaCliente(cpf);
             if (cliente != null)
             {
                 Console.WriteLine("Nome: ");
@@ -110,7 +117,7 @@ namespace CadastrosBasicos
                 cliente.DataNascimento = flag == false ? cliente.DataCadastro : dNascimento;
                 cliente.Situacao = flagSituacao == false ? cliente.Situacao : situacao;
 
-                write.EditarCliente(cliente);
+                cbd.EditaCliente(cliente);
 
                 Console.WriteLine("Cliente Cadastrado com sucesso");
                 Console.WriteLine("Pressione enter para continuar...");
@@ -126,10 +133,10 @@ namespace CadastrosBasicos
         public void Navegar()
         {
             Console.WriteLine("============== Cliente ==============");
-            bool verificaArquivo = read.VerificaListaCliente();
+            bool verificaArquivo = cbd.VerificaTabelaCliente();
             if (verificaArquivo == true)
             {
-                List<Cliente> lista = read.ListaArquivoCliente();
+                List<Cliente> lista = cbd.ListaClientes();
                 int opcao = 0, posicao = 0;
                 bool flag = false;
                 do
@@ -197,7 +204,7 @@ namespace CadastrosBasicos
             Console.WriteLine("Insira o cpf para localizar: ");
             string cpf = Console.ReadLine();
 
-            Cliente cliente = read.ProcuraCliente(cpf);
+            Cliente cliente = cbd.BuscaCliente(cpf);
 
             if (cliente != null)
             {
@@ -213,11 +220,11 @@ namespace CadastrosBasicos
         {
             Console.WriteLine("Insira o CPF para pesquisa: ");
             string cpf = Console.ReadLine();
-            bool flag = new Read().ProcurarCPFBloqueado(cpf);
+            bool flag = new CadastrosBD().VerificaCpfBloqueado(cpf);
             
             if (flag)
             {
-                Cliente cliente = new Read().ProcuraCliente(cpf);
+                Cliente cliente = new CadastrosBD().BuscaCliente(cpf);
                 Console.WriteLine(cliente.ToString());
             }
             else
@@ -231,6 +238,5 @@ namespace CadastrosBasicos
         {
             return $"CPF: {CPF}\nNome: {Nome.Trim()}\nData de nascimento: {DataNascimento.ToString("dd/MM/yyyy")}\nSexo: {Sexo}\nUltima Compra: {UltimaVenda.ToString("dd/MM/yyyy")}\nDia de Cadastro: {DataCadastro.ToString("dd/MM/yyyy")}\nSituacao: {Situacao}";
         }
-
     }
 }
