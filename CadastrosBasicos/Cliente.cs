@@ -1,7 +1,8 @@
 using CadastrosBasicos.ManipulaArquivos;
-using ConexaoDB;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace CadastrosBasicos
 {
@@ -9,7 +10,6 @@ namespace CadastrosBasicos
     {
         public Write write = new Write();
         public Read read = new Read();
-        public BDCadastro connection = new BDCadastro();
         public string CPF { get; private set; }
         public string Nome { get; set; }
         public DateTime DataNascimento { get; set; }
@@ -18,13 +18,14 @@ namespace CadastrosBasicos
         public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
-        Conexao conexao = new Conexao();
+        public bool Risco { get; set; }
+
         public Cliente()
         {
 
         }
 
-        public Cliente(string cpf, string name, DateTime dataNascimento, char sexo, char situacao)
+        public Cliente(string cpf, string name, DateTime dataNascimento, char sexo, char situacao, bool risco)
         {
             CPF = cpf;
             Nome = name;
@@ -33,8 +34,9 @@ namespace CadastrosBasicos
             UltimaVenda = DateTime.Now;
             DataCadastro = DateTime.Now;
             Situacao = situacao;
+            Risco = risco;
         }
-        public Cliente(string cpf, string name, DateTime dataNascimento, char sexo, DateTime UltimaCompra, DateTime dataCadastro, char situacao)
+        public Cliente(string cpf, string name, DateTime dataNascimento, char sexo, DateTime UltimaCompra, DateTime dataCadastro, char situacao, bool risco)
         {
             CPF = cpf;
             Nome = name;
@@ -43,15 +45,18 @@ namespace CadastrosBasicos
             UltimaVenda = UltimaCompra;
             DataCadastro = dataCadastro;
             Situacao = situacao;
+            Risco = risco;
         }
 
+        CadastrosBD cbd = new CadastrosBD();
 
         public void BloqueiaCadastro()
         {
+            Cliente cliente;
             Console.WriteLine("Insira o CPF para bloqueio: ");
             string cpf = Console.ReadLine();
-            string ehBloqueado = connection.SearchBlocked($"SELECT * FROM ClienteRisco WHERE CPF_Cliente ='{cpf}'");
-            if (ehBloqueado.Length != 0)
+            cpf = cpf.Replace(".", "").Replace("-", "");
+            if (cbd.VerificaCpfBloqueado(cpf))
             {
                 bool flag = false;
                 int opcao;
@@ -65,21 +70,21 @@ namespace CadastrosBasicos
 
                 if (opcao == 1)
                 {
-                    write.DesbloqueiaCliente(cpf);
+                    cbd.DesbloqueiaCliente(cpf);
                     Console.WriteLine("Cliente desbloqueado");
                     Console.WriteLine("Pressione enter para continuar...");
                     Console.ReadKey();
                 }
-
+                
             }
             else
             {
                 if (Validacoes.ValidarCpf(cpf))
                 {
-                    
-                    if (ehBloqueado.Length != 0)
+                    cliente = cbd.BuscaCliente(cpf);
+                    if (cliente != null)
                     {
-                        write.BloqueiaCliente($"INSERT INTO ClienteRisco(CPF_Cliente) VALUES ('{cpf}')");
+                        cbd.BloqueiaCliente(cliente.CPF);
                         Console.WriteLine("CPF bloqueado!");
                     }
                 }
@@ -98,7 +103,7 @@ namespace CadastrosBasicos
             Console.Write("CPF: ");
             string cpf = Console.ReadLine();
 
-            cliente = null;
+            cliente = cbd.BuscaCliente(cpf);
             if (cliente != null)
             {
                 Console.WriteLine("Nome: ");
@@ -112,7 +117,7 @@ namespace CadastrosBasicos
                 cliente.DataNascimento = flag == false ? cliente.DataCadastro : dNascimento;
                 cliente.Situacao = flagSituacao == false ? cliente.Situacao : situacao;
 
-                //write.EditarCliente(cliente);
+                cbd.EditaCliente(cliente);
 
                 Console.WriteLine("Cliente Cadastrado com sucesso");
                 Console.WriteLine("Pressione enter para continuar...");
@@ -128,11 +133,10 @@ namespace CadastrosBasicos
         public void Navegar()
         {
             Console.WriteLine("============== Cliente ==============");
-
-            List<Cliente> lista = connection.ListCliente();
-            bool verificaArquivo = read.VerificaListaCliente();
+            bool verificaArquivo = cbd.VerificaTabelaCliente();
             if (verificaArquivo == true)
             {
+                List<Cliente> lista = cbd.ListaClientes();
                 int opcao = 0, posicao = 0;
                 bool flag = false;
                 do
@@ -199,17 +203,16 @@ namespace CadastrosBasicos
         {
             Console.WriteLine("Insira o cpf para localizar: ");
             string cpf = Console.ReadLine();
-            conexao.ProcurarCliente(cpf);
 
-            var cliente = connection.SearchData($"SELECT * FROM Cliente WHERE CPF = '{cpf}'");
+            Cliente cliente = cbd.BuscaCliente(cpf);
 
-            if (cliente.Length != 0)
+            if (cliente != null)
             {
                 Console.WriteLine(cliente.ToString());
+                
             }
             else
                 Console.WriteLine("Nenhum cadastrado foi encontrado!");
-
             Console.WriteLine("Pressione enter para continuar...");
             Console.ReadKey();
         }
@@ -217,13 +220,11 @@ namespace CadastrosBasicos
         {
             Console.WriteLine("Insira o CPF para pesquisa: ");
             string cpf = Console.ReadLine();
-
-            var clienteBloqueado = connection.SearchBlocked($"SELECT * FROM ClienteRisco WHERE CPF_Cliente = '{cpf}'");
-
-            if (clienteBloqueado.Length != 0)
-
+            bool flag = new CadastrosBD().VerificaCpfBloqueado(cpf);
+            
+            if (flag)
             {
-                var cliente = connection.SearchData($"SELECT * FROM Cliente WHERE CPF = '{cpf}'");
+                Cliente cliente = new CadastrosBD().BuscaCliente(cpf);
                 Console.WriteLine(cliente.ToString());
             }
             else
@@ -237,6 +238,5 @@ namespace CadastrosBasicos
         {
             return $"CPF: {CPF}\nNome: {Nome.Trim()}\nData de nascimento: {DataNascimento.ToString("dd/MM/yyyy")}\nSexo: {Sexo}\nUltima Compra: {UltimaVenda.ToString("dd/MM/yyyy")}\nDia de Cadastro: {DataCadastro.ToString("dd/MM/yyyy")}\nSituacao: {Situacao}";
         }
-
     }
 }

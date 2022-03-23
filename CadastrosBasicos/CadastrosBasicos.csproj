@@ -11,4 +11,9 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
-</Project>
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
+
+

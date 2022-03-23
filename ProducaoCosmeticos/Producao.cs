@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using CadastrosBasicos;
+using System.Data;
+using System.Data.SqlClient;
 using ConexaoDB;
 
 namespace ProducaoCosmeticos
@@ -92,11 +94,11 @@ namespace ProducaoCosmeticos
 
         #region Métodos
 
-        List<Producao> listaProducao = new List<Producao>();
 
         ItemProducao itemProducao = new ItemProducao();
 
-        List<ItemProducao> itens = new List<ItemProducao>();
+
+        CadastrosBD2 cbd = new CadastrosBD2();
 
         public void Cadastrar()
         {
@@ -104,7 +106,9 @@ namespace ProducaoCosmeticos
             if (Contador == 1)
             {
 
-                LerArquivo();
+                List<Producao> listaProducao = cbd.ListaProducao();
+                if(listaProducao.Count > 0)
+                Contador = listaProducao.Count;
 
             }
 
@@ -119,6 +123,8 @@ namespace ProducaoCosmeticos
 
             if (Contador <= 99999)
             {
+
+                List<ItemProducao> itens = new List<ItemProducao>();
 
                 Console.Write("ID: " + id);
 
@@ -184,9 +190,12 @@ namespace ProducaoCosmeticos
 
                 do
                 {
+
                     control = false;
 
                     MPrima materiaPrima;
+
+                    Console.WriteLine("\nRegistrar Item de produção:\n");
 
                     do
                     {
@@ -249,14 +258,24 @@ namespace ProducaoCosmeticos
                 {
 
                     Producao producao = new(id, dataProducao, produto, quantidade);
-                    listaProducao.Add(producao);
+                    cbd.RegistraProducaoBD(produto, quantidade);
+
+                    foreach (ItemProducao itemProducao in itens)
+                    {
+
+                        string idProducao, codMPrima;
+                        float quantidadeMPrima;
+
+                        idProducao = itemProducao.Id;
+                        codMPrima = itemProducao.MateriaPrima;
+                        quantidadeMPrima = itemProducao.QuantidadeMateriaPrima;
+
+                        cbd.RegistraItemProducaoBD(idProducao, codMPrima, quantidadeMPrima);
+
+
+                    }
 
                     Contador++;
-
-                    string formatado = "" + id + dataProducao.Replace("/", "") + produto + quantidade.ToString("00000");
-                    SalvarArquivo(formatado);
-
-                    itemProducao.GravarItemProducao(itens);
 
                     Console.WriteLine("\n\tRegistro efetuado com sucesso!");
                     Console.ReadKey();
@@ -288,35 +307,28 @@ namespace ProducaoCosmeticos
 
         }
 
-        public Producao Localizar()
+        public void Localizar()
         {
 
-            if (Contador == 1)
-            {
-
-                LerArquivo();
-
-            }
-
-
-            Producao encontrado;
+            bool verifica_tabela = cbd.VerificaTabelaProducao();
             string buscaId;
 
-            if (listaProducao.Count == 0)
+            if (verifica_tabela == false)
             {
 
                 Console.WriteLine("Não existe nenhum registro de produção ainda!");
                 Console.ReadKey();
-                return null;
 
             }
             else
             {
 
+
                 Console.Write("Digite o ID da produção que você deseja localizar: ");
 
                 buscaId = Console.ReadLine();
-                encontrado = listaProducao.Find(x => x.Id == buscaId);
+
+                Producao encontrado = cbd.BuscaProducao(buscaId);
 
                 if (encontrado == null)
                 {
@@ -326,7 +338,6 @@ namespace ProducaoCosmeticos
                     Console.ReadKey();
                     Console.Clear();
 
-                    return null;
 
                 }
                 else
@@ -340,7 +351,6 @@ namespace ProducaoCosmeticos
                     Console.ReadKey();
                     Console.Clear();
 
-                    return encontrado;
 
                 }
             }
@@ -349,17 +359,14 @@ namespace ProducaoCosmeticos
         public void ImprimirPorRegistro()
         {
 
-            if (Contador == 1)
-            {
-
-                LerArquivo();
-
-            }
-
             int escolha, i = 0;
 
-            if (listaProducao.Count == 0)
+            List<Producao> listaProducao = cbd.ListaProducao();
+            bool verifica_tabela = cbd.VerificaTabelaProducao();
+
+            if (verifica_tabela == true)
             {
+
                 Console.Clear();
                 Console.WriteLine("Não existe nenhum registro de produção ainda!");
                 Console.ReadKey();
@@ -441,226 +448,24 @@ namespace ProducaoCosmeticos
             }
         }
 
-        public void SalvarArquivo(string producao)
-        {
-
-            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
-            Directory.CreateDirectory(caminhoFinal);
-
-            string arquivoFinal = Path.Combine(caminhoFinal, "Producao.dat");
-
-            if (!File.Exists(arquivoFinal))
-            {
-
-                try
-                {
-
-                    using (StreamWriter sw = new StreamWriter(arquivoFinal))
-                    {
-
-                        sw.WriteLine(producao);
-                        sw.Close();
-
-                    }
-
-                }
-                catch
-                {
-
-                    Console.WriteLine("Algo deu errado...");
-
-                }
-
-            }
-            else
-            {
-
-                try
-                {
-
-                    using (StreamWriter sw = new StreamWriter(arquivoFinal, append: true))
-                    {
-
-                        sw.WriteLine(producao);
-                        sw.Close();
-
-                    }
-
-                }
-                catch
-                {
-
-                    Console.WriteLine("Algo deu errado...");
-
-                }
-
-            }
-
-
-
-        }
-
-        public string BuscarCodigo(string codigo)
-        {
-
-
-            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
-            Directory.CreateDirectory(caminhoFinal);
-
-            string arquivoFinal = Path.Combine(caminhoFinal, "Producao.dat");
-
-            string cbarras = null;
-
-            try
-            {
-
-                string linha = null;
-
-                using (StreamReader sr = new StreamReader(arquivoFinal))
-                {
-
-                    linha = sr.ReadLine();
-
-
-                    do
-                    {
-
-                        if (linha.Substring(0, 13) == codigo)
-                        {
-
-                            cbarras = linha.Substring(0, 13);
-
-                        }
-                        linha = sr.ReadLine();
-
-                    }
-                    while (linha != null);
-
-                    sr.Close();
-
-                }
-
-            }
-            catch
-            {
-
-                Console.WriteLine("Algo deu errado...");
-
-            }
-
-            return cbarras;
-
-        }
-
-        public void LerArquivo()
-        {
-
-            string caminhoInicial = Directory.GetCurrentDirectory();
-
-            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
-            Directory.CreateDirectory(caminhoFinal);
-
-            string arquivoFinal = Path.Combine(caminhoFinal, "Producao.dat");
-
-            try
-            {
-
-                string linha = null;
-
-                using (StreamReader sr = new StreamReader(arquivoFinal))
-                {
-
-                    linha = sr.ReadLine();
-
-
-                    do
-                    {
-
-                        Id = linha.Substring(0, 5);
-                        DataProducao = linha.Substring(5, 8).Insert(2, "/").Insert(5, "/");
-                        Produto = linha.Substring(13, 13);
-                        Quantidade = float.Parse(linha.Substring(26, 5));
-
-                        Producao producao = new Producao(Id, DataProducao, Produto, Quantidade);
-
-                        listaProducao.Add(producao);
-                        Contador++;
-
-
-                        linha = sr.ReadLine();
-
-                    }
-                    while (linha != null);
-
-                    sr.Close();
-
-                }
-            }
-            catch
-            {
-
-            }
-        }
-
         public void BuscarItemProducao(string codigoproducao)
         {
-            string caminhoInicial = Directory.GetCurrentDirectory();
 
-            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
-            Directory.CreateDirectory(caminhoFinal);
+            List<ItemProducao> listaItemProducao = cbd.ListaItemProducao();
 
-            string arquivoItemProducao = Path.Combine(caminhoFinal, "ItemProducao.dat");
+            Console.WriteLine("\nLista de itens da producao: \n");
 
-            List<string> listaItemProducao = new();
-
-            try
+            foreach (ItemProducao item in listaItemProducao)
             {
-
-                string linha = null;
-
-                using (StreamReader sr = new StreamReader(arquivoItemProducao))
+                if (codigoproducao == item.Id)
                 {
 
-                    linha = sr.ReadLine();
-
-
-                    do
-                    {
-
-                        if (codigoproducao == linha.Substring(0, 5))
-                        {
-
-                            listaItemProducao.Add(linha.Substring(13, 11));
-
-                        }
-
-
-
-                        linha = sr.ReadLine();
-
-                    }
-                    while (linha != null);
-
-
-                    Console.WriteLine("\nLista de matérias primas utilizadas: \n");
-
-                    listaItemProducao.ForEach(item =>
-                    {
-                        float qntdMatPrima = float.Parse(item.Substring(6, 5));
-
-                        Console.WriteLine("Código da matéria prima: " + item.Substring(0, 6));
-                        Console.WriteLine("Quantidade utilizada da matéria prima: " + qntdMatPrima.ToString("000.#0").TrimStart('0') + "\n");
-
-                    });
-
-                    Console.WriteLine("\n\n *********************************************");
+                    Console.WriteLine("Codigo da materia prima: " + item.MateriaPrima);
+                    Console.WriteLine("Quantidade utilizada da matéria prima: " + item.QuantidadeMateriaPrima);
 
                 }
             }
-            catch
-            {
 
-            }
 
         }
 
@@ -674,6 +479,7 @@ namespace ProducaoCosmeticos
                 + "\nQuantidade: " + Quantidade.ToString("000.#0").TrimStart('0');
 
         }
+
 
         #endregion
     }

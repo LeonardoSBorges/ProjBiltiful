@@ -1,5 +1,4 @@
-﻿using CadastrosBasicos.ManipulaArquivos;
-using ConexaoDB;
+using CadastrosBasicos.ManipulaArquivos;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +9,6 @@ namespace CadastrosBasicos
     {
         public Write write = new Write();
         public Read read = new Read();
-        public BDCadastro connection = new BDCadastro();
         public string CNPJ { get; set; }
         public string RazaoSocial { get; set; }
         public DateTime DataAbertura { get; set; }
@@ -18,16 +16,13 @@ namespace CadastrosBasicos
         public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
-        Conexao conexao = new Conexao();
+        public bool Bloqueado { get; set; }
+
         public Fornecedor()
         {
 
         }
-        public Fornecedor(string cnpj)
-        {
-            CNPJ = cnpj;
-        }
-        public Fornecedor(string cnpj, string rSocial, DateTime dAbertura, char situacao)
+        public Fornecedor(string cnpj, string rSocial, DateTime dAbertura, char situacao, bool bloqueado)
         {
             CNPJ = cnpj;
             RazaoSocial = rSocial;
@@ -35,8 +30,9 @@ namespace CadastrosBasicos
             UltimaCompra = DateTime.Now;
             DataCadastro = DateTime.Now;
             Situacao = situacao;
+            Bloqueado = bloqueado;
         }
-        public Fornecedor(string cnpj, string rSocial, DateTime dAbertura, DateTime uCompra, DateTime dCadastro, char situacao)
+        public Fornecedor(string cnpj, string rSocial, DateTime dAbertura, DateTime uCompra, DateTime dCadastro, char situacao, bool bloqueado)
         {
             CNPJ = cnpj;
             RazaoSocial = rSocial;
@@ -44,13 +40,19 @@ namespace CadastrosBasicos
             UltimaCompra = DateTime.Now;
             DataCadastro = DateTime.Now;
             Situacao = situacao;
+            Bloqueado = bloqueado;
         }
+
+
+        CadastrosBD cbd = new CadastrosBD();
+
         public void Navegar()
         {
             Console.WriteLine("============== Fornecedores ==============");
-            List<Fornecedor> lista = connection.ListFornecedor();
-            if (lista != null)
+            bool verificaArquivo = cbd.VerificaTabelaFornecedor();
+            if (verificaArquivo == true)
             {
+                List<Fornecedor> lista = cbd.ListaFornecedores();
                 int opcao = 0, posicao = 0;
                 bool flag = false;
                 do
@@ -114,25 +116,27 @@ namespace CadastrosBasicos
         {
             Console.WriteLine("Insira o CNPJ para localizar: ");
             string cnpj = Console.ReadLine();
-            string fornecedor = connection.SearchDataFornecedor($"SELECT * FROM Fornecedor WHERE CNPJ = '{cnpj}'");
 
+            Fornecedor fornecedor = cbd.BuscaFornecedor(cnpj);
 
-            if (fornecedor.Length != 0)
+            if (fornecedor != null)
             {
-                Console.WriteLine(fornecedor);
+                Console.WriteLine(fornecedor.ToString());
             }
             else
                 Console.WriteLine("Nenhum cadastrado foi encontrado!");
             Console.WriteLine("Pressione enter para voltar ao menu.");
             Console.ReadKey();
         }
+
         public void BloqueiaFornecedor()
         {
+            Fornecedor fornecedor;
             Console.WriteLine("Insira o CNPJ para bloqueio: ");
             string cnpj = Console.ReadLine();
-            string getFornecedor = connection.SearchDataFornecedor($"SELECT * FROM Fornecedor WHERE CNPJ = '{cnpj}'");
-            string getFornecedorBloqueado = connection.SearchBlocked($"SELECT * FROM FornecedorBloqueado WHERE CNPJ_Fornecedor = '{cnpj}'");
-            if (getFornecedorBloqueado.Length != 0)
+            cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
+
+            if (cbd.VerificaCnpjBloqueado(cnpj))
             {
                 bool flag = false;
                 int opcao;
@@ -146,31 +150,25 @@ namespace CadastrosBasicos
 
                 if (opcao == 1)
                 {
-                    connection.PushNewRegister($"DELETE FROM FornecedorBloqueado WHERE CNPJ_Fornecedor= '{cnpj}'");
-                    Console.WriteLine("Fornecedor desbloqueado");
+                    cbd.DesbloqueiaFornecedor(cnpj);
                 }
-                else
-                    Console.WriteLine("Insira uma opcao valida");
-                
             }
             else
             {
                 if (Validacoes.ValidarCnpj(cnpj))
                 {
-                    if (getFornecedor.Length != 0)
+                    fornecedor = cbd.BuscaFornecedor(cnpj);
+                    if (fornecedor != null)
                     {
-                        connection.PushNewRegister($"INSERT INTO FornecedorBloqueado(CNPJ_Fornecedor) VALUES ('{cnpj}')");
+                        cbd.BloqueiaFornecedor(fornecedor.CNPJ);
                         Console.WriteLine("CNPJ bloqueado!");
                     }
                 }
                 else
-                {
                     Console.WriteLine("CNPJ incorreto!");
-                }
             }
-            Console.WriteLine("Pressione enter para continuar...");
-            Console.ReadKey();
-        }
+        } 
+
         public string RetornaArquivo()
         {
             return CNPJ + RazaoSocial + DataAbertura.ToString("dd/MM/yyyy") + UltimaCompra.ToString("dd/MM/yyyy") + DataCadastro.ToString("dd/MM/yyyy") + Situacao;
@@ -178,13 +176,12 @@ namespace CadastrosBasicos
 
         public Fornecedor Editar()
         {
-
             Fornecedor fornecedor;
             Console.WriteLine("Somente algumas informacoes podem ser alterada como (Razao social/situacao), caso nao queira alterar alguma informacao pressione enter!");
             Console.Write("CNPJ: ");
             string cnpj = Console.ReadLine();
-            
-            fornecedor = read.ProcurarFornecedor(cnpj);
+
+            fornecedor = cbd.BuscaFornecedor(cnpj);
             if (fornecedor != null)
             {
                 Console.WriteLine("Razao social: ");
@@ -196,8 +193,7 @@ namespace CadastrosBasicos
 
                 fornecedor.Situacao = flagSituacao == false ? fornecedor.Situacao : situacao;
 
-                //write.EditarFornecedor(fornecedor);
-                conexao.EditarFornecedor(fornecedor);
+                cbd.EditaFornecedor(fornecedor);
             }
             return fornecedor;
         }
@@ -206,20 +202,22 @@ namespace CadastrosBasicos
         {
             Console.WriteLine("Insira o CNPJ para pesquisa: ");
             string cnpj = Console.ReadLine();
-            string cnpjBloqueado = connection.SearchBlocked($"SELECT * FROM FornecedorBloqueado WHERE CNPJ_Fornecedor = '{cnpj}'");
-            
-            if (cnpjBloqueado.Length != 0)
+            bool flag = cbd.VerificaCnpjBloqueado(cnpj);
+
+            if (flag)
             {
-                string procuraFornecedor = $"SELECT * FROM Fornecedor WHERE CNPJ = '{cnpj}'";
-                Console.WriteLine(connection.SearchDataFornecedor(procuraFornecedor));
+                Fornecedor fornecedor = cbd.BuscaFornecedor(cnpj);
+                Console.WriteLine(fornecedor.ToString());
+                Console.ReadKey();
             }
             else
             {
                 Console.WriteLine("Fornecedor bloqueado nao encontrado");
+                Console.ReadKey();
             }
-            Console.WriteLine("Pressione enter para continuar...");
-            Console.ReadKey();
+
         }
+
         public override string ToString()
         {
             return $"CNPJ: {CNPJ}\nRSocial: {RazaoSocial.Trim()}\nData de Abertura da empresa: {DataAbertura.ToString("dd/MM/yyyy")}\nUltima Compra: {UltimaCompra.ToString("dd/MM/yyyy")}\nData de Cadastro: {DataCadastro.ToString("dd/MM/yyyy")}\nSituacao: {Situacao}";

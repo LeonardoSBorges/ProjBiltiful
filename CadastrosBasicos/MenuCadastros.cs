@@ -1,5 +1,4 @@
 using CadastrosBasicos.ManipulaArquivos;
-using ConexaoDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +12,9 @@ namespace CadastrosBasicos
 
     public class MenuCadastros
     {
-        public static BDCadastro connection = new BDCadastro();
+        public static Write write = new Write();
+        public static Read read = new Read();
+
         public static void SubMenu()
         {
             string escolha;
@@ -30,7 +31,7 @@ namespace CadastrosBasicos
                 Console.WriteLine("0. Voltar ao menu anterior");
                 Console.Write("\nEscolha: ");
 
-                switch (escolha = Console.ReadLine())
+                switch(escolha = Console.ReadLine())
                 {
                     case "0":
                         break;
@@ -54,7 +55,7 @@ namespace CadastrosBasicos
                         break;
                 }
 
-            } while (escolha != "0");
+            }while(escolha != "0");
 
         }
 
@@ -103,7 +104,7 @@ namespace CadastrosBasicos
 
                     case "4":
                         new Cliente().BloqueiaCadastro();
-
+                        
                         break;
 
                     case "5":
@@ -143,6 +144,7 @@ namespace CadastrosBasicos
             } while (escolha != "0");
         }
 
+
         public static void NovoCliente()
         {
             Console.Clear();
@@ -165,11 +167,7 @@ namespace CadastrosBasicos
                 Console.WriteLine("Menor de 18 anos nao pode ser cadastrado");
                 Console.ReadKey();
             }
-
-            Console.WriteLine("Pressione enter para continuar");
-            Console.ReadKey();
-
-
+                
         }
 
         public static void NovoFornecedor()
@@ -187,47 +185,56 @@ namespace CadastrosBasicos
             } while (flag != true);
             if (Validacoes.CalculaCriacao(dCriacao))
             {
-                RegistrarFornecedor(dCriacao);
+                Fornecedor fornecedor = RegistrarFornecedor(dCriacao);
+                
+                write.GravarNovoFornecedor(fornecedor);
             }
             else
             {
                 Console.WriteLine("Empresa com menos de 6 meses nao deve ser cadastrada");
-                
+                Console.WriteLine("Pressione enter para continuar");
+                Console.ReadKey();
             }
-            Console.WriteLine("Pressione enter para continuar");
-            Console.ReadKey();
         }
 
-        public static void RegistrarFornecedor(DateTime dFundacao)
+        public static Fornecedor RegistrarFornecedor(DateTime dFundacao)
         {
+
+            CadastrosBD cbd = new CadastrosBD();
             string rSocial = "", cnpj = "";
             Read read = new Read();
             char situacao;
+            bool bloqueado = false;
             do
             {
                 Console.Write("CNPJ: ");
                 cnpj = Console.ReadLine();
                 cnpj = cnpj.Trim();
+                cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
             } while (Validacoes.ValidarCnpj(cnpj) == false);
-            
-            string getFornecedor = connection.SearchData($"SELECT * FROM Fornecedor WHERE CNPJ = '{cnpj}' ");
-
-            if (getFornecedor.Length == 0)
+            Fornecedor f = read.ProcurarFornecedor(cnpj);
+            if (f == null)
             {
                 Console.Write("Razao social: ");
-                rSocial = Console.ReadLine().Trim();
+                rSocial = Console.ReadLine().Trim().PadLeft(50, ' ');
                 Console.Write("Situacao (A - Ativo/ I - Inativo): ");
                 situacao = char.Parse(Console.ReadLine());
-                string fornecedorData = $"INSERT INTO Fornecedor(CNPJ, Razao_Social, Data_Abertura, Situacao) values ( '{cnpj}', '{rSocial}',CONVERT(DATE, '{dFundacao}'), '{situacao}')";
-                connection.PushNewRegister(fornecedorData);
-                Console.WriteLine("O novo fornecedor foi inserido no sistema!");
+                cbd.RegistraFornecedorBD(cnpj, rSocial, dFundacao);
             }
-            Console.WriteLine("Pressione enter para continuar");
-            Console.ReadKey();
-        }
+            else
+            {
+                Console.WriteLine("Fornecedor ja cadastrado");
+                Console.WriteLine("Pressione enter para continuar");
+                Console.ReadKey();
+                return f;
+            }
 
+            return new Fornecedor(cnpj, rSocial, dFundacao, situacao, bloqueado);
+
+        }
         public static void RegistrarCliente(DateTime dNascimento)
         {
+            CadastrosBD cbd = new CadastrosBD();
             string cpf = "", nome = "";
             Read read = new Read();
             char situacao, sexo;
@@ -236,29 +243,41 @@ namespace CadastrosBasicos
                 Console.Write("CPF: ");
                 cpf = Console.ReadLine();
                 cpf = cpf.Trim();
+                cpf = cpf.Replace(".", "").Replace("-", "");
+
             } while (Validacoes.ValidarCpf(cpf) == false);
+            Cliente c = read.ProcuraCliente(cpf);
 
-            string getCliente = connection.SearchData($"SELECT [CPF] ,[Nome] ,[Data_Nasc] ,[Sexo] ,[Ultima_Compra] ,[Data_Cadastro] ,[Situacao] FROM Cliente WHERE CPF = '{cpf}' ");
-
-            if (getCliente.Length == 0)
+            if (c == null)
             {
                 Console.Write("Nome: ");
-                nome = Console.ReadLine().Trim();
+                nome = Console.ReadLine().Trim().PadLeft(50, ' ');
                 Console.Write("Genero (M - Masculino/ F - Feminino): ");
                 sexo = char.Parse(Console.ReadLine());
                 Console.Write("Situacao (A - Ativo/ I - Inativo): ");
-                situacao = char.Parse(Console.ReadLine().ToUpper());
-                string clienteData = $"INSERT INTO Cliente(CPF, Nome, Data_Nasc, Sexo, Situacao) values ( '{cpf}', '{nome}',CONVERT(DATE, '{dNascimento}'), '{sexo}', '{situacao}')";
-                connection.PushNewRegister(clienteData);
-                Console.WriteLine("O novo cliente foi inserido no sistema!");
+                situacao = char.Parse(Console.ReadLine());
+                cbd.RegistraClienteBD(cpf, nome, dNascimento, sexo);
+                bool risco = false;
+                //write.GravarNovoCliente(new Cliente(cpf, nome, dNascimento, sexo, situacao, risco));
             }
+            else
+            {
+                Console.WriteLine("Cliente ja cadastrado!!");
+                Console.ReadKey();
+                //return c;
+            }
+            //return null;
         }
-        public void EscreverArquivo(Cliente cliente)
+        public static void EscreverArquivo(Cliente cliente)
         {
             Write write = new Write();
 
             write.GravarNovoCliente(cliente);
 
         }
+
+
+        
+
     }
 }

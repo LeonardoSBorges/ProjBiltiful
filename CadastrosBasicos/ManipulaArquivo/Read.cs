@@ -1,10 +1,11 @@
-﻿using ConexaoDB;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace CadastrosBasicos.ManipulaArquivos
 {
@@ -15,8 +16,6 @@ namespace CadastrosBasicos.ManipulaArquivos
         public string ClienteInadimplente { get; set; }
         public string CaminhoFornecedor { get; set; }
         public string CaminhoBloqueado { get; set; }
-
-        Conexao conexao = new Conexao();
 
         public Read()
         {
@@ -82,7 +81,7 @@ namespace CadastrosBasicos.ManipulaArquivos
 
             cpf = cpf.Replace(".", "").Replace("-", "");
             string cpfBloqueado = "";
-
+          
             try
             {
                 using (StreamReader sr = new StreamReader(ClienteInadimplente))
@@ -123,78 +122,7 @@ namespace CadastrosBasicos.ManipulaArquivos
             else
                 return true;
         }
-        public List<Fornecedor> ListaArquivoFornecedor()
-        {
-            List<Fornecedor> fornecedores = new List<Fornecedor>();
-            string procuraFornecedor = "", rSocial = "", cnpj = "";
-            DateTime dAbertura, uCompra, dCadastro;
-            char situacao;
-
-            try
-            {
-                using (StreamReader sr = new StreamReader(CaminhoFornecedor))
-                {
-                    procuraFornecedor = sr.ReadLine();
-                    while (procuraFornecedor != null)
-                    {
-                        cnpj = procuraFornecedor.Substring(0, 14); ;
-                        rSocial = procuraFornecedor.Substring(14, 50);
-                        dAbertura = DateTime.Parse(procuraFornecedor.Substring(64, 10));
-                        uCompra = DateTime.Parse(procuraFornecedor.Substring(74, 10));
-                        dCadastro = DateTime.Parse(procuraFornecedor.Substring(84, 10));
-                        situacao = char.Parse(procuraFornecedor.Substring(94, 1));
-                        fornecedores.Add(new Fornecedor(cnpj, rSocial, dAbertura, uCompra, dCadastro, situacao));
-
-                        procuraFornecedor = sr.ReadLine();
-                    }
-                }
-                return fornecedores;
-            }
-
-            catch (Exception ex)
-            {
-                Console.WriteLine("Ocorreu um erro: " + ex.Message);
-            }
-            return fornecedores;
-        }
-        //Retorna lista de clientes
-        public List<Cliente> ListaArquivoCliente()
-        {
-            List<Cliente> clientes = new List<Cliente>();
-            string procuraCliente = "", nome = "", cpf = "";
-            DateTime dNascimento, uCompra, dCadastro;
-            Cliente buscaCliente;
-
-            try
-            {
-                using (StreamReader sr = new StreamReader(CaminhoCadastro))
-                {
-                    procuraCliente = sr.ReadLine();
-                    while (procuraCliente != null)
-                    {
-                        cpf = procuraCliente.Substring(0, 11);
-                        nome = procuraCliente.Substring(11, 50);
-                        dNascimento = DateTime.Parse(procuraCliente.Substring(61, 10));
-                        char sexo = char.Parse(procuraCliente.Substring(71, 1));
-                        uCompra = DateTime.Parse(procuraCliente.Substring(72, 10));
-                        dCadastro = DateTime.Parse(procuraCliente.Substring(82, 10));
-                        char situacao = char.Parse(procuraCliente.Substring(92, 1));
-                        buscaCliente = new Cliente(cpf, nome, dNascimento, sexo, uCompra, dCadastro, situacao);
-                        clientes.Add(buscaCliente);
-                        procuraCliente = sr.ReadLine();
-                    }
-                }
-                return clientes;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Ocorreu um erro: " + ex.Message);
-            }
-            return null;
-
-
-        }
-        //Fornecedor nao retorna valores.
+        
         public Fornecedor ProcurarFornecedor(string procuraCnpj)
         {
             string procuraFornecedor = "", rSocial = "";
@@ -202,6 +130,7 @@ namespace CadastrosBasicos.ManipulaArquivos
             DateTime dAbertura, uCompra, dCadastro;
             char situacao;
             Fornecedor fornecedor;
+            bool bloqueado = true;
             if (!File.Exists(CaminhoFornecedor))
                 File.Create(CaminhoFornecedor).Close();
             try
@@ -221,7 +150,7 @@ namespace CadastrosBasicos.ManipulaArquivos
                             uCompra = DateTime.Parse(procuraFornecedor.Substring(74, 10));
                             dCadastro = DateTime.Parse(procuraFornecedor.Substring(84, 10));
                             situacao = char.Parse(procuraFornecedor.Substring(94, 1));
-                            fornecedor = new Fornecedor(cnpj, rSocial, dAbertura, uCompra, dCadastro, situacao);
+                            fornecedor = new Fornecedor(cnpj, rSocial, dAbertura, uCompra, dCadastro, situacao, bloqueado);
                             return fornecedor;
                         }
 
@@ -244,7 +173,7 @@ namespace CadastrosBasicos.ManipulaArquivos
             string procuraCliente = "";
             Cliente cliente;
             cpf = cpf.Replace(".", "").Replace("-", "");
-
+            bool risco = true;
             try
             {
 
@@ -263,7 +192,7 @@ namespace CadastrosBasicos.ManipulaArquivos
                             DateTime uCompra = DateTime.Parse(procuraCliente.Substring(72, 10));
                             DateTime dCadastro = DateTime.Parse(procuraCliente.Substring(82, 10));
                             char situacao = char.Parse(procuraCliente.Substring(92, 1));
-                            cliente = new Cliente(cpf, nome, dNascimento, sexo, uCompra, dCadastro, situacao);
+                            cliente = new Cliente(cpf, nome, dNascimento, sexo, uCompra, dCadastro, situacao,risco);
                             return cliente;
                         }
                         procuraCliente = sr.ReadLine();
