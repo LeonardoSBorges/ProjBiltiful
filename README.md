@@ -1,4 +1,5 @@
-#INSERCAO DO SQL
+# INSERCAO DO SQL
+
 Foi feita a parte de cadastros.
 Iniciei vendas mas travei, ComprasMateriasPrima nao consegui iniciar, e ProducaoCosmeticos tambem nao foi iniciada
 
