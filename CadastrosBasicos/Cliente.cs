@@ -1,4 +1,5 @@
 ﻿using CadastrosBasicos.ManipulaArquivos;
+using ConexaoDB;
 using System;
 using System.Collections.Generic;
 
@@ -16,6 +17,7 @@ namespace CadastrosBasicos
         public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
 
+        Conexao conexao = new Conexao();
         public Cliente()
         {
 
@@ -68,7 +70,7 @@ namespace CadastrosBasicos
                     Console.WriteLine("Pressione enter para continuar...");
                     Console.ReadKey();
                 }
-                
+
             }
             else
             {
@@ -196,16 +198,17 @@ namespace CadastrosBasicos
         {
             Console.WriteLine("Insira o cpf para localizar: ");
             string cpf = Console.ReadLine();
+            conexao.ProcurarCliente(cpf);
 
-            Cliente cliente = read.ProcuraCliente(cpf);
+            //Cliente cliente = read.ProcuraCliente(cpf);
 
-            if (cliente != null)
-            {
-                Console.WriteLine(cliente.ToString());
-                
-            }
-            else
-                Console.WriteLine("Nenhum cadastrado foi encontrado!");
+            //if (cliente != null)
+            //{
+            //    Console.WriteLine(cliente.ToString());
+
+            //}
+            //else
+            //Console.WriteLine("Nenhum cadastrado foi encontrado!");
             Console.WriteLine("Pressione enter para continuar...");
             Console.ReadKey();
         }
@@ -214,7 +217,7 @@ namespace CadastrosBasicos
             Console.WriteLine("Insira o CPF para pesquisa: ");
             string cpf = Console.ReadLine();
             bool flag = new Read().ProcurarCPFBloqueado(cpf);
-            
+
             if (flag)
             {
                 Cliente cliente = new Read().ProcuraCliente(cpf);

@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using ConexaoDB;
 
 namespace CadastrosBasicos
 {
@@ -17,6 +17,8 @@ namespace CadastrosBasicos
         public DateTime UltimaVenda { get; set; }
         public DateTime DataCadastro { get; set; }
         public char Situacao { get; set; }
+
+        Conexao conexao = new Conexao();
 
         public override string ToString()
         {
@@ -158,14 +160,14 @@ namespace CadastrosBasicos
                     Console.Write(" Valor da Venda: ");
                     valorVenda = Convert.ToDecimal(Console.ReadLine());
 
-                    if ((valorVenda < 1) || (valorVenda > (decimal) 999.99))
+                    if ((valorVenda < 1) || (valorVenda > (decimal)999.99))
                     {
                         Console.WriteLine("\n Valor invalido. Apenas valores maior que 0 e menor que 999,99.");
                         Console.WriteLine("\n Pressione ENTER para voltar ao cadastro.");
                         Console.ReadKey();
                     }
 
-                } while ((valorVenda < 1) || (valorVenda > (decimal) 999.99));
+                } while ((valorVenda < 1) || (valorVenda > (decimal)999.99));
 
 
                 do
@@ -204,32 +206,34 @@ namespace CadastrosBasicos
 
         public void GravarProduto(Produto produto)
         {
-            string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
-            Directory.CreateDirectory(caminhoFinal);
+            conexao.GravarNovoProduto(produto);
 
-            string arquivoFinal = Path.Combine(caminhoFinal, "Cosmetico.dat");
+            //string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
+            //Directory.CreateDirectory(caminhoFinal);
 
-            try
-            {
-                if (!File.Exists(arquivoFinal))
-                {
-                    using (StreamWriter sw = new StreamWriter(arquivoFinal))
-                    {
-                        sw.WriteLine(produto.ToString());
-                    }
-                }
-                else
-                {
-                    using (StreamWriter sw = new StreamWriter(arquivoFinal, append: true))
-                    {
-                        sw.WriteLine(produto.ToString());
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Ex -> " + ex.Message);
-            }
+            //string arquivoFinal = Path.Combine(caminhoFinal, "Cosmetico.dat");
+
+            //try
+            //{
+            //    if (!File.Exists(arquivoFinal))
+            //    {
+            //        using (StreamWriter sw = new StreamWriter(arquivoFinal))
+            //        {
+            //            sw.WriteLine(produto.ToString());
+            //        }
+            //    }
+            //    else
+            //    {
+            //        using (StreamWriter sw = new StreamWriter(arquivoFinal, append: true))
+            //        {
+            //            sw.WriteLine(produto.ToString());
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("Ex -> " + ex.Message);
+            //}
         }
 
         public void Localizar()
@@ -572,6 +576,7 @@ namespace CadastrosBasicos
 
         public string Buscar(string cod, bool remover = false)
         {
+            conexao.ProcurarProduto(cod);
             string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
             Directory.CreateDirectory(caminhoFinal);
 
@@ -605,7 +610,7 @@ namespace CadastrosBasicos
         }
 
         public Produto RetornaProduto(string cod)
-        {
+        {  
             string caminhoFinal = Path.Combine(Directory.GetCurrentDirectory(), "DataBase");
             Directory.CreateDirectory(caminhoFinal);
 

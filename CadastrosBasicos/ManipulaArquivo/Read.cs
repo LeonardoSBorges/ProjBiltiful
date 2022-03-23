@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConexaoDB;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace CadastrosBasicos.ManipulaArquivos
         public string ClienteInadimplente { get; set; }
         public string CaminhoFornecedor { get; set; }
         public string CaminhoBloqueado { get; set; }
+
+        Conexao conexao = new Conexao();
 
         public Read()
         {
@@ -79,7 +82,7 @@ namespace CadastrosBasicos.ManipulaArquivos
 
             cpf = cpf.Replace(".", "").Replace("-", "");
             string cpfBloqueado = "";
-          
+
             try
             {
                 using (StreamReader sr = new StreamReader(ClienteInadimplente))
@@ -126,7 +129,7 @@ namespace CadastrosBasicos.ManipulaArquivos
             string procuraFornecedor = "", rSocial = "", cnpj = "";
             DateTime dAbertura, uCompra, dCadastro;
             char situacao;
-            
+
             try
             {
                 using (StreamReader sr = new StreamReader(CaminhoFornecedor))
@@ -147,7 +150,7 @@ namespace CadastrosBasicos.ManipulaArquivos
                 }
                 return fornecedores;
             }
-            
+
             catch (Exception ex)
             {
                 Console.WriteLine("Ocorreu um erro: " + ex.Message);
@@ -241,6 +244,7 @@ namespace CadastrosBasicos.ManipulaArquivos
             string procuraCliente = "";
             Cliente cliente;
             cpf = cpf.Replace(".", "").Replace("-", "");
+
             try
             {
 

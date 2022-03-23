@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConexaoDB;
 
 namespace CadastrosBasicos.ManipulaArquivos
 {
@@ -14,6 +15,8 @@ namespace CadastrosBasicos.ManipulaArquivos
         public string ClienteInadimplente { get; set; }
         public string CaminhoFornecedor { get; set; }
         public string CaminhoBloqueado { get; set; }
+
+        Conexao conexao = new Conexao();
 
         public Write()
         {
@@ -131,109 +134,112 @@ namespace CadastrosBasicos.ManipulaArquivos
         //editar cliente
         public void EditarCliente(Cliente clienteAtualizado)
         {
+            conexao.EditarCliente(clienteAtualizado);
+            //Read read = new Read();
+            //List<Cliente> clientes = read.ListaArquivoCliente();
+            //int posicao = 0;
+            //try
+            //{
 
-            Read read = new Read();
-            List<Cliente> clientes = read.ListaArquivoCliente();
-            int posicao = 0;
-            try
-            {
-
-                while (clientes[posicao] != null)
-                {
-                    if (clienteAtualizado.CPF == clientes[posicao].CPF)
-                    {
-                        clientes[posicao] = clienteAtualizado;
-                        break;
-                    }
-                    posicao++;
-                }
-                File.Delete(CaminhoCadastro);
-                using (StreamWriter sw = new StreamWriter(CaminhoCadastro))
-                {
-                    posicao = 0;
-                    do
-                    {
-                        sw.WriteLine(clientes[posicao].RetornaArquivo());
-                        posicao++;
-                    } while (posicao < clientes.Count);
-                    Console.WriteLine("Registro atualizado");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Ocorreu um erro: " + ex.Message);
-            }
+            //    while (clientes[posicao] != null)
+            //    {
+            //        if (clienteAtualizado.CPF == clientes[posicao].CPF)
+            //        {
+            //            clientes[posicao] = clienteAtualizado;
+            //            break;
+            //        }
+            //        posicao++;
+            //    }
+            //    File.Delete(CaminhoCadastro);
+            //    using (StreamWriter sw = new StreamWriter(CaminhoCadastro))
+            //    {
+            //        posicao = 0;
+            //        do
+            //        {
+            //            sw.WriteLine(clientes[posicao].RetornaArquivo());
+            //            posicao++;
+            //        } while (posicao < clientes.Count);
+            //        Console.WriteLine("Registro atualizado");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            //}
         }
         public void EditarFornecedor(Fornecedor fornecedorAtualizado)
         {
-
-            Read read = new Read();
-            List<Fornecedor> fornecedores = read.ListaArquivoFornecedor();
-            int posicao = 0;
-            try
-            {
-                while (fornecedores[posicao] != null)
-                {
-                    if (fornecedorAtualizado.CNPJ == fornecedores[posicao].CNPJ)
-                    {
-                        fornecedores[posicao] = fornecedorAtualizado;
-                        break;
-                    }
-                    posicao++;
-                }
-                File.Delete(CaminhoFornecedor);
-                using (StreamWriter sw = new StreamWriter(CaminhoFornecedor))
-                {
-                    posicao = 0;
-                    do
-                    {
-                        sw.WriteLine(fornecedores[posicao].RetornaArquivo());
-                        posicao++;
-                    } while (posicao < fornecedores.Count);
-                        Console.WriteLine("Registro atualizado");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Ocorreu um erro: " + ex.Message);
-            }
+            conexao.EditarFornecedor(fornecedorAtualizado);
+            //Read read = new Read();
+            //List<Fornecedor> fornecedores = read.ListaArquivoFornecedor();
+            //int posicao = 0;
+            //try
+            //{
+            //    while (fornecedores[posicao] != null)
+            //    {
+            //        if (fornecedorAtualizado.CNPJ == fornecedores[posicao].CNPJ)
+            //        {
+            //            fornecedores[posicao] = fornecedorAtualizado;
+            //            break;
+            //        }
+            //        posicao++;
+            //    }
+            //    File.Delete(CaminhoFornecedor);
+            //    using (StreamWriter sw = new StreamWriter(CaminhoFornecedor))
+            //    {
+            //        posicao = 0;
+            //        do
+            //        {
+            //            sw.WriteLine(fornecedores[posicao].RetornaArquivo());
+            //            posicao++;
+            //        } while (posicao < fornecedores.Count);
+            //        Console.WriteLine("Registro atualizado");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            //}
         }
+
         //Gravar novo cliente no arquivo
         public void GravarNovoCliente(Cliente cliente)
         {
-            try
-            {
 
-                string total = cliente.RetornaArquivo();
+            //try
+            //{
+            //    string total = cliente.RetornaArquivo();
 
+            //    using (StreamWriter sw = new StreamWriter(CaminhoCadastro, append: true))
+            //    {
+            //        sw.WriteLine(total);
+            //        Console.WriteLine("Cliente inserido com sucesso");
+            //    }
 
-                using (StreamWriter sw = new StreamWriter(CaminhoCadastro, append: true))
-                {
-                    sw.WriteLine(total);
-                    Console.WriteLine("Cliente inserido com sucesso");
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Ocorreu um erro: " + ex.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            //}
+            conexao.GravarCliente(cliente);
         }
         public void GravarNovoFornecedor(Fornecedor fornecedor)
         {
-            try
-            {
-                using (StreamWriter sw = new StreamWriter(CaminhoFornecedor, append: true))
-                {
-                    sw.WriteLine(fornecedor.RetornaArquivo());
-                    Console.WriteLine("Fornecedor inserido com sucesso");
-                }
+            //try
+            //{
+            //    using (StreamWriter sw = new StreamWriter(CaminhoFornecedor, append: true))
+            //    {
+            //        sw.WriteLine(fornecedor.RetornaArquivo());
+            //        Console.WriteLine("Fornecedor inserido com sucesso");
+            //    }
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Ocorreu um erro: " + ex.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            //}
+            conexao.GravarFornecedor(fornecedor);
+
         }
         public void GravarProduto(Produto produto)
         {

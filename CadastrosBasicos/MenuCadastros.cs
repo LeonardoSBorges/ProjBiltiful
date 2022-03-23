@@ -1,9 +1,12 @@
 using CadastrosBasicos.ManipulaArquivos;
+using ConexaoDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace CadastrosBasicos
 {
@@ -29,7 +32,7 @@ namespace CadastrosBasicos
                 Console.WriteLine("0. Voltar ao menu anterior");
                 Console.Write("\nEscolha: ");
 
-                switch(escolha = Console.ReadLine())
+                switch (escolha = Console.ReadLine())
                 {
                     case "0":
                         break;
@@ -53,7 +56,7 @@ namespace CadastrosBasicos
                         break;
                 }
 
-            }while(escolha != "0");
+            } while (escolha != "0");
 
         }
 
@@ -102,7 +105,7 @@ namespace CadastrosBasicos
 
                     case "4":
                         new Cliente().BloqueiaCadastro();
-                        
+
                         break;
 
                     case "5":
@@ -164,7 +167,7 @@ namespace CadastrosBasicos
                 Console.WriteLine("Menor de 18 anos nao pode ser cadastrado");
                 Console.ReadKey();
             }
-                
+
         }
 
         public static void NovoFornecedor()
